@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/bottom_category"
+        android:icon="@drawable/category"
+        android:title="카테고리"/>
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/bottom_search"
+        android:icon="@drawable/search"
+        android:title="검색"/>
+    <item
+        android:id="@+id/bottom_home"
+        android:icon="@drawable/home"
+        android:title="홈"
+        app:showAsAction="always"
+        />
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/bottom_community"
+        android:icon="@drawable/community"
+        android:title="커뮤니티"/>
+    <item
+        app:showAsAction="always"
+        android:id="@+id/bottom_profile"
+        android:icon="@drawable/profile"
+        android:title="마이페이지"/>
+</menu>
