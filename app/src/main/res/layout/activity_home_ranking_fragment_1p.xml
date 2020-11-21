@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="100dp"
+            android:layout_height="24dp"
+            android:fontFamily="@font/kopubworlddotumbold"
+            android:gravity="center"
+            android:paddingLeft="44dp"
+            android:text="뮤지컬"
+            android:textColor="#FED700"
+            android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_ranking_rv"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:paddingTop="13dp" />
+
+    </LinearLayout>
+
+</FrameLayout>

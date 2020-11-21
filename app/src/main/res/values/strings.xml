@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TodayPlay</string>
+    <string name="q_a"><![CDATA[Q&A]]></string>
+    <string name="underline_string">&lt;u>필수 사항&lt;/u>!!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottom_category">카테고리</string>
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="question_spinner">
+        <item>질문대상 선택</item>
+        <item>전체</item>
+        <item>병아리</item>
+        <item>연구원</item>
+        <item>마스터</item>
+        <item>에디터</item>
+    </string-array>
+</resources>

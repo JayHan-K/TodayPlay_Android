@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="302dp"
+    android:layout_height="185dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/journal_iv"
+        android:layout_width="302dp"
+        android:layout_height="151dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/journal_tv"
+        android:layout_width="263dp"
+        android:layout_height="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="식상한 무대는 그만!국내 이색 공연장 5선"
+        android:textAlignment="center"
+        android:textColor="#736A6A"
+        android:textSize="12dp" />
+
+</LinearLayout>
