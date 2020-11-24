@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="#232323"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="145dp">
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/real_review_suggestion_iv"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/poster_sample11"
+            android:layout_width="73dp"
+            android:layout_height="106dp">
+        </ImageView>
+        <LinearLayout
+            android:layout_width="15dp"
+            android:layout_height="match_parent"></LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:id="@+id/real_review_suggestion_title_tv"
+                android:paddingBottom="3dp"
+                android:layout_marginTop="20dp"
+                android:textSize="15dp"
+                android:textColor="#ffffff"
+                android:text="뮤지컬 오페라의 유령"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+            <TextView
+                android:id="@+id/real_review_suggestion_tag_tv"
+                android:textColor="#afafaf"
+                android:textSize="13dp"
+                android:text="로맨스, 스릴러"
+                android:layout_below="@+id/real_review_suggestion_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+            <TextView
+                android:fontFamily="@font/kopubworlddotummedium"
+                android:layout_marginBottom="25dp"
+                android:layout_alignParentBottom="true"
+                android:textSize="11dp"
+                android:textColor="#9c9c9c"
+                android:text="2020.05.10~08.15"
+                android:id="@+id/real_review_suggestion_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
