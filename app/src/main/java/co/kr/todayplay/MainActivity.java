@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.fragment.CommunityFragment;
 import co.kr.todayplay.fragment.HomeFragment;
+import co.kr.todayplay.fragment.JournalFragment;
 import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.fragment.SearchFragment;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private final SearchFragment searchFragment = new SearchFragment();
     private final ProfileFragment profileFragment = new ProfileFragment();
     private final CommunityFragment communityFragment = new CommunityFragment();
+    private final JournalFragment journalFragment = new JournalFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.replace(R.id.main_frameLayout, new SearchFragment()).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_community:
-                        transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();
+                        transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_profile:
                         transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();
