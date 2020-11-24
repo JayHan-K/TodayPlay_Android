@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="spinner_notice">
+        <item>제목</item>
+        <item>날짜</item>
+    </string-array>
+</resources>
