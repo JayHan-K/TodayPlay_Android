@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private final SearchFragment searchFragment = new SearchFragment();
     private final ProfileFragment profileFragment = new ProfileFragment();
     private final CommunityFragment communityFragment = new CommunityFragment();
+    private final JournalFragment journalFragment = new JournalFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
