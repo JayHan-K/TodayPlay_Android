@@ -11,12 +11,14 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import co.kr.todayplay.fragment.HomeFragment;
+import co.kr.todayplay.fragment.JournalFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private Long mBackwait = 0L;
     private BottomNavigationView main_bottomNavigationView;
     private HomeFragment homeFragment = new HomeFragment();
+    private JournalFragment journalFragment = new JournalFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_community:
-                        transaction.replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+                        transaction.replace(R.id.main_frameLayout, journalFragment).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_profile:
                         transaction.replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
