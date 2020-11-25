@@ -1,7 +1,6 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,47 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 
-public class JournalListAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public List<Item> data;
     public ArrayList<JournalListViewHolder> journal_itemController = new ArrayList<>();
-
-    public JournalListAdaptor(List<Item> data){
-        super();
-        this.data = data;
-    }
-
-    public static class JournalListViewHolder extends RecyclerView.ViewHolder{
-        public TextView textView;
-        public ImageView imageView;
-        public JournalListViewHolder(View itemView){
-            super(itemView);
-            textView = (TextView)itemView.findViewById(R.id.journal_tv);
-            imageView = (ImageView)itemView.findViewById(R.id.journal_iv);
-        }
-    }
-
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.journal_menu_item, parent, false);
-        JournalListViewHolder holder = new JournalListViewHolder(view);
-        journal_itemController.add(holder);
-        return holder;
-    }
-
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final Item item = data.get(position);
-        final JournalListViewHolder itemController = (JournalListViewHolder) holder;
-        itemController.textView.setText(item.title);
-        itemController.imageView.setImageResource(item.drawable);
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return data.size();
-    }
 
     public static class Item{
         private int drawable;
@@ -83,4 +44,49 @@ public class JournalListAdaptor extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.title = title ;
         }
     }
+
+    public static class JournalListViewHolder extends RecyclerView.ViewHolder{
+        public TextView textView;
+        public ImageView imageView;
+        public JournalListViewHolder(View itemView){
+            super(itemView);
+            textView = (TextView)itemView.findViewById(R.id.journal_tv);
+            imageView = (ImageView)itemView.findViewById(R.id.journal_iv);
+        }
+    }
+
+    public JournalListAdapter(List<Item> data){
+        super();
+        this.data = data;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.journal_circle_item, parent, false);
+        JournalListViewHolder holder = new JournalListViewHolder(view);
+        journal_itemController.add(holder);
+        return holder;
+    }
+
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final Item item = data.get(position);
+        final JournalListViewHolder itemController = (JournalListViewHolder) holder;
+        itemController.textView.setText(item.title);
+        itemController.imageView.setImageResource(item.drawable);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //child fragment 전환
+            }
+        });
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+
 }
