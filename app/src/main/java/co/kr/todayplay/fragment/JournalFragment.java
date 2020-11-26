@@ -2,6 +2,7 @@ package co.kr.todayplay.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +24,10 @@ import co.kr.todayplay.fragment.Journal.JournalChickFragment;
 import co.kr.todayplay.fragment.Journal.JournalHotFragment;
 
 public class JournalFragment extends Fragment {
-    MainActivity mainActivity;
-    private FragmentManager fragmentManager;
-    private JournalChickFragment journalChickFragment;
-    private JournalHotFragment journalHotFragment;
-    private FragmentTransaction fragmentTransaction;
     private RecyclerView recyclerView;
 
     public JournalFragment(){
 
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mainActivity = (MainActivity)getActivity();
     }
 
     @Nullable
@@ -54,22 +44,38 @@ public class JournalFragment extends Fragment {
         data.add(new JournalListAdapter.Item(R.drawable.editors_sample4,"마스터"));
         data.add(new JournalListAdapter.Item(R.drawable.editors_sample1,"가족"));
         data.add(new JournalListAdapter.Item(R.drawable.editors_sample2,"연인"));
-
-        recyclerView.setAdapter(new JournalListAdapter(data));
-
+        JournalListAdapter journalListAdapter = new JournalListAdapter(data);
+        recyclerView.setAdapter(journalListAdapter);
+        journalListAdapter.setOnItemClickListener(new JournalListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                Fragment fragment;
+                switch (pos){
+                    case 0:
+                        break;
+                    case 1:
+                        fragment = JournalHotFragment.newInstance();
+                        setChildFragment(fragment);
+                        Log.e("hot", "onItemClick: 1");
+                        break;
+                    case 2:
+                        fragment = JournalChickFragment.newInstance();
+                        setChildFragment(fragment);
+                        Log.e("chick", "onItemClick: 2");
+                        break;
+                }
+            }
+        });
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        FragmentManager childFragmentManager = getChildFragmentManager();
-        childFragmentManager.beginTransaction().replace(R.id.journal_child_framelayout, journalHotFragment).commitAllowingStateLoss();
+    private void setChildFragment(Fragment child) {
+        FragmentTransaction childFt = getChildFragmentManager().beginTransaction();
+        if (!child.isAdded()) {
+            childFt.replace(R.id.journal_child_framelayout, child);
+            childFt.addToBackStack(null);
+            childFt.commit();
+        }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mainActivity = null;
-    }
 }

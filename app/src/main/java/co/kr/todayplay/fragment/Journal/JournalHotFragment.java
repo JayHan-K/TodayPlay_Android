@@ -12,20 +12,27 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalHotListAdapter;
 
 public class JournalHotFragment extends Fragment {
     private RecyclerView hot_rv;
-    public JournalHotFragment(){
-
+    public static JournalHotFragment newInstance(){
+            return new JournalHotFragment();
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_journal_hot, container, false);
         hot_rv = (RecyclerView)viewGroup.findViewById(R.id.hot_rv);
-        hot_rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
+        hot_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL,false));
         ArrayList<JournalHotListAdapter.HotItem> data = new ArrayList<>();
         data.add(new JournalHotListAdapter.HotItem(R.drawable.hot_issue_sample1,"명동에 극장이 있다고!"));
         data.add(new JournalHotListAdapter.HotItem(R.drawable.hot_issue_sample2,"모든 이야기의 시작,\n오이디푸스"));

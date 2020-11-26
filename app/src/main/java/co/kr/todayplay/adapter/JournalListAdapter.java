@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import co.kr.todayplay.R;
 public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public List<Item> data;
     public ArrayList<JournalListViewHolder> journal_itemController = new ArrayList<>();
+    private static OnItemClickListener mListener = null;
 
     public static class Item{
         private int drawable;
@@ -45,11 +47,35 @@ public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    public interface OnItemClickListener
+    {
+        void onItemClick(View v, int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.mListener = listener;
+    }
+
     public static class JournalListViewHolder extends RecyclerView.ViewHolder{
         public TextView textView;
         public ImageView imageView;
         public JournalListViewHolder(View itemView){
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION)
+                    {
+                        mListener.onItemClick(v, pos);
+                        Log.e("hot_holder", "onItemClick: 1");
+                    }
+                }
+            });
             textView = (TextView)itemView.findViewById(R.id.journal_tv);
             imageView = (ImageView)itemView.findViewById(R.id.journal_iv);
         }
@@ -75,12 +101,14 @@ public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         final JournalListViewHolder itemController = (JournalListViewHolder) holder;
         itemController.textView.setText(item.title);
         itemController.imageView.setImageResource(item.drawable);
+        /*
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //child fragment 전환
             }
         });
+        */
     }
 
 
@@ -88,5 +116,4 @@ public class JournalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemCount() {
         return data.size();
     }
-
 }
