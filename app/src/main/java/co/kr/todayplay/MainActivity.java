@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.fragment.CommunityFragment;
 import co.kr.todayplay.fragment.HomeFragment;
+import co.kr.todayplay.fragment.JournalFragment;
 import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.fragment.SearchFragment;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.replace(R.id.main_frameLayout, new SearchFragment()).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_community:
-                        transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();
+                        transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_profile:
                         transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();

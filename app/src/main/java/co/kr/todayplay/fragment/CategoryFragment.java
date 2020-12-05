@@ -8,10 +8,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.Arrays;
+import java.util.List;
 
 import co.kr.todayplay.R;
+import co.kr.todayplay.adapter.CategoryPagerAdapter;
 
 public class CategoryFragment extends Fragment {
+    ViewPager2 viewPager2;
+    CategoryPagerAdapter adapter;
 
     public CategoryFragment(){
 
@@ -20,7 +30,31 @@ public class CategoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_category, container, false);
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_category,container,false);
+
+        final TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
+        tabLayout.addTab((tabLayout.newTab().setText("전체")));
+        tabLayout.addTab((tabLayout.newTab().setText("뮤지컬")));
+        tabLayout.addTab((tabLayout.newTab().setText("연극")));
+        tabLayout.addTab((tabLayout.newTab().setText("공연중")));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final List<String> tabElement = Arrays.asList("전체","뮤지컬","연극","공연중");
+
+        adapter = new CategoryPagerAdapter(this,tabLayout.getTabCount());
+        viewPager2 = (ViewPager2)rootView.findViewById(R.id.viewcategory);
+        viewPager2.setAdapter(adapter);
+        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(tabElement.get(position));
+
+
+            }
+        }).attach();
+
+
+        return rootView;
     }
 
 }
