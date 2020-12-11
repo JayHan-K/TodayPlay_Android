@@ -1,4 +1,4 @@
-package co.kr.todayplay.fragment.Journal;
+package co.kr.todayplay.fragment.journal;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

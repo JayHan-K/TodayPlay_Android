@@ -18,8 +18,8 @@ import java.util.List;
 
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalListAdapter;
-import co.kr.todayplay.fragment.Journal.JournalChickFragment;
-import co.kr.todayplay.fragment.Journal.JournalHotFragment;
+import co.kr.todayplay.fragment.journal.JournalChickFragment;
+import co.kr.todayplay.fragment.journal.JournalHotFragment;
 
 public class JournalFragment extends Fragment {
     private RecyclerView recyclerView;
