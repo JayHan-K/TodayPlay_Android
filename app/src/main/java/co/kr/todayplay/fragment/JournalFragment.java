@@ -1,25 +1,27 @@
 package co.kr.todayplay.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalListAdapter;
-import co.kr.todayplay.fragment.journal.JournalChickFragment;
-import co.kr.todayplay.fragment.journal.JournalHotFragment;
+import co.kr.todayplay.fragment.Journal.JournalChickFragment;
+import co.kr.todayplay.fragment.Journal.JournalHotFragment;
 
 public class JournalFragment extends Fragment {
     private RecyclerView recyclerView;
