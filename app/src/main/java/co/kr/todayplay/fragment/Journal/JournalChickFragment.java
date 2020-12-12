@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalChickListAdapter;
-import co.kr.todayplay.adapter.JournalHotListAdapter;
 
 public class JournalChickFragment extends Fragment {
     RecyclerView chick_rv;
