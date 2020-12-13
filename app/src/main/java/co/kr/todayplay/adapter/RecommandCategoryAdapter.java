@@ -8,11 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import co.kr.todayplay.R;
+import co.kr.todayplay.object.Journal;
 import co.kr.todayplay.object.RecommandItem;
 
 public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

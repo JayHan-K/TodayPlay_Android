@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import co.kr.todayplay.ItemClickListener
 import co.kr.todayplay.R
 import co.kr.todayplay.`object`.Show
+import org.w3c.dom.Text
 
 
 class HomeRankingAdapter(show1: ArrayList<Show>, context: Context,itemClickListener: ItemClickListener) :
@@ -27,9 +30,11 @@ class HomeRankingAdapter(show1: ArrayList<Show>, context: Context,itemClickListe
 
     override fun onBindViewHolder(holder: RankingHolder, position: Int) {
         val show: Show = shows.get(position)
+        val layoutParams = holder.itemView.layoutParams
         holder.ranking_tv.text = show.showName
-        setMarginsInDp(holder.ranking_iv,0,0,0,13)
+        setMarginsInDp(holder.ranking_iv,0,0,0,0)
         holder.ranking_iv.setImageResource(show.imageSource)
+        holder.ranking_num.text = (position+1).toString();
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClicked(holder,show,position)
         }
@@ -43,6 +48,7 @@ class HomeRankingAdapter(show1: ArrayList<Show>, context: Context,itemClickListe
     class RankingHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var ranking_tv = itemView?.findViewById<TextView>(R.id.ranking_tv_title);
         var ranking_iv = itemView?.findViewById<ImageView>(R.id.ranking_iv);
+        var ranking_num = itemView?.findViewById<TextView>(R.id.ranking_num_tv);
 
     }
 
