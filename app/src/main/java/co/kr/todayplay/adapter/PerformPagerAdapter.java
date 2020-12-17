@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import co.kr.todayplay.fragment.category.CategoryMusical;
 import co.kr.todayplay.fragment.category.CategoryPlay;
 import co.kr.todayplay.fragment.category.CategoryTotal;
+import co.kr.todayplay.fragment.perform.PerformDetailFragment;
 import co.kr.todayplay.fragment.perform.PerformReviewFragment;
 
 public class PerformPagerAdapter extends FragmentStatePagerAdapter {
@@ -25,7 +26,7 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                PerformReviewFragment tab1 = new PerformReviewFragment();
+                PerformDetailFragment tab1 = new PerformDetailFragment();
                 return tab1;
 
             case 1:

@@ -3,7 +3,6 @@ package co.kr.todayplay.fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -12,6 +11,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +46,8 @@ public class PerformInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_prac, container, false);
-        tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
         tag_rv = (RecyclerView)viewGroup.findViewById(R.id.tag_rv);
-        viewPager = (ViewPager)viewGroup.findViewById(R.id.viewPager);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -81,21 +79,24 @@ public class PerformInfoFragment extends Fragment {
 
         tag_rv.setLayoutManager(gridLayoutManager);
 
-        tabLayout.addTab(tabLayout.newTab().setText("후기 분석"));
+        tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("상세 정보"));
+        tabLayout.addTab(tabLayout.newTab().setText("후기 분석"));
         tabLayout.addTab(tabLayout.newTab().setText("영상 자료"));
         tabLayout.addTab(tabLayout.newTab().setText("History"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         performPagerAdapter = new PerformPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+        viewPager = (ViewPager)viewGroup.findViewById(R.id.viewPager);
         viewPager.setAdapter(performPagerAdapter);
-
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 performPagerAdapter.notifyDataSetChanged();
+                Log.d("TAG", "onTabSelected: "+tab.getPosition());
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) { }
