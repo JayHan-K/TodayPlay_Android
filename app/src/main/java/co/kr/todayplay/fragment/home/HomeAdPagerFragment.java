@@ -14,9 +14,13 @@ import androidx.viewpager.widget.ViewPager;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.fragment.PerformInfoFragment;
+import co.kr.todayplay.fragment.perform.PerformDetailFragment;
+import co.kr.todayplay.fragment.perform.PerformReviewFragment;
 
 public class HomeAdPagerFragment extends Fragment {
     PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+    //PerformDetailFragment performDetailFragment = new PerformDetailFragment();
+    PerformReviewFragment performReviewFragment = new PerformReviewFragment();
     private int imageResource;
     private String ad_name;
 
@@ -34,6 +38,9 @@ public class HomeAdPagerFragment extends Fragment {
             public void onClick(View view) {
                 Log.e("clicked", "onClick: image");
                 ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
+                //((MainActivity)getActivity()).replaceFragment(performDetailFragment);
+                //((MainActivity)getActivity()).replaceFragment(performReviewFragment);
+
             }
         });
         TextView homeMaindAdTX = (TextView) viewGroup.findViewById(R.id.home_main_ad_tx);

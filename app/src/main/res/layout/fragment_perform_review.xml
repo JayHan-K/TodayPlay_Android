@@ -24,11 +24,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="24dp">
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="34dp">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/review_rv"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/review_part"
             app:layout_constraintEnd_toEndOf="@id/review_part"
             app:layout_constraintTop_toTopOf="@id/review_part"
@@ -50,8 +51,7 @@
             app:layout_constraintBottom_toBottomOf="@id/review_part"
             app:layout_constraintStart_toStartOf="@id/review_part"
             app:layout_constraintEnd_toEndOf="@id/review_part"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="34dp">
+            android:layout_marginTop="2dp">
         </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <Button
