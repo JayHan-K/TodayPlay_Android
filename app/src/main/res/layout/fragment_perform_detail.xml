@@ -24,8 +24,11 @@
             app:layout_constraintTop_toTopOf="@id/perform_intro_part"
             app:layout_constraintStart_toStartOf="@id/perform_intro_part"
             android:layout_marginLeft="24dp" />
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/perform_iv"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:riv_corner_radius="7dp"
             android:src="@drawable/opera_5"
             android:layout_width="match_parent"
             android:layout_height="160dp"
@@ -34,6 +37,29 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="12dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:paddingLeft="30dp"
+            android:paddingBottom="25dp">
+            <TextView
+                android:id="@+id/perform_detail_sub_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모든 이야기의 시작이 된 이야기"
+                android:textColor="#ffffff"
+                android:textSize="12sp"/>
+            <TextView
+                android:id="@+id/perform_detail_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오이디푸스I"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/perform_staff_part"
@@ -70,8 +96,7 @@
         app:layout_constraintTop_toBottomOf="@id/perform_staff_part"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingLeft="24dp"
-        android:layout_marginTop="30dp">
+        android:paddingLeft="24dp">
         <TextView
             android:id="@+id/journal_tv"
             android:layout_width="wrap_content"

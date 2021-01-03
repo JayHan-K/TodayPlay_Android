@@ -5,8 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#252525"
     android:layout_marginRight="6dp">
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/staff_iv"
+        android:src="@drawable/editor_profile_4"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="6dp"
         android:layout_width="match_parent"
         android:layout_height="83.5dp"
         app:layout_constraintTop_toTopOf="parent"

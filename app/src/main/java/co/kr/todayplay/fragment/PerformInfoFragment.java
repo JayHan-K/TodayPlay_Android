@@ -32,22 +32,18 @@ import androidx.viewpager.widget.ViewPager;
 import co.kr.todayplay.BlurredImage;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformPagerAdapter;
-import co.kr.todayplay.adapter.PerformTagAdapter;
 
 public class PerformInfoFragment extends Fragment {
-    RecyclerView tag_rv;
     TabLayout tabLayout;
     ViewPager viewPager;
     PerformPagerAdapter performPagerAdapter;
     ConstraintLayout poster;
-    GridLayoutManager gridLayoutManager;
     public PerformInfoFragment(){}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
-        tag_rv = (RecyclerView)viewGroup.findViewById(R.id.tag_rv);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -59,25 +55,6 @@ public class PerformInfoFragment extends Fragment {
         //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
         BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
         poster.setBackground(bitmapDrawable);
-
-        ArrayList<String> data = new ArrayList<>();
-        data.add("세계4대뮤지컬");
-        data.add("로맨스");
-        data.add("드라마");
-        data.add("가면");
-        data.add("대극장");
-        data.add("세계4대뮤지컬");
-        PerformTagAdapter performTagAdapter = new PerformTagAdapter(data);
-        tag_rv.setAdapter(performTagAdapter);
-        gridLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2, LinearLayoutManager.HORIZONTAL,false){
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        tag_rv.setHasFixedSize(true);
-
-        tag_rv.setLayoutManager(gridLayoutManager);
 
         tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("상세 정보"));

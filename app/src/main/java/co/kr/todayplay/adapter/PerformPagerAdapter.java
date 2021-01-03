@@ -11,7 +11,9 @@ import co.kr.todayplay.fragment.category.CategoryMusical;
 import co.kr.todayplay.fragment.category.CategoryPlay;
 import co.kr.todayplay.fragment.category.CategoryTotal;
 import co.kr.todayplay.fragment.perform.PerformDetailFragment;
+import co.kr.todayplay.fragment.perform.PerformHistoryFragment;
 import co.kr.todayplay.fragment.perform.PerformReviewFragment;
+import co.kr.todayplay.fragment.perform.PerformVideoFragment;
 
 public class PerformPagerAdapter extends FragmentStatePagerAdapter {
     int num;
@@ -34,11 +36,11 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
                 return tab2;
 
             case 2:
-                PerformReviewFragment tab3 = new PerformReviewFragment();
+                PerformVideoFragment tab3 = new PerformVideoFragment();
                 return tab3;
 
             case 3:
-                PerformReviewFragment tab4 = new PerformReviewFragment();
+                PerformHistoryFragment tab4 = new PerformHistoryFragment();
                 return tab4;
             default:
                 return null;

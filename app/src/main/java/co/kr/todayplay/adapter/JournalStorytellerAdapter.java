@@ -12,11 +12,10 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
-import co.kr.todayplay.object.Journal;
 
-public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    public ArrayList<PerformDetailJournalAdapter.JournalItem> data = new ArrayList<>();
-    private ArrayList<PerformDetailJournalAdapter.JournalHolder> itemController = new ArrayList<>();
+public class JournalStorytellerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public ArrayList<JournalStorytellerAdapter.JournalItem> data = new ArrayList<>();
+    private ArrayList<JournalStorytellerAdapter.JournalHolder> itemController = new ArrayList<>();
 
     public static class JournalItem{
         private int drawable;
@@ -54,7 +53,7 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public PerformDetailJournalAdapter(ArrayList<PerformDetailJournalAdapter.JournalItem> data){
+    public JournalStorytellerAdapter(ArrayList<JournalStorytellerAdapter.JournalItem> data){
         super();
         this.data = data;
     }

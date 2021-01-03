@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,15 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 
 public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public ArrayList<PerformReviewAdapter.ReviewItem> data = new ArrayList<>();
     private ArrayList<PerformReviewAdapter.ReviewHolder> itemController = new ArrayList<>();
+    private Context context;
 
     public static class ReviewItem{
         private int profile_drawable;
@@ -29,6 +33,7 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
         private int num_review;
         private String good_thing;
         private String bad_thing;
+        private ArrayList<Integer> review_drawable;
 
         public ReviewItem(){}
         public ReviewItem(int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing){
@@ -41,6 +46,18 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.num_review = num_review;
             this.good_thing = good_thing;
             this.bad_thing = bad_thing;
+        }
+        public ReviewItem(int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, ArrayList<Integer> review_drawable){
+            this.profile_drawable = profile_drawable;
+            this.user_name = user_name;
+            this.thumb = thumb;
+            this.age_level = age_level;
+            this.date = date;
+            this.num_heart = num_heart;
+            this.num_review = num_review;
+            this.good_thing = good_thing;
+            this.bad_thing = bad_thing;
+            this.review_drawable = review_drawable;
         }
 
         public boolean isThumb() {
@@ -77,6 +94,10 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
         public String getGood_thing() {
             return good_thing;
         }
+
+        public ArrayList<Integer> getReview_drawable() {
+            return review_drawable;
+        }
     }
 
     public class ReviewHolder extends RecyclerView.ViewHolder{
@@ -89,7 +110,8 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
         private TextView num_review_tv;
         private TextView good_thing_tv;
         private TextView bad_thing_tv;
-        //private RecyclerView photo_rv;
+        private RecyclerView photo_rv;
+        private ConstraintLayout parent_layout;
 
         public ReviewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,12 +124,13 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.num_review_tv = itemView.findViewById(R.id.num_review_tv);
             this.good_thing_tv = itemView.findViewById(R.id.good_review_tv);
             this.bad_thing_tv = itemView.findViewById(R.id.bad_review_tv);
-            //this.photo_rv = itemView.findViewById(R.id.review_photo_rv);
+            this.photo_rv = itemView.findViewById(R.id.review_photo_rv);
+            this.parent_layout = itemView.findViewById(R.id.parent_layout);
         }
     }
-
-    public PerformReviewAdapter(ArrayList<PerformReviewAdapter.ReviewItem> data){
+    public PerformReviewAdapter(Context context, ArrayList<PerformReviewAdapter.ReviewItem> data){
         super();
+        this.context = context;
         this.data = data;
     }
 
@@ -125,17 +148,28 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ReviewItem item = data.get(position);
         PerformReviewAdapter.ReviewHolder itemController = (PerformReviewAdapter.ReviewHolder) holder;
-        itemController.profile_iv.setImageResource(item.getProfile_drawable());
-        itemController.user_name_tv.setText(item.user_name);
-        if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
-        else itemController.thumb_iv.setImageResource(R.drawable.icon_bad);
-        itemController.num_heart_tv.setText(Integer.toString(item.getNum_heart()));
-        itemController.num_review_tv.setText(Integer.toString(item.getNum_review()));
-        itemController.age_level_tv.setText(item.getAge_level());
-        itemController.date_tv.setText(item.getDate());
-        itemController.good_thing_tv.setText(item.getGood_thing());
-        itemController.bad_thing_tv.setText(item.getBad_thing());
-        //recycler
+            itemController.profile_iv.setImageResource(item.getProfile_drawable());
+            itemController.user_name_tv.setText(item.user_name);
+            if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
+            else itemController.thumb_iv.setImageResource(R.drawable.icon_bad);
+            itemController.num_heart_tv.setText(Integer.toString(item.getNum_heart()));
+            itemController.num_review_tv.setText(Integer.toString(item.getNum_review()));
+            itemController.age_level_tv.setText(item.getAge_level());
+            itemController.date_tv.setText(item.getDate());
+            itemController.good_thing_tv.setText(item.getGood_thing());
+            itemController.bad_thing_tv.setText(item.getBad_thing());
+            //recycler
+            if (item.review_drawable != null){
+                itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
+                    @Override
+                    public boolean canScrollHorizontally() {
+                        return false;
+                    }
+                });
+                PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
+                itemController.photo_rv.setAdapter(performReviewImageAdapter);
+            }
+            else Log.d("IsImage", "onBindViewHolder: image is null!!");
     }
 
     @Override

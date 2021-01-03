@@ -13,14 +13,19 @@ import androidx.viewpager.widget.ViewPager;
 
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.adapter.PerformHistoryAdapter;
 import co.kr.todayplay.fragment.PerformInfoFragment;
 import co.kr.todayplay.fragment.perform.PerformDetailFragment;
+import co.kr.todayplay.fragment.perform.PerformHistoryFragment;
 import co.kr.todayplay.fragment.perform.PerformReviewFragment;
+import co.kr.todayplay.fragment.perform.PerformVideoFragment;
 
 public class HomeAdPagerFragment extends Fragment {
     PerformInfoFragment performInfoFragment = new PerformInfoFragment();
-    //PerformDetailFragment performDetailFragment = new PerformDetailFragment();
+    PerformDetailFragment performDetailFragment = new PerformDetailFragment();
     PerformReviewFragment performReviewFragment = new PerformReviewFragment();
+    PerformHistoryFragment performHistoryFragment = new PerformHistoryFragment();
+    PerformVideoFragment performVideoFragment = new PerformVideoFragment();
     private int imageResource;
     private String ad_name;
 
@@ -40,6 +45,8 @@ public class HomeAdPagerFragment extends Fragment {
                 ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
                 //((MainActivity)getActivity()).replaceFragment(performDetailFragment);
                 //((MainActivity)getActivity()).replaceFragment(performReviewFragment);
+                //((MainActivity)getActivity()).replaceFragment(performHistoryFragment);
+                //((MainActivity)getActivity()).replaceFragment(performVideoFragment);
 
             }
         });
