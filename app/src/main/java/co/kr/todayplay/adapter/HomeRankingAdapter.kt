@@ -34,7 +34,7 @@ class HomeRankingAdapter(show1: ArrayList<Show>, context: Context,itemClickListe
         holder.ranking_tv.text = show.showName
         setMarginsInDp(holder.ranking_iv,0,0,0,0)
         holder.ranking_iv.setImageResource(show.imageSource)
-        holder.ranking_num.text = (position+1).toString();
+        holder.ranking_num.text = (position+1).toString()
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClicked(holder,show,position)
         }

@@ -11,6 +11,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="144dp"
+            android:layout_marginLeft="144dp"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/kopubworlddotumbold"
+            android:text="찜한 작품"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/pick_to_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/pick_to_profile"
+            android:layout_width="9dp"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="38dp"
+            android:src="@drawable/icon_pre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/pf_tab_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="124dp"
+            app:layout_constraintBottom_toTopOf="@+id/viewPager2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabIndicatorColor="#fed700"
+            app:tabIndicatorFullWidth="true"
+            app:tabSelectedTextColor="#ffffff"
+            app:tabTextColor="#bababa" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/notice_part"
             android:layout_width="match_parent"
@@ -20,9 +60,8 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/notice_rounded_corner"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView33">
+            app:layout_constraintTop_toBottomOf="@+id/textView34">
 
             <ImageView
                 android:id="@+id/notice_iv"
@@ -62,40 +101,16 @@
                 app:layout_constraintTop_toTopOf="@id/notice_part" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/scrap_to_profile"
-            android:layout_width="9dp"
-            android:layout_height="18dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="22dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginTop="38dp"
-            android:src="@drawable/icon_pre"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView33"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="144dp"
-            android:layout_marginLeft="144dp"
-            android:layout_marginTop="36dp"
-            android:fontFamily="@font/kopubworlddotumbold"
-            android:text="스크랩"
-            android:textColor="#ffffff"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/scrap_to_profile"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pf_scrap_rv"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginTop="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notice_part" />
+            app:layout_constraintTop_toBottomOf="@+id/pf_tab_ly" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

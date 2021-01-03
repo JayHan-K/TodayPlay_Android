@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.todayplay.ItemClickListener
 import co.kr.todayplay.R
@@ -23,9 +24,11 @@ class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context : Context, item
     }
     override fun onBindViewHolder(holder: HomeShowHolder, position: Int) {
         val homeShow : Show = homeShows.get(position)
-        holder.homeShowIV.setBackgroundResource(homeShow.imageSource)
-        setMarginsInDp(holder.homeShowIV, 0,0,25, 0)
-        holder.homeShowIV.setOnClickListener(View.OnClickListener {
+        holder.pf_homeShowIV.setBackgroundResource(homeShow.imageSource)
+        holder.pf_homeShow_TV.text = homeShow.showName
+        setMarginsInDp(holder.pf_homeShowIV, 0,0,40, 0)
+        holder.pf_homeShow_num.text = (position+1).toString()
+        holder.pf_homeShowIV.setOnClickListener(View.OnClickListener {
             itemClickListener.onItemClicked(holder, homeShow, position)
         })
 
@@ -35,7 +38,9 @@ class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context : Context, item
         return homeShows.size
     }
     class HomeShowHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val homeShowIV = itemView.findViewById<ImageView>(R.id.home_show_iv)
+        val pf_homeShowIV = itemView.findViewById<ImageView>(R.id.home_show_iv)
+        val pf_homeShow_TV = itemView.findViewById<TextView>(R.id.pf_home_show_tv_title)
+        val pf_homeShow_num = itemView.findViewById<TextView>(R.id.pf_home_show_tv_num)
     }
 
     fun setMarginsInDp(view: View, left: Int, top: Int, right: Int, bottom: Int){
