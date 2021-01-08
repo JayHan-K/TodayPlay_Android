@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/notice_part"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/notice_rounded_corner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView33">
+
+            <ImageView
+                android:id="@+id/notice_iv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/icon_notice"
+                app:layout_constraintBottom_toBottomOf="@id/notice_part"
+                app:layout_constraintLeft_toLeftOf="@id/notice_part"
+                app:layout_constraintRight_toLeftOf="@id/notice_tv"
+                app:layout_constraintTop_toTopOf="@id/notice_part" />
+
+            <TextView
+                android:id="@+id/notice_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="2020 공연 문화 에티켓지키기"
+                android:textColor="#2d2d2d"
+                app:layout_constraintBottom_toBottomOf="@id/notice_part"
+                app:layout_constraintLeft_toRightOf="@id/notice_iv"
+                app:layout_constraintRight_toLeftOf="@id/community_notice_more_bt"
+                app:layout_constraintTop_toTopOf="@id/notice_part" />
+
+            <Button
+                android:id="@+id/community_notice_more_bt"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginRight="10dp"
+                android:background="#00000000"
+                android:text="...더보기"
+                android:textColor="#2d2d2d"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="@id/notice_part"
+                app:layout_constraintLeft_toRightOf="@id/notice_tv"
+                app:layout_constraintRight_toRightOf="@id/notice_part"
+                app:layout_constraintTop_toTopOf="@id/notice_part" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/scrap_to_profile"
+            android:layout_width="9dp"
+            android:layout_height="18dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="38dp"
+            android:src="@drawable/icon_pre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="144dp"
+            android:layout_marginLeft="144dp"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/kopubworlddotumbold"
+            android:text="스크랩"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/scrap_to_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pf_scrap_rv"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notice_part" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

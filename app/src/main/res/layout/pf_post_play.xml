@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="#FF6C6C6C"
+    app:cardCornerRadius="5dp">
+
+    <ImageView
+        android:id="@+id/pf_post_iv"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:layout_marginTop="125dp">
+
+        <TextView
+            android:id="@+id/pf_post_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/kopubworlddotummedium"
+            android:text="'2020.12.21 종료'"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

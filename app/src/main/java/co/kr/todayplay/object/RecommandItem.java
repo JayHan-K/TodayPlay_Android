@@ -4,7 +4,7 @@ public class RecommandItem {
     private int drawable;
     private String title;
 
-    public RecommandItem(int drawable, String title){
+    public RecommandItem(int drawable,String title){
         this.drawable = drawable;
         this.title = title;
     }

@@ -8,16 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import co.kr.todayplay.R;
-import co.kr.todayplay.object.Journal;
 import co.kr.todayplay.object.RecommandItem;
 
-public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ProfileFavAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<RecommandItem> data = new ArrayList<>();
     private ArrayList<RecommandHolder> itemController = new ArrayList<>();
 
@@ -28,12 +26,12 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
 
         public RecommandHolder(@NonNull View itemView){
             super(itemView);
-            this.imageView = itemView.findViewById(R.id.recommand_image_iv);
-            this.title_tv = itemView.findViewById(R.id.recommand_title_tv);
+            this.imageView = itemView.findViewById(R.id.pf_fav_iv);
+            this.title_tv = itemView.findViewById(R.id.pf_fav_tv);
         }
     }
 
-    public RecommandCategoryAdapter(ArrayList<RecommandItem> data){
+    public ProfileFavAdapter(ArrayList<RecommandItem> data){
         super();
         this.data = data;
     }
@@ -42,7 +40,7 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.recommand_category, parent, false);
+        View view = layoutInflater.inflate(R.layout.pf_fav_play, parent, false);
         RecommandHolder recommandHolder = new RecommandHolder(view);
         itemController.add(recommandHolder);
         return recommandHolder;

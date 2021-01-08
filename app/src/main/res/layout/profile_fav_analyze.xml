@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout11"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/fav_to_proflie"
+                android:layout_width="9dp"
+                android:layout_height="14dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="22dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginTop="38dp"
+                android:src="@drawable/icon_pre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="140dp"
+                android:layout_marginLeft="140dp"
+                android:layout_marginTop="34dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:text="취향 분석실"
+                android:textColor="#ffffff"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/fav_to_proflie"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/info_to_proflie3"
+                    android:layout_width="9dp"
+                    android:layout_height="22dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginBottom="3dp"
+                    android:elevation="4dp"
+                    android:src="@drawable/icon_pre_mirror"
+                    app:layout_constraintBottom_toTopOf="@+id/keyword_rv"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView49"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginRight="6dp"
+                    android:elevation="4dp"
+                    android:fontFamily="@font/kopubworlddotummedium"
+                    android:text="키워드 천체보기"
+                    android:textColor="#FFC1C1C1"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/button2"
+                    app:layout_constraintEnd_toStartOf="@+id/info_to_proflie3" />
+
+                <TextView
+                    android:id="@+id/textView43"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="35dp"
+                    android:fontFamily="@font/kopubworlddotumbold"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp"
+                    android:text="선호 Keyword"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@color/transparent"
+                    android:text="Button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView44"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/kopubworlddotumbold"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="#ffffff"
+                    android:text="취향 맞춤추천"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/keyword_rv" />
+
+                <TextView
+                    android:id="@+id/textView45"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/kopubworlddotummedium"
+                    android:textColor="#FFC1C1C1"
+                    android:textSize="12dp"
+                    android:text="공연중"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView44" />
+
+                <TextView
+                    android:id="@+id/textView46"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/kopubworlddotummedium"
+                    android:textColor="#FFC1C1C1"
+                    android:textSize="12dp"
+                    android:text="공연예정"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/playing_rv" />
+
+                <TextView
+                    android:id="@+id/textView48"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/kopubworlddotummedium"
+                    android:textColor="#FFC1C1C1"
+                    android:textSize="12dp"
+                    android:text="미정"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/play_yet_rv" />
+
+                <LinearLayout
+                    android:layout_width="360dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/not_yet_rv"></LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/not_yet_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView48" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/play_yet_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView46" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/playing_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/keyword_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView43" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

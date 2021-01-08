@@ -2,20 +2,19 @@ package co.kr.todayplay.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import co.kr.todayplay.fragment.Profile.ProfileIng;
 import co.kr.todayplay.fragment.category.CategoryCurrent;
 import co.kr.todayplay.fragment.category.CategoryMusical;
 import co.kr.todayplay.fragment.category.CategoryPlay;
 import co.kr.todayplay.fragment.category.CategoryTotal;
 
 
-public class CategoryPagerAdapter extends FragmentStateAdapter {
+public class pf_myPickPagerAdapter extends FragmentStateAdapter {
     int num;
 
-    public CategoryPagerAdapter(Fragment fm, int num){
+    public pf_myPickPagerAdapter(Fragment fm, int num){
         super(fm);
         this.num = num;
     }
@@ -25,20 +24,17 @@ public class CategoryPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                CategoryTotal tab1 = new CategoryTotal();
+                ProfileIng tab1 = new ProfileIng();
                 return tab1;
 
             case 1:
-                CategoryMusical tab2 = new CategoryMusical();
+                ProfileIng tab2 = new ProfileIng();
                 return tab2;
 
             case 2:
-                CategoryPlay tab3 = new CategoryPlay();
+                ProfileIng tab3 = new ProfileIng();
                 return tab3;
 
-            case 3:
-                CategoryCurrent tab4 = new CategoryCurrent();
-                return tab4;
             default:
                 return null;
 

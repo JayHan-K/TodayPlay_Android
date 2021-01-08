@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout8"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <FrameLayout
+        android:id="@+id/pf_fragment_child_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"></FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pf_scrollView"
+        android:background="#000000"
+        tools:layout_editor_absoluteX="-108dp"
+        tools:layout_editor_absoluteY="96dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/info_to_proflie2"
+                android:layout_width="9dp"
+                android:layout_height="14dp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginRight="35dp"
+                android:src="@drawable/icon_pre_mirror"
+                android:elevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <ImageView
+                android:id="@+id/pf_setting"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="52dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginRight="28dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_setting" />
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/profile_user_iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="38dp"
+                android:src="@drawable/editor_profile_3"
+                app:civ_border_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="54dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:text="말랑말랑 레몬상어"
+                android:textColor="#ffffff"
+                android:textSize="18dp"
+                app:layout_constraintStart_toEndOf="@+id/profile_user_iv"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/kopubworlddotummedium"
+                android:text="프로필수정"
+                android:textColor="#9e9c9d"
+                android:textSize="15dp"
+                app:layout_constraintStart_toEndOf="@+id/profile_user_iv"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="360dp"
+                android:layout_height="116dp"
+                android:layout_marginTop="28dp"
+                android:background="#252525"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_user_iv">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="290dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginEnd="45dp"
+                    android:layout_marginRight="45dp"
+                    android:background="@color/cardview_light_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="14dp"
+                    android:fontFamily="@font/kopubworlddotumbold"
+                    android:text="45%"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="14dp"
+                    android:fontFamily="@font/kopubworlddotumbold"
+                    android:text="Beginner"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/profile_my_review_rl"
+                    android:layout_width="108dp"
+                    android:layout_height="29dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toLeftOf="@+id/profile_scrap_rl"
+                    android:background="#252525"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_toRightOf="@+id/tv02"
+                        android:fontFamily="@font/kopubworlddotumbold"
+                        android:text="23"
+                        android:textColor="#ffffff"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv02" />
+
+                    <TextView
+                        android:id="@+id/tv02"
+                        android:layout_width="26dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="41dp"
+                        android:layout_marginLeft="41dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/kopubworlddotummedium"
+                        android:text="후기"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="18dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="6dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv02"
+                        app:srcCompat="@drawable/proflie_wrote" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/profile_scrap_rl"
+                    android:layout_width="108dp"
+                    android:layout_height="29dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:background="#252525"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile_my_review_rl">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginBottom="7dp"
+                        android:layout_toRightOf="@+id/tv01"
+                        android:fontFamily="@font/kopubworlddotumbold"
+                        android:text="13"
+                        android:textColor="#ffffff"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv01" />
+
+                    <TextView
+                        android:id="@+id/tv01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginLeft="36dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/kopubworlddotummedium"
+                        android:text="찜하기"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="16dp"
+                        android:layout_height="15dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv01"
+                        app:srcCompat="@drawable/profile_pick" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/profile_qna_rl"
+                    android:layout_width="108dp"
+                    android:layout_height="29dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toRightOf="@+id/profile_scrap_rl"
+                    android:background="#252525"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile_scrap_rl">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="12dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="13dp"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginBottom="6dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/profile_bookmark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_toRightOf="@+id/tv03"
+                        android:fontFamily="@font/kopubworlddotumbold"
+                        android:text="23"
+                        android:textColor="#ffffff"
+                        android:textSize="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv03" />
+
+                    <TextView
+                        android:id="@+id/tv03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/kopubworlddotummedium"
+                        android:text="스크랩"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="180dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:text="취향 분석실"
+                android:textColor="#ffffff"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <Button
+                android:id="@+id/profile_to_fav"
+                android:layout_width="66dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/transparent"
+                android:text="Button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout9"
+                android:layout_width="350dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="19dp"
+                android:background="#999999"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21"></LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
+                tools:layout_editor_absoluteX="0dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/kopubworlddotummedium"
+                    android:text="나의 별점랭킹"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/profile_my_show_rv"
+                    android:layout_width="360dp"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="60dp" />
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -8,32 +8,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import co.kr.todayplay.R;
-import co.kr.todayplay.object.Journal;
 import co.kr.todayplay.object.RecommandItem;
+import co.kr.todayplay.object.totalItem;
 
-public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<RecommandItem> data = new ArrayList<>();
+public class ProfileFavKeywordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private ArrayList<totalItem> data = new ArrayList<>();
     private ArrayList<RecommandHolder> itemController = new ArrayList<>();
 
 
     public class RecommandHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
+        private TextView num_tv;
         private TextView title_tv;
 
         public RecommandHolder(@NonNull View itemView){
             super(itemView);
-            this.imageView = itemView.findViewById(R.id.recommand_image_iv);
-            this.title_tv = itemView.findViewById(R.id.recommand_title_tv);
+            this.num_tv = itemView.findViewById(R.id.keyword_num_tv);
+            this.title_tv = itemView.findViewById(R.id.keyword_tv);
         }
     }
 
-    public RecommandCategoryAdapter(ArrayList<RecommandItem> data){
+    public ProfileFavKeywordAdapter(ArrayList<totalItem> data){
         super();
         this.data = data;
     }
@@ -42,7 +41,7 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.recommand_category, parent, false);
+        View view = layoutInflater.inflate(R.layout.pf_keyword, parent, false);
         RecommandHolder recommandHolder = new RecommandHolder(view);
         itemController.add(recommandHolder);
         return recommandHolder;
@@ -51,9 +50,9 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position){
-        RecommandItem recommandItem = data.get(position);
+        totalItem recommandItem = data.get(position);
         RecommandHolder itemController = (RecommandHolder) holder;
-        itemController.imageView.setImageResource(recommandItem.getDrawable());
+        itemController.num_tv.setText((CharSequence)String.valueOf(position + 1));
         itemController.title_tv.setText(recommandItem.getTitle());
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override

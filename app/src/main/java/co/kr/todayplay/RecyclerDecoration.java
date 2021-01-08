@@ -11,7 +11,7 @@ public class RecyclerDecoration extends RecyclerView.ItemDecoration {
     private final int num;
 
 
-    public RecyclerDecoration(int divHeight, int num){
+    public RecyclerDecoration(int divHeight,int num){
         this.divHeight = divHeight;
         this.num = num;
     }

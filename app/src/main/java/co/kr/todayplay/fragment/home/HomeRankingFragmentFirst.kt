@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import co.kr.todayplay.ItemClickListener
 import co.kr.todayplay.R
+import co.kr.todayplay.RecyclerDecoration
 import co.kr.todayplay.`object`.Journal
 import co.kr.todayplay.`object`.Show
 import co.kr.todayplay.adapter.HomeRankingAdapter
@@ -24,10 +25,7 @@ import co.kr.todayplay.fragment.HomeFragment
 class HomeRankingFragmentFirst : Fragment(){
 
     var rankingList : ArrayList<Journal>? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    val spaceDecoration:RecyclerDecoration = RecyclerDecoration(30,1)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +53,7 @@ class HomeRankingFragmentFirst : Fragment(){
         var homeRankingRecyclerView : RecyclerView = viewGroup.findViewById(R.id.home_ranking_rv) as RecyclerView
         homeRankingRecyclerView.layoutManager = LinearLayoutManager(context)
         homeRankingRecyclerView.adapter = HomeRankingAdapter(getPersonals(),context!!,mListener)
+        homeRankingRecyclerView.addItemDecoration(spaceDecoration)
 
 
 
