@@ -12,13 +12,19 @@
         <activity android:name=".MyReviewActivity"/>
         <activity android:name=".MyScrapActivity"/>
         <activity android:name=".MyQnAActivity"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+          android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".JoinSettingProfileActivity"></activity>
+        <activity android:name=".JoinPreferenceAnalysisGuideActivity"></activity>
+        <activity android:name=".JoinIdentificationActivity"></activity>
+        <activity android:name=".FindIdPwActivity"></activity>
+
     </application>
 
 </manifest>
