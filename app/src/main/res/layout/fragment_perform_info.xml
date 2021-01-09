@@ -4,17 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#252525">
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/poster_part"
                 android:layout_width="match_parent"
@@ -99,38 +88,38 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vp_part"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/poster_part"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginLeft="22dp"
-                android:layout_marginRight="25dp"
                 android:layout_marginTop="20dp">
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="0dp"
                     app:tabIndicatorFullWidth="false"
                     app:tabIndicatorColor="#fed702"
                     app:tabGravity="fill"
                     app:tabSelectedTextColor="#fed702"
                     app:tabTextColor="#ffffff"
+                    app:layout_constraintHeight_percent="0.1"
                     app:layout_constraintTop_toTopOf="@id/vp_part"
+                    app:layout_constraintBottom_toTopOf="@id/viewPager"
                     app:layout_constraintStart_toStartOf="@id/vp_part"
-                    app:layout_constraintEnd_toEndOf="@id/vp_part"
-                    app:layout_constraintBottom_toTopOf="@id/viewPager">
+                    app:layout_constraintEnd_toEndOf="@id/vp_part">
                 </com.google.android.material.tabs.TabLayout>
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintHeight_percent="0.9"
                     app:layout_constraintTop_toBottomOf="@id/tabLayout"
                     app:layout_constraintStart_toStartOf="@id/vp_part"
                     app:layout_constraintEnd_toEndOf="@id/vp_part"
-                    app:layout_constraintBottom_toBottomOf="@id/vp_part">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="30dp">
                 </androidx.viewpager.widget.ViewPager>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
