@@ -21,9 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".JoinSettingProfileActivity"></activity>
+        <activity android:name=".FindIdPwActivity"></activity>
         <activity android:name=".JoinPreferenceAnalysisGuideActivity"></activity>
         <activity android:name=".JoinIdentificationActivity"></activity>
-        <activity android:name=".FindIdPwActivity"></activity>
 
     </application>
 

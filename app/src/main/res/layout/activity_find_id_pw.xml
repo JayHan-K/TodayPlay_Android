@@ -25,11 +25,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-                <ImageView
+                <ImageButton
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/join_more_btn"
+                    android:background="@drawable/close_btn_icon"
                     app:layout_constraintTop_toTopOf="@id/close_btn_part"
                     app:layout_constraintBottom_toBottomOf="@id/close_btn_part"
                     app:layout_constraintStart_toStartOf="@id/close_btn_part" />
