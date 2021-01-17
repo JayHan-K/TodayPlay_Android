@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_marginRight="27dp"
+    android:layout_marginLeft="27dp"
+    android:orientation="vertical"
+    android:background="@drawable/mypage_qna_box"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <RelativeLayout
+            android:background="@drawable/mypage_review_comment_title_rounded_corner"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="27dp">
+            <TextView
+                android:id="@+id/real_review_comment_title_tv"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:textColor="#ffffff"
+                android:textSize="13dp"
+                android:text="오페라의 유령"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/real_review_comment_date_tv"
+                android:fontFamily="@font/kopubworlddotummedium"
+                android:textSize="10dp"
+                android:textColor="#aeaeae"
+                android:text="2020.00.00"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/real_review_comment_editor_profile_iv"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/editor_profile_3"
+                app:civ_border_width="0dp"></com.mikhaellopez.circularimageview.CircularImageView>
+
+            <TextView
+                android:layout_toRightOf="@+id/real_review_comment_editor_profile_iv"
+                android:layout_centerVertical="true"
+                android:id="@+id/real_review_comment_editor_name_tv"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:textSize="12dp"
+                android:textColor="#000000"
+                android:text="제인"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/real_review_editor_info_tv"
+                android:layout_toRightOf="@id/real_review_comment_editor_name_tv"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/kopubworlddotumlight"
+                android:textSize="10dp"
+                android:textColor="#5f5f5f"
+                android:text="20대 / 병아리"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/real_review_comment_recommend_icon_iv"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/real_review_editor_info_tv"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/icon_good"
+                android:layout_width="15dp"
+                android:layout_height="13dp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:textSize="10dp"
+                android:textColor="#000000"
+                android:text="좋은 점"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/real_review_comment_good_tv"
+                android:layout_marginLeft="65dp"
+                android:textSize="9dp"
+                android:fontFamily="@font/kopubworlddotumlight"
+                android:textColor="#000000"
+                android:text="줄거리가 좋고, 무대 꽤 화려함!\n박효신 노래 너무잘해요ㅠㅠ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"></RelativeLayout>
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:textSize="10dp"
+                android:textColor="#000000"
+                android:text="아쉬운 점"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/real_review_comment_bad_tv"
+                android:layout_marginLeft="65dp"
+                android:textSize="9dp"
+                android:fontFamily="@font/kopubworlddotumlight"
+                android:textColor="#000000"
+                android:text="티켓가격 8만원.....? 박효신때문에 봤지...\n다른 캐스팅이면 못볼듯... 그래도 한번쯤은..."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/real_review_comment_comment_tv"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/kopubworlddotumlight"
+                android:textSize="8dp"
+                android:text="35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_centerVertical="true"
+                android:id="@+id/real_review_comment_comment_iv"
+                android:layout_marginRight="3dp"
+                android:layout_toLeftOf="@id/real_review_comment_comment_tv"
+                android:layout_width="9dp"
+                android:layout_height="9dp"/>
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/real_review_heart_tv"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/real_review_comment_comment_iv"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/kopubworlddotumlight"
+                android:textSize="8dp"
+                android:text="128"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:layout_toLeftOf="@id/real_review_heart_tv"
+                android:layout_width="9dp"
+                android:layout_height="9dp"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".fragment.HomeFragment"
+    android:background="#252525">
+
+    <FrameLayout
+        android:id="@+id/home_fragment_child_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/home_fragment_main_sv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/ad_mid"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_journal_rv"></androidx.viewpager.widget.ViewPager>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="162dp"
+                android:layout_marginLeft="162dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="161dp"
+                android:layout_marginRight="161dp"
+                android:background="#252525"
+                style="?android:borderlessButtonStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:elevation="4dp"
+                android:src="@drawable/icon_down_black_sym"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:elevation="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="65dp"
+                android:layout_marginLeft="65dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="65dp"
+                android:layout_marginRight="65dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:gravity="center"
+                android:text="Tomorrow is another day"
+                android:textColor="#6C6A6A"
+                android:textSize="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_main_ad_vp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="138dp"
+                android:layout_marginLeft="138dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="139dp"
+                android:layout_marginRight="139dp"
+                android:background="#252525"
+                android:elevation="2dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:text="뮤지컬&lt;바람과 함께 사라지다&gt;"
+                android:textColor="#6C6A6A"
+                android:textSize="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="match_parent"
+                android:layout_height="89dp"
+                android:src="@drawable/home_word_shadow"
+                app:layout_constraintBottom_toBottomOf="@+id/button"
+                app:layout_constraintTop_toBottomOf="@+id/home_main_ad_vp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/hidden"
+                    android:layout_width="match_parent"
+                    android:layout_height="455dp"
+                    android:background="#F6F6F6"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/constraintLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintLayout">
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="관련저널"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toTopOf="@+id/homejournal_2"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="153dp"
+                        android:layout_marginTop="33dp"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginLeft="24dp"
+                            android:src="@drawable/homeinfo"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginTop="12dp"
+                            android:letterSpacing="-0.02"
+                            android:text="연극"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/imageView3"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:fontFamily="@font/kopubworlddotumbold"
+                            android:letterSpacing="-0.02"
+                            android:text="햄릿기계"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toEndOf="@+id/imageView3"
+                            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="34dp"
+                            android:letterSpacing="-0.02"
+                            android:text="2011,90분"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/textView8"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginTop="7dp"
+                            android:fontFamily="@font/kopubworlddotumbold"
+                            android:letterSpacing="-0.02"
+                            android:text="연출"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/imageView3"
+                            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="18dp"
+                            android:layout_marginLeft="18dp"
+                            android:layout_marginTop="8dp"
+                            android:letterSpacing="-0.02"
+                            android:text="이윤택(문화게릴라)"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/textView10"
+                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="13dp"
+                            android:layout_marginLeft="13dp"
+                            android:fontFamily="@font/kopubworlddotumbold"
+                            android:letterSpacing="-0.02"
+                            android:text="출연진"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/imageView3"
+                            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginLeft="7dp"
+                            android:letterSpacing="-0.02"
+                            android:text="노심동,조정우,민혜림,배미 ..."
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/textView12"
+                            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginTop="27dp"
+                            android:letterSpacing="-0.02"
+                            android:text="공연정보 더보기"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/imageView3"
+                            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/homejournal_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="185dp"
+                        android:layout_marginTop="64dp"
+                        android:paddingLeft="25dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/home_main_ad_vp"
+                android:layout_width="match_parent"
+                android:layout_height="466dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"></androidx.viewpager.widget.ViewPager>
+
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/home_main_ad_ci"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="50dp"
+                android:paddingBottom="10dp"
+                app:ci_drawable="@menu/indicator_dot_on"
+                app:layout_constraintBottom_toBottomOf="@+id/home_main_ad_vp"
+                app:layout_constraintEnd_toEndOf="@+id/home_main_ad_vp"></me.relex.circleindicator.CircleIndicator>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/kopubworlddotumbold"
+                android:paddingLeft="20sp"
+                android:text="오늘의 저널"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/personalizedShowRV"></TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_journal_rv"
+                android:layout_width="0dp"
+                android:layout_height="185dp"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"></androidx.recyclerview.widget.RecyclerView>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/personalizedShowRV"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubworlddotumbold"
+                    android:paddingLeft="20sp"
+                    android:text="오늘의 추천"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/personalizedShowRV"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginTop="33dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/ad_mid">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/kopubworlddotumbold"
+                    android:paddingLeft="25dp"
+                    android:text="HOT 인기작"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"/>
+
+
+            </LinearLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/rankingview"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="31dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:background="#999999"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rankingview"></LinearLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="205dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+</FrameLayout>

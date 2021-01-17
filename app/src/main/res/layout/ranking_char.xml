@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#252525">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="234dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="48dp">
+
+        <TextView
+            android:id="@+id/ranking_tv_title"
+            android:fontFamily="@font/kopubworlddotumbold"
+            android:layout_width="141dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="6dp"
+            android:text="TextView"
+            android:textColor="#F6F1F1"
+            app:layout_constraintStart_toEndOf="@+id/ranking_iv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ranking_iv"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
+            app:layout_constraintStart_toEndOf="@+id/ranking_num_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/ad_sample1" />
+
+        <TextView
+            android:id="@+id/ranking_num_tv"
+            android:fontFamily="@font/kopubworlddotumbold"
+            android:layout_width="7dp"
+            android:layout_height="19dp"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="#FED700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ranking_state"
+            android:fontFamily="@font/kopubworlddotumbold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="4dp"
+            android:text="공연중"
+            android:textSize="10dp"
+            android:textColor="#F6F1F1"
+            app:layout_constraintStart_toEndOf="@+id/ranking_iv"
+            app:layout_constraintTop_toBottomOf="@+id/ranking_tv_title" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

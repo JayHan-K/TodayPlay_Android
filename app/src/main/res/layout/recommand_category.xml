@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout7"
+    android:layout_width="60dp"
+    android:layout_height="90dp"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/recommand_image_iv"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp" />
+
+    <TextView
+        android:id="@+id/recommand_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/kopubworlddotumbold"
+        android:text="국내"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"
+        android:textSize="12dp" />
+
+</LinearLayout>

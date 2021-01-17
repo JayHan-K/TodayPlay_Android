@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout10"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/home_show_iv"
+        android:layout_width="96dp"
+        android:layout_height="120dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <TextView
+        android:id="@+id/pf_home_show_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:textColor="#ffffff"
+        android:fontFamily="@font/kopubworlddotumbold"
+        android:text="연극&lt;라이어&gt;"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/pf_home_show_tv_num"
+        app:layout_constraintTop_toBottomOf="@+id/home_show_iv" />
+
+    <TextView
+        android:id="@+id/pf_home_show_tv_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/kopubworlddotumbold"
+        android:text="1"
+        android:textColor="#fed700"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_show_iv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
