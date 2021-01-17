@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +26,6 @@ import co.kr.todayplay.RecyclerDecoration;
 import co.kr.todayplay.adapter.ProfileHomeShowAdapter;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.object.Show;
-import co.kr.todayplay.pf_change_info_Activity;
 
 public class ProfileFragment extends Fragment {
     private ArrayList<Show> PersonalizedShow = new ArrayList<Show>();
@@ -174,53 +172,59 @@ public class ProfileFragment extends Fragment {
     }
 
     public void profileChangeToReview(){
-        profileFragmentChildFragment.setVisibility(View.VISIBLE);
-        profileFragmentmainScrollView.setVisibility(View.INVISIBLE);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
                 new MyReviewActivity()
         ).commitAllowingStateLoss();
+        profileFragmentmainScrollView.setVisibility(View.GONE);
+        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+
     }
 
     public void profileChangeToPick(){
-        profileFragmentChildFragment.setVisibility(View.VISIBLE);
-        profileFragmentmainScrollView.setVisibility(View.INVISIBLE);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
                 new MypickFragment()
         ).commitAllowingStateLoss();
+        profileFragmentmainScrollView.setVisibility(View.GONE);
+        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+
     }
 
     public void profileChangeToScrap(){
-        profileFragmentChildFragment.setVisibility(View.VISIBLE);
-        profileFragmentmainScrollView.setVisibility(View.INVISIBLE);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
                 new MyScrapFragment()
         ).commitAllowingStateLoss();
+        profileFragmentmainScrollView.setVisibility(View.GONE);
+        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+
 
     }
 
     public void profileChangeToinfo(){
-        profileFragmentChildFragment.setVisibility(View.VISIBLE);
-        profileFragmentmainScrollView.setVisibility(View.INVISIBLE);
+
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
                 new pf_change_info_Activity()
         ).commitAllowingStateLoss();
+        profileFragmentmainScrollView.setVisibility(View.GONE);
+        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+
     }
 
     public void profileChangeToFav(){
-        profileFragmentChildFragment.setVisibility(View.VISIBLE);
-        profileFragmentmainScrollView.setVisibility(View.INVISIBLE);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
                 new Profile_Fav_AnalyzeFragment()
         ).commitAllowingStateLoss();
+        profileFragmentmainScrollView.setVisibility(View.GONE);
+        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+
     }
 
     public void BackToHome(){
-        profileFragmentChildFragment.setVisibility(View.INVISIBLE);
+        profileFragmentChildFragment.setVisibility(View.GONE);
         profileFragmentmainScrollView.setVisibility(View.VISIBLE);
     }
 

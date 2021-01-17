@@ -15,7 +15,7 @@ import co.kr.todayplay.R;
 
 public class PerformReviewImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public ArrayList<Integer> data = new ArrayList<>();
-    private ArrayList<PerformReviewImageAdapter.ReviewImageHolder> itemController = new ArrayList<>();
+    private ArrayList<ReviewImageHolder> itemController = new ArrayList<>();
 
     public class ReviewImageHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
@@ -35,7 +35,7 @@ public class PerformReviewImageAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.perform_review_image_item, parent, false);
-        PerformReviewImageAdapter.ReviewImageHolder reviewImageHolder = new PerformReviewImageAdapter.ReviewImageHolder(view);
+        ReviewImageHolder reviewImageHolder = new ReviewImageHolder(view);
         itemController.add(reviewImageHolder);
         return reviewImageHolder;
     }
@@ -43,7 +43,7 @@ public class PerformReviewImageAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int reviewImageItem = data.get(position);
-        PerformReviewImageAdapter.ReviewImageHolder itemController = (PerformReviewImageAdapter.ReviewImageHolder) holder;
+        ReviewImageHolder itemController = (ReviewImageHolder) holder;
         if(position < 3){
             itemController.imageView.setImageResource(reviewImageItem);
             itemController.textView.setText("");

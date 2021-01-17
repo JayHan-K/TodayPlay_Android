@@ -1,6 +1,5 @@
 package co.kr.todayplay;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,10 +10,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
 
 public class FindIdPwActivity extends AppCompatActivity {
     Spinner telecom_spinner;

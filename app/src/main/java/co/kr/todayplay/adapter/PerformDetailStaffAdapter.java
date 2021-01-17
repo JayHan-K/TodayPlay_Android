@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 
 public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    private ArrayList<PerformDetailStaffAdapter.StaffItem> data = new ArrayList<>();
-    private ArrayList<PerformDetailStaffAdapter.StaffHolder> itemController = new ArrayList<>();
+    private ArrayList<StaffItem> data = new ArrayList<>();
+    private ArrayList<StaffHolder> itemController = new ArrayList<>();
     public static class StaffItem{
         private int drawable;
         private String job;
@@ -50,7 +50,7 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    public PerformDetailStaffAdapter(ArrayList<PerformDetailStaffAdapter.StaffItem> data){
+    public PerformDetailStaffAdapter(ArrayList<StaffItem> data){
         super();
         this.data = data;
     }

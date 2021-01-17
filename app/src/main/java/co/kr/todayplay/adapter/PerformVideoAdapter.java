@@ -89,7 +89,7 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final PerformVideoAdapter.Item item = data.get(position);
+        final Item item = data.get(position);
         final VideoListViewHolder itemController = (VideoListViewHolder) holder;
         itemController.imageView.setImageResource(item.getDrawable());
         itemController.video_title_tv.setText(item.getVideo_title());

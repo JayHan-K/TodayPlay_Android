@@ -89,7 +89,7 @@ public class PerformHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final PerformHistoryAdapter.Item item = data.get(position);
+        final Item item = data.get(position);
         final HistoryListViewHolder itemController = (HistoryListViewHolder) holder;
         itemController.imageView.setImageResource(item.getDrawable());
         itemController.perform_title_tv.setText(item.getPerform_title());

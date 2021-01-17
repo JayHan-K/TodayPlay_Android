@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 
 public class JournalStorytellerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    public ArrayList<JournalStorytellerAdapter.JournalItem> data = new ArrayList<>();
-    private ArrayList<JournalStorytellerAdapter.JournalHolder> itemController = new ArrayList<>();
+    public ArrayList<JournalItem> data = new ArrayList<>();
+    private ArrayList<JournalHolder> itemController = new ArrayList<>();
 
     public static class JournalItem{
         private int drawable;
@@ -53,7 +53,7 @@ public class JournalStorytellerAdapter extends RecyclerView.Adapter<RecyclerView
         }
     }
 
-    public JournalStorytellerAdapter(ArrayList<JournalStorytellerAdapter.JournalItem> data){
+    public JournalStorytellerAdapter(ArrayList<JournalItem> data){
         super();
         this.data = data;
     }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".fragment.HomeFragment"
-    android:background="#000000">
+    android:background="#252525">
 
     <FrameLayout
         android:id="@+id/home_fragment_child_fragment"
@@ -38,19 +38,34 @@
             <Button
                 android:id="@+id/button"
                 android:layout_width="0dp"
-                android:layout_height="16dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="162dp"
                 android:layout_marginLeft="162dp"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="18dp"
                 android:layout_marginEnd="161dp"
                 android:layout_marginRight="161dp"
-                android:text="Button"
+                android:background="#252525"
+                style="?android:borderlessButtonStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:elevation="4dp"
+                android:src="@drawable/icon_down_black_sym"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4"
+                app:layout_constraintVertical_bias="0.0" />
+
             <TextView
                 android:id="@+id/textView5"
+                android:elevation="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="65dp"
@@ -76,17 +91,23 @@
                 android:layout_marginTop="1dp"
                 android:layout_marginEnd="139dp"
                 android:layout_marginRight="139dp"
-                android:layout_marginBottom="10dp"
-                android:background="#000000"
+                android:background="#252525"
+                android:elevation="2dp"
                 android:fontFamily="@font/kopubworlddotumbold"
                 android:text="뮤지컬&lt;바람과 함께 사라지다&gt;"
                 android:textColor="#6C6A6A"
                 android:textSize="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <ImageView
+                android:id="@+id/imageView12"
+                android:layout_width="match_parent"
+                android:layout_height="89dp"
+                android:src="@drawable/home_word_shadow"
+                app:layout_constraintBottom_toBottomOf="@+id/button"
+                app:layout_constraintTop_toBottomOf="@+id/home_main_ad_vp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -266,16 +287,15 @@
 
             <me.relex.circleindicator.CircleIndicator
                 android:id="@+id/home_main_ad_ci"
-                app:ci_drawable="@menu/indicator_dot_on"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="25dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginBottom="50dp"
                 android:paddingBottom="10dp"
+                app:ci_drawable="@menu/indicator_dot_on"
                 app:layout_constraintBottom_toBottomOf="@+id/home_main_ad_vp"
-                app:layout_constraintEnd_toEndOf="@+id/home_main_ad_vp">
-            </me.relex.circleindicator.CircleIndicator>
+                app:layout_constraintEnd_toEndOf="@+id/home_main_ad_vp"></me.relex.circleindicator.CircleIndicator>
 
             <TextView
                 android:id="@+id/textView2"
@@ -317,14 +337,8 @@
                     android:paddingLeft="20sp"
                     android:text="오늘의 추천"
                     android:textColor="#ffffff"
-                    android:textSize="18dp"></TextView>
+                    android:textSize="18dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:background="#999999" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -352,14 +366,8 @@
                     android:paddingLeft="25dp"
                     android:text="HOT 인기작"
                     android:textColor="#ffffff"
-                    android:textSize="16sp"></TextView>
+                    android:textSize="16sp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:background="#999999" />
 
             </LinearLayout>
 

@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 
 public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public ArrayList<PerformReviewAdapter.ReviewItem> data = new ArrayList<>();
-    private ArrayList<PerformReviewAdapter.ReviewHolder> itemController = new ArrayList<>();
+    public ArrayList<ReviewItem> data = new ArrayList<>();
+    private ArrayList<ReviewHolder> itemController = new ArrayList<>();
     private Context context;
 
     public static class ReviewItem{
@@ -128,7 +128,7 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.parent_layout = itemView.findViewById(R.id.parent_layout);
         }
     }
-    public PerformReviewAdapter(Context context, ArrayList<PerformReviewAdapter.ReviewItem> data){
+    public PerformReviewAdapter(Context context, ArrayList<ReviewItem> data){
         super();
         this.context = context;
         this.data = data;
@@ -139,7 +139,7 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.perform_review_item, parent, false);
-        PerformReviewAdapter.ReviewHolder reviewHolder = new PerformReviewAdapter.ReviewHolder(view);
+        ReviewHolder reviewHolder = new ReviewHolder(view);
         itemController.add(reviewHolder);
         return reviewHolder;
     }
@@ -147,7 +147,7 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ReviewItem item = data.get(position);
-        PerformReviewAdapter.ReviewHolder itemController = (PerformReviewAdapter.ReviewHolder) holder;
+        ReviewHolder itemController = (ReviewHolder) holder;
             itemController.profile_iv.setImageResource(item.getProfile_drawable());
             itemController.user_name_tv.setText(item.user_name);
             if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);

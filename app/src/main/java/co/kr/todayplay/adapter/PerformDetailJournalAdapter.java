@@ -15,8 +15,8 @@ import co.kr.todayplay.R;
 import co.kr.todayplay.object.Journal;
 
 public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    public ArrayList<PerformDetailJournalAdapter.JournalItem> data = new ArrayList<>();
-    private ArrayList<PerformDetailJournalAdapter.JournalHolder> itemController = new ArrayList<>();
+    public ArrayList<JournalItem> data = new ArrayList<>();
+    private ArrayList<JournalHolder> itemController = new ArrayList<>();
 
     public static class JournalItem{
         private int drawable;
@@ -54,7 +54,7 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public PerformDetailJournalAdapter(ArrayList<PerformDetailJournalAdapter.JournalItem> data){
+    public PerformDetailJournalAdapter(ArrayList<JournalItem> data){
         super();
         this.data = data;
     }
