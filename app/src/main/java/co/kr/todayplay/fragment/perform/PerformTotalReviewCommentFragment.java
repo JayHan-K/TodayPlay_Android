@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewAdapter;
 import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
@@ -26,6 +27,7 @@ public class PerformTotalReviewCommentFragment extends Fragment {
     TextView user_name_tv, user_age_level_tv, review_date_tv, good_review_tv, bad_review_tv, tip_review_tv, num_heart, num_review;
     Button comment_btn, write_review_btn;
     EditText comment_et;
+    PerformWriteReviewFragment performWriteReviewFragment = new PerformWriteReviewFragment();
 
     public PerformTotalReviewCommentFragment(){}
 
@@ -57,6 +59,13 @@ public class PerformTotalReviewCommentFragment extends Fragment {
         final PerformReviewCommentAdapter performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity().getApplicationContext(), data);
         comment_rv.setAdapter(performReviewCommentAdapter);
         comment_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+
+        write_review_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment);
+            }
+        });
 
         return viewGroup;
     }

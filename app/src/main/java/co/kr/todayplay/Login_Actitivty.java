@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class Login_Actitivty extends AppCompatActivity {
 
     String email_input = null , password_input=null;
+    public static final int find_id_sub = 1002;
+    public static final int find_pw_sub = 1003;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +32,27 @@ public class Login_Actitivty extends AppCompatActivity {
         Button login_go_home = findViewById(R.id.login_go_back2);
         final Button login_btn = findViewById(R.id.login_btn);
         ConstraintLayout linearlayout19 = findViewById(R.id.linearLayout19);
+
+        final Button find_id_btn = findViewById(R.id.find_id_btn);
+        final Button find_pw_btn = findViewById(R.id.find_password_btn);
+
+        find_id_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivity.class);
+                intent.putExtra("sub", find_id_sub);
+                startActivity(intent);
+            }
+        });
+
+        find_pw_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivity.class);
+                intent.putExtra("sub", find_pw_sub);
+                startActivity(intent);
+            }
+        });
 
         final EditText email = findViewById(R.id.editText);
         final EditText password = findViewById(R.id.editText2);

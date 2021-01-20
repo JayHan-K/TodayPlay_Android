@@ -1,6 +1,7 @@
 package co.kr.todayplay;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,6 +51,13 @@ public class Register_default extends AppCompatActivity {
         });
 
         register_btn.setEnabled(false);
+        register_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
         get_email.addTextChangedListener(new TextWatcher() {
             @Override

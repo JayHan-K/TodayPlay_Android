@@ -281,7 +281,7 @@
                 android:layout_marginTop="20dp">
                 <EditText
                     android:id="@+id/write_comment_et"
-                    android:background="@drawable/comment_rounded_corner"
+                    android:background="@drawable/round_border_4dp_fefefe"
                     android:layout_width="258dp"
                     android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="@id/write_comment_part"
@@ -291,7 +291,7 @@
                     android:text="등록"
                     android:textColor="#252525"
                     android:textSize="12sp"
-                    android:background="@drawable/comment_btn_rounded_corner"
+                    android:background="@drawable/rounded_border_4dp_ffe34e"
                     android:layout_width="48dp"
                     android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="@id/write_comment_part"
@@ -305,17 +305,18 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/write_comment_part"
                 app:layout_constraintStart_toStartOf="parent"/>
-            <Button
-                android:id="@+id/write_review_btn"
-                android:background="@drawable/perform_review_cat_icon"
-                android:layout_alignParentBottom="true"
-                android:layout_width="74dp"
-                android:layout_height="74dp"
-                android:layout_alignParentRight="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginRight="30dp">
-            </Button>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/write_review_btn"
+        android:background="@drawable/perform_review_cat_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:layout_alignParentRight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="30dp">
+    </Button>
 </androidx.constraintlayout.widget.ConstraintLayout>

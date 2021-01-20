@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,10 +23,15 @@ public class JoinIdentificationActivity extends AppCompatActivity {
     EditText user_name_et, user_birth_et, user_phone_et;
     Button phone_certification_btn, next_btn;
     boolean radio_flag = false;
+    int sub;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_identification);
+        Intent intent = getIntent();
+        sub = intent.getIntExtra("sub",0);
+        Log.d("sub", "onCreate: sub = " + sub);
         radioButton = (ImageButton) findViewById(R.id.radio_btn);
         user_name_et = (EditText)findViewById(R.id.join_user_name_et);
         user_birth_et = (EditText)findViewById(R.id.join_user_birth_et);
@@ -48,8 +54,20 @@ public class JoinIdentificationActivity extends AppCompatActivity {
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JoinSettingProfileActivity.class);
-                startActivity(intent);
+                if(sub==0){
+                    Intent intent = new Intent(getApplicationContext(), JoinSettingProfileActivity.class);
+                    intent.putExtra("sub", sub);
+                    startActivity(intent);
+                }
+                //id 찾기
+                else if(sub==1002){
+
+                }
+                //pw 찾기
+                else if(sub==1003){
+
+                }
+
             }
         });
 

@@ -12,6 +12,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class PerformReviewFragment extends Fragment {
     Button write_review_btn, more_review_btn;
     BarChart satisfy_ratio_chart;
     PerformTotalReviewFragment performTotalReviewFragment = new PerformTotalReviewFragment();
+    PerformWriteReviewFragment performWriteReviewFragment = new PerformWriteReviewFragment();
 
     public PerformReviewFragment(){}
 
@@ -111,6 +113,13 @@ public class PerformReviewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((MainActivity)getActivity()).replaceFragment(performTotalReviewFragment);
+            }
+        });
+
+        write_review_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment);
             }
         });
 

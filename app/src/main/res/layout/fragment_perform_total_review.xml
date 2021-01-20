@@ -157,17 +157,17 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp">
             </androidx.recyclerview.widget.RecyclerView>
-            <Button
-                android:id="@+id/write_review_btn"
-                android:background="@drawable/perform_review_cat_icon"
-                android:layout_alignParentBottom="true"
-                android:layout_width="74dp"
-                android:layout_height="74dp"
-                android:layout_alignParentRight="true"
-                app:layout_constraintEnd_toEndOf="@id/scroll_part"
-                app:layout_constraintBottom_toBottomOf="@id/scroll_part"
-                android:layout_marginRight="30dp">
-            </Button>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/write_review_btn"
+        android:background="@drawable/perform_review_cat_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:layout_alignParentRight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="30dp">
+    </Button>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,15 @@ public class Login_Home_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_login_home);
         Button button6 = findViewById(R.id.button6);
         Button button4 = findViewById(R.id.button4);
+        Button button5 = findViewById(R.id.button5);
+
+        button5.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Register_default.class);
+                startActivityForResult(intent,sub);
+            }
+        }));
 
         button4.setOnClickListener((new View.OnClickListener() {
             @Override
