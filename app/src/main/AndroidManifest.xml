@@ -26,6 +26,7 @@
         <activity android:name=".FindIdPwActivity"></activity>
         <activity android:name=".JoinPreferenceAnalysisGuideActivity"></activity>
         <activity android:name=".JoinIdentificationActivity"></activity>
+        <activity android:name=".JoinIdentificationActivityVer2"></activity>
 
     </application>
 

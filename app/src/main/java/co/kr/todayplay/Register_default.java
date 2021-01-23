@@ -54,7 +54,7 @@ public class Register_default extends AppCompatActivity {
         register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
                 startActivity(intent);
             }
         });

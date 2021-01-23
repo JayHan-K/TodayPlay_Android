@@ -80,10 +80,9 @@
                         android:layout_marginLeft="4dp"
                         app:layout_constraintStart_toEndOf="@id/good_icon"
                         app:layout_constraintTop_toTopOf="@id/good_part"/>
-                    <TextView
-                        android:text="최소 30자 이상"
-                        android:textColor="#252525"
-                        android:textSize="10sp"
+                    <ImageView
+                        android:id="@+id/good_more30_iv"
+                        android:src="@drawable/write_review_more30_gray"
                         android:layout_width="80dp"
                         android:layout_height="14dp"
                         android:paddingLeft="8dp"
@@ -148,10 +147,9 @@
                         android:layout_marginLeft="4dp"
                         app:layout_constraintStart_toEndOf="@id/bad_icon"
                         app:layout_constraintTop_toTopOf="@id/bad_part"/>
-                    <TextView
-                        android:text="최소 30자 이상"
-                        android:textColor="#252525"
-                        android:textSize="10sp"
+                    <ImageView
+                        android:id="@+id/bad_more30_iv"
+                        android:src="@drawable/write_review_more30_gray"
                         android:layout_width="80dp"
                         android:layout_height="14dp"
                         android:paddingLeft="8dp"
@@ -315,6 +313,7 @@
                 app:layout_constraintStart_toStartOf="@id/scroll_part"
                 app:layout_constraintEnd_toEndOf="@id/scroll_part"
                 android:layout_marginTop="50dp"/>
+            <!--
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/star_part"
                 android:layout_width="wrap_content"
@@ -327,7 +326,7 @@
                     android:id="@+id/star1_btn"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
-                    android:background="@drawable/perform_info_heart_icon"
+                    android:background="@drawable/write_review_star_off_icon"
                     app:layout_constraintTop_toTopOf="@id/star_part"
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
                     app:layout_constraintStart_toStartOf="@id/star_part"/>
@@ -335,7 +334,7 @@
                     android:id="@+id/star2_btn"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
-                    android:background="@drawable/perform_info_heart_icon"
+                    android:background="@drawable/write_review_star_off_icon"
                     app:layout_constraintTop_toTopOf="@id/star_part"
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
                     app:layout_constraintStart_toEndOf="@id/star1_btn"
@@ -344,7 +343,7 @@
                     android:id="@+id/star3_btn"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
-                    android:background="@drawable/perform_info_heart_icon"
+                    android:background="@drawable/write_review_star_off_icon"
                     app:layout_constraintTop_toTopOf="@id/star_part"
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
                     app:layout_constraintStart_toEndOf="@id/star2_btn"
@@ -353,7 +352,7 @@
                     android:id="@+id/star4_btn"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
-                    android:background="@drawable/perform_info_heart_icon"
+                    android:background="@drawable/write_review_star_off_icon"
                     app:layout_constraintTop_toTopOf="@id/star_part"
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
                     app:layout_constraintStart_toEndOf="@id/star3_btn"
@@ -362,17 +361,31 @@
                     android:id="@+id/star5_btn"
                     android:layout_width="33dp"
                     android:layout_height="33dp"
-                    android:background="@drawable/perform_info_heart_icon"
+                    android:background="@drawable/write_review_star_off_icon"
                     app:layout_constraintTop_toTopOf="@id/star_part"
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
                     app:layout_constraintStart_toEndOf="@id/star4_btn"
                     android:layout_marginLeft="8dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+            -->
+            <RatingBar
+                android:id="@+id/star_rb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/notice_tv"
+                app:layout_constraintStart_toStartOf="@id/scroll_part"
+                app:layout_constraintEnd_toEndOf="@id/scroll_part"
+                android:layout_marginTop="30dp"
+                android:stepSize="1"
+                android:rating="0"
+                android:numStars="5"
+                style="@style/starRatingBar">
+            </RatingBar>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/info_part"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/star_part"
+                app:layout_constraintTop_toBottomOf="@id/star_rb"
                 app:layout_constraintStart_toStartOf="@id/scroll_part"
                 app:layout_constraintEnd_toEndOf="@id/scroll_part"
                 android:layout_marginTop="20dp">
@@ -380,7 +393,7 @@
                     android:id="@+id/notice_icon"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:src="@drawable/icon_default_notice"
+                    android:src="@drawable/write_review_notice_icon"
                     app:layout_constraintTop_toTopOf="@id/info_part"
                     app:layout_constraintBottom_toBottomOf="@id/info_part"
                     app:layout_constraintStart_toStartOf="@id/info_part"/>

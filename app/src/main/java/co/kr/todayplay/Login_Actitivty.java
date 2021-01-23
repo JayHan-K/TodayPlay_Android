@@ -39,7 +39,7 @@ public class Login_Actitivty extends AppCompatActivity {
         find_id_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
                 intent.putExtra("sub", find_id_sub);
                 startActivity(intent);
             }
@@ -48,7 +48,7 @@ public class Login_Actitivty extends AppCompatActivity {
         find_pw_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivity.class);
+                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
                 intent.putExtra("sub", find_pw_sub);
                 startActivity(intent);
             }

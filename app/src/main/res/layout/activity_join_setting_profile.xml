@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:paddingTop="36dp"
@@ -26,9 +27,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
                 <ImageView
-                    android:layout_width="90dp"
+                    android:layout_width="50dp"
                     android:layout_height="17dp"
-                    android:src="@drawable/join_level2"
+                    android:src="@drawable/join_level2_ver2"
                     app:layout_constraintTop_toTopOf="@id/join_level_part"
                     app:layout_constraintBottom_toBottomOf="@id/join_level_part"
                     app:layout_constraintStart_toStartOf="@id/join_level_part"
@@ -49,13 +50,13 @@
                 android:id="@+id/nickname_part"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/nickname_gray_rounded_corner"
+                android:background="@drawable/gray_bottom_border"
                 app:layout_constraintTop_toBottomOf="@id/user_profile_iv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="26dp"
                 android:paddingRight="5dp"
-                android:paddingLeft="22dp"
+                android:paddingLeft="6dp"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp">
                 <EditText
@@ -81,6 +82,17 @@
                     android:textSize="12sp"
                     android:textColor="#252525"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:text="8자 이하 한글, 영문"
+                android:textColor="#252525"
+                android:textSize="12sp"
+                android:id="@+id/nickname_state_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/nickname_part"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="3.5dp"
+                android:layout_marginLeft="6dp"/>
             <Button
                 android:id="@+id/next_btn"
                 android:layout_width="match_parent"
@@ -89,7 +101,7 @@
                 android:textSize="16sp"
                 android:textColor="#252525"
                 android:background="@drawable/join_gray_rounded_corner"
-                app:layout_constraintTop_toBottomOf="@id/nickname_part"
+                app:layout_constraintTop_toBottomOf="@id/nickname_state_tv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp"/>
