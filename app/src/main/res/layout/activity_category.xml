@@ -9,18 +9,20 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        app:tabTextAppearance="@style/tab_text"
-        app:tabIndicatorFullWidth="true"
-        app:tabIndicatorColor="#fed700"
-        app:tabSelectedTextColor="#ffffff"
-        app:tabTextColor="#bababa"
-        android:theme="@style/AppTheme"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="38dp"
+        android:theme="@style/AppTheme"
+        android:tabStripEnabled='true'
+        app:tabGravity="fill"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicatorColor="#fed700"
+        app:tabIndicatorFullWidth="true"
+        app:tabSelectedTextColor="#ffffff"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="#bababa" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewcategory"

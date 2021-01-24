@@ -10,12 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MyQnAActivity"/>
+        <activity android:name=".Activity_suggest"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".Activity_FAQ"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+
         <activity android:name=".Login_Actitivty"/>
         <activity android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".Register_default"/>
 
-        <activity android:name=".Login_Home_Activity">
+        <activity android:name=".Customer_Service_Activity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +30,16 @@
             </intent-filter>
         </activity>
 
-<!--        <activity android:name=".MainActivity">-->
+<!--        <activity android:name=".Login_Home_Activity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+<!--        <activity android:name=".MainActivity"-->
+<!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
