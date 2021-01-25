@@ -9,6 +9,6 @@ public class JoinPreferenceAnalysisGuideActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join_preference_analysis_guide);
+        setContentView(R.layout.activity_join_preference_analysis_guide_ver2);
     }
 }
