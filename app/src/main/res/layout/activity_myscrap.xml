@@ -5,11 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent">
+    android:background="#252525">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/scrap_to_profile_bt"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="30dp"
+            android:background="#252525"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/notice_part"
@@ -66,6 +77,7 @@
             android:id="@+id/scrap_to_profile"
             android:layout_width="9dp"
             android:layout_height="18dp"
+            android:elevation="4dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="22dp"
             android:layout_marginLeft="22dp"

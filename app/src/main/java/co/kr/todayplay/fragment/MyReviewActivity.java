@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ public class MyReviewActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_myreview, container, false);
         LineView lineView = (LineView)viewGroup.findViewById(R.id.line_view);
-        ImageView review_to_profile = viewGroup.findViewById(R.id.review_to_profile);
+        Button review_to_profile = viewGroup.findViewById(R.id.back_profile3);
 
         RecyclerView recyclerView = (RecyclerView) viewGroup.findViewById(R.id.myreview_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false));

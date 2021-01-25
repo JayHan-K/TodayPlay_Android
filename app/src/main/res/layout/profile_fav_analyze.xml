@@ -14,15 +14,27 @@
             android:id="@+id/linearLayout11"
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:background="#000000"
+            android:background="#252525"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/back_profile5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:background="#252525"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/fav_to_proflie"
                 android:layout_width="9dp"
                 android:layout_height="14dp"
+                android:elevation="4dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="22dp"
                 android:layout_marginLeft="22dp"
@@ -56,7 +68,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="#000000"
+                android:background="#252525"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#252525">
 
     <FrameLayout
         android:id="@+id/pf_fragment_child_fragment"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/pf_scrollView"
-        android:background="#000000"
+        android:background="#252525"
         tools:layout_editor_absoluteX="-108dp"
         tools:layout_editor_absoluteY="96dp">
 
@@ -25,6 +25,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+
+            <ImageView
+                android:id="@+id/imageView14"
+                android:layout_width="9dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="3dp"
+                android:elevation="4dp"
+                app:layout_constraintStart_toEndOf="@+id/textView42"
+                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                app:srcCompat="@drawable/icon_pre_mirror" />
+
+            <Button
+                android:id="@+id/button11"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
+                android:background="#252525"
+                app:layout_constraintStart_toEndOf="@+id/textView42"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <ImageView
                 android:id="@+id/info_to_proflie2"
@@ -333,11 +353,10 @@
                 android:id="@+id/profile_to_fav"
                 android:layout_width="66dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="17dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:background="@color/transparent"
-                android:text="Button"
+                android:background="#252525"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
@@ -357,7 +376,7 @@
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:background="@color/transparent"
+                android:background="#252525"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
                 tools:layout_editor_absoluteX="0dp">
 
