@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,7 @@ public class Profile_Fav_AnalyzeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.profile_fav_analyze,container,false);
-       ImageView fav_to_proflie = (ImageView)viewGroup.findViewById(R.id.fav_to_proflie);
+       Button fav_to_profile = (Button)viewGroup.findViewById(R.id.back_profile5);
        playing_rv = (RecyclerView)viewGroup.findViewById(R.id.playing_rv);
        playing_yet_rv = (RecyclerView)viewGroup.findViewById(R.id.play_yet_rv);
        not_yet_rv = (RecyclerView)viewGroup.findViewById(R.id.not_yet_rv);
@@ -64,7 +65,7 @@ public class Profile_Fav_AnalyzeFragment extends Fragment {
        not_yet_rv.setAdapter(profileFavAdapter);
        keyword_rv.setAdapter(profileFavKeywordAdapter);
 
-       fav_to_proflie.setOnClickListener((new View.OnClickListener(){
+       fav_to_profile.setOnClickListener((new View.OnClickListener(){
            @Override
            public void onClick(View view){
                ProfileFragment parentFrag = (ProfileFragment) Profile_Fav_AnalyzeFragment.this.getParentFragment() ;

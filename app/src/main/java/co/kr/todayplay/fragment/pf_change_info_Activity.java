@@ -28,12 +28,12 @@ public class pf_change_info_Activity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.profile_info_change, container, false);
-        ImageView info_to_proflie = rootView.findViewById(R.id.info_to_proflie);
 
         final Button button_rewrite = rootView.findViewById(R.id.button_rewrite);
         final EditText rewrite_nick_name = rootView.findViewById(R.id.rewrite_nick_name);
         final Button button3 = rootView.findViewById(R.id.button3);
         final TextView textView24 = rootView.findViewById(R.id.textView24);
+        Button back_profile2 = (Button)rootView.findViewById(R.id.back_profile2);
 
         button_rewrite.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -75,7 +75,7 @@ public class pf_change_info_Activity extends Fragment {
             }
         });
 
-        info_to_proflie.setOnClickListener((new View.OnClickListener(){
+        back_profile2.setOnClickListener((new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 ProfileFragment parentFrag = (ProfileFragment) pf_change_info_Activity.this.getParentFragment() ;

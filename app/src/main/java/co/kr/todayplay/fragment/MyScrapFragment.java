@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class MyScrapFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_myscrap,container,false);
-        ImageView pf_to_profile = rootView.findViewById(R.id.scrap_to_profile);
+        Button pf_to_profile = rootView.findViewById(R.id.scrap_to_profile_bt);
         pf_scrap_rv =(RecyclerView)rootView.findViewById(R.id.pf_scrap_rv);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),2);

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ public class MypickFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_mypick,container,false);
-        ImageView pf_to_profile = rootView.findViewById(R.id.pick_to_profile);
+        Button pf_to_profile = rootView.findViewById(R.id.back_profile4);
 
         final TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.pf_tab_ly);
         tabLayout.addTab((tabLayout.newTab().setText("공연중")));
@@ -49,8 +50,6 @@ public class MypickFragment extends Fragment {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(tabElement.get(position));
-
-
             }
         }).attach();
 

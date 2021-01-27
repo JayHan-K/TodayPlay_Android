@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="#000000">
+    app:cardBackgroundColor="#252525">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -26,6 +26,7 @@
                 android:layout_height="20dp"
                 android:layout_marginEnd="1dp"
                 android:layout_marginRight="1dp"
+                android:gravity="center"
                 android:text="2020 공연 문화 에티켓지키기"
                 android:textColor="#2d2d2d"
                 app:layout_constraintBottom_toBottomOf="@id/notice_part"

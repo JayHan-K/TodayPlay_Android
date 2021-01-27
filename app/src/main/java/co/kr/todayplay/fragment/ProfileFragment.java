@@ -66,6 +66,7 @@ public class ProfileFragment extends Fragment {
         profileMyShowRecyclerView.setLayoutManager(layoutManager);
         profileMyShowRecyclerView.addItemDecoration(spaceDecoration);
 
+
         ConstraintLayout profileMyReviewRelativeLayout = viewGroup.findViewById(R.id.profile_my_review_rl);
         profileMyReviewRelativeLayout.setOnClickListener((new View.OnClickListener(){
             @Override
@@ -82,6 +83,13 @@ public class ProfileFragment extends Fragment {
                 profileChangeToFav();
             }
         }));
+        Button profile_to_info = viewGroup.findViewById(R.id.button11);
+        profile_to_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileChangeToinfo();
+            }
+        });
 
         ConstraintLayout profileScrapRelativeLayout = viewGroup.findViewById(R.id.profile_scrap_rl);
         profileScrapRelativeLayout.setOnClickListener((new View.OnClickListener(){
@@ -105,7 +113,7 @@ public class ProfileFragment extends Fragment {
         pf_setting.setOnClickListener((new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                profileChangeToinfo();
+                profileChangeToSettings();
             }
         }));
 
@@ -221,6 +229,15 @@ public class ProfileFragment extends Fragment {
         profileFragmentmainScrollView.setVisibility(View.GONE);
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
 
+    }
+
+    public void profileChangeToSettings(){
+        getChildFragmentManager().beginTransaction().replace(
+                R.id.pf_fragment_child_fragment,
+                new SettingsFragment()
+        ).commitAllowingStateLoss();
+        profileFragmentmainScrollView.setVisibility(View.GONE);
+        profileFragmentChildFragment.setVisibility(View.VISIBLE);
     }
 
     public void BackToHome(){
