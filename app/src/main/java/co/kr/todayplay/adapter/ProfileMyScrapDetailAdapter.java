@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
+import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.object.RecommandItem;
 
 public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -54,12 +56,13 @@ public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerVi
         RecommandHolder itemController = (RecommandHolder) holder;
         itemController.imageView.setImageResource(recommandItem.getDrawable());
         itemController.title_tv.setText(recommandItem.getTitle());
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
+            }
+        });
 
     }
 

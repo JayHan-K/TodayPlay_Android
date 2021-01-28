@@ -14,71 +14,73 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
-import co.kr.todayplay.object.Journal;
 
-public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    public ArrayList<JournalItem> data = new ArrayList<>();
-    private ArrayList<JournalHolder> itemController = new ArrayList<>();
+public class JournalRecommendListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public ArrayList<Item> data = new ArrayList<>();
+    public ArrayList<JournalRecommendListViewHolder> itemController = new ArrayList<>();
 
-    public static class JournalItem{
+    public static class Item{
         private int drawable;
-        private String sub_title;
+        private String subtitle;
         private String title;
 
-        public JournalItem(){}
-        public JournalItem(int drawable, String sub_title, String title){
-            this.drawable = drawable;
-            this.sub_title = sub_title;
-            this.title = title;
-        }
+        public Item(){
 
-        public String getSub_title() {
-            return sub_title;
+        }
+        public Item(int drawable, String subtitle, String title){
+            this.subtitle = subtitle;
+            this.drawable = drawable;
+            this.title = title;
         }
 
         public String getTitle() {
             return title;
+        }
+
+        public String getSubtitle() {
+            return subtitle;
         }
         public int getDrawable(){
             return drawable;
         }
     }
 
-    public class JournalHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
-        private TextView sub_tv;
-        private TextView title_tv;
-        public JournalHolder(@NonNull View itemView){
+    public class JournalRecommendListViewHolder extends RecyclerView.ViewHolder{
+        public TextView journal_title_tv;
+        public TextView journal_subtitle_tv;
+        public ImageView imageView;
+
+        public JournalRecommendListViewHolder(View itemView){
             super(itemView);
-            this.imageView = itemView.findViewById(R.id.perform_detail_journal_iv);
-            this.sub_tv = itemView.findViewById(R.id.perform_detail_sub_tv);
-            this.title_tv = itemView.findViewById(R.id.perform_detail_title_tv);
+            journal_subtitle_tv = itemView.findViewById(R.id.journal_subtitle_tv);
+            journal_title_tv = itemView.findViewById(R.id.journal_title_tv);
+            imageView = itemView.findViewById(R.id.journal_iv);
         }
+
     }
 
-    public PerformDetailJournalAdapter(ArrayList<JournalItem> data){
+    public JournalRecommendListAdapter(ArrayList<Item> data){
         super();
         this.data = data;
     }
-
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = (LayoutInflater)parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.perform_detail_journal_item, parent, false);
-        JournalHolder journalHolder = new JournalHolder(view);
-        itemController.add(journalHolder);
-        return journalHolder;
+        View view = layoutInflater.inflate(R.layout.journal_recommend_item, parent, false);
+        JournalRecommendListViewHolder journalRecommendListViewHolder = new JournalRecommendListViewHolder(view);
+        itemController.add(journalRecommendListViewHolder);
+        return journalRecommendListViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        JournalItem item = data.get(position);
-        JournalHolder itemController = (JournalHolder) holder;
+        Item item = data.get(position);
+        JournalRecommendListViewHolder itemController = (JournalRecommendListViewHolder) holder;
+        itemController.journal_subtitle_tv.setText(item.getSubtitle());
         itemController.imageView.setImageResource(item.getDrawable());
-        itemController.sub_tv.setText(item.getSub_title());
-        itemController.title_tv.setText(item.getTitle());
+        itemController.journal_title_tv.setText(item.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,4 +94,6 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
     public int getItemCount() {
         return data.size();
     }
+
+
 }
