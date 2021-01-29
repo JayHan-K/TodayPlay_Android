@@ -34,6 +34,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="25dp"
                 android:background="#252525"
+                style="?android:borderlessButtonStyle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,7 +101,7 @@
                     android:layout_marginRight="6dp"
                     android:elevation="4dp"
                     android:fontFamily="@font/kopubworlddotummedium"
-                    android:text="키워드 천체보기"
+                    android:text="키워드 전체보기"
                     android:textColor="#FFC1C1C1"
                     android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/button2"
@@ -129,6 +130,7 @@
                     android:layout_marginRight="30dp"
                     android:background="@color/transparent"
                     android:text="Button"
+                    style="?android:borderlessButtonStyle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
