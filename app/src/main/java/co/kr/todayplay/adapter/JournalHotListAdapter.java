@@ -1,5 +1,6 @@
 package co.kr.todayplay.adapter;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 
 public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public ArrayList<Item> data = new ArrayList<>();
@@ -82,7 +85,8 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CommunityHotIssueJournalAdapter 참고 itemClickListener.onItemClicked(holder, journal, position)
+                JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
             }
         });
     }

@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformDetailJournalAdapter;
 import co.kr.todayplay.adapter.PerformDetailStaffAdapter;
+import co.kr.todayplay.fragment.Journal.JournalViewFragment;
 
 public class PerformDetailFragment extends Fragment {
+    JournalViewFragment journalViewFragment = new JournalViewFragment();
     ImageView perform_iv;
     RecyclerView staff_rv;
     RecyclerView journal_rv;
@@ -38,6 +41,13 @@ public class PerformDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_detail,container,false);
         perform_iv = (ImageView)viewGroup.findViewById(R.id.perform_iv);
+        perform_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).replaceFragment(journalViewFragment);
+            }
+        });
+
         staff_rv = (RecyclerView)viewGroup.findViewById(R.id.staff_rv);
         staff_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         //staff_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));

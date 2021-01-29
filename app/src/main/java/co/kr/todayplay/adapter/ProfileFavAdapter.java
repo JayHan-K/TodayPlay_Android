@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.fragment.PerformInfoFragment;
 import co.kr.todayplay.object.RecommandItem;
 
 public class ProfileFavAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -53,12 +55,13 @@ public class ProfileFavAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         RecommandHolder itemController = (RecommandHolder) holder;
         itemController.imageView.setImageResource(recommandItem.getDrawable());
         itemController.title_tv.setText(recommandItem.getTitle());
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+                ((MainActivity)view.getContext()).replaceFragment(performInfoFragment);
+            }
+        });
 
     }
 
