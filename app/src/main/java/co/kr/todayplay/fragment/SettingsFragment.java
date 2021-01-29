@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment {
         set_to_profile.setOnClickListener((new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                ProfileFragment parentFrag = (ProfileFragment) SettingsFragment.this.getParentFragment() ;
+                ProfileFragment parentFrag = (ProfileFragment) SettingsFragment.this.getParentFragment();
                 parentFrag.BackToHome();
             }
         }));

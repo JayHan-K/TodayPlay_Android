@@ -26,7 +26,6 @@ public class Activity_suggest extends AppCompatActivity {
     private Spinner spinner2;
     String suggest_input = null;
     ArrayList<String> arrayList;
-    ArrayAdapter<String> arrayAdapter;
     AdapterSpinner adapterSpinner;
     Button button8;
 

@@ -17,6 +17,7 @@ import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
 import co.kr.todayplay.adapter.RecommandCategoryAdapter;
 import co.kr.todayplay.adapter.TotalCategoryAdapter;
+import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.object.RecommandItem;
 import co.kr.todayplay.object.totalItem;
 
@@ -52,12 +53,28 @@ public class CategoryMusical extends Fragment {
        data_total = getTotals();
        RecommandCategoryAdapter recommandCategoryAdapter = new RecommandCategoryAdapter(data_recommand);
        TotalCategoryAdapter totalCategoryAdapter = new TotalCategoryAdapter(data_total);
+        recommandCategoryAdapter.setOnItemClickListener(new RecommandCategoryAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, int pos) {
+                CategoryFragment parentFrag = (CategoryFragment) CategoryMusical.this.getParentFragment();
+                parentFrag.categoryChangeToclicked();
+            }
+        });
 
        recommand_rv.setAdapter(recommandCategoryAdapter);
        recommand_rv.addItemDecoration(spaceDecoration);
 
        total_rv.setAdapter(totalCategoryAdapter);
        total_rv.addItemDecoration(spaceDecoration2);
+        totalCategoryAdapter.setOnItemClickListener(new TotalCategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+                CategoryFragment parentFrag = (CategoryFragment) CategoryMusical.this.getParentFragment();
+                parentFrag.categoryChangeToclicked();
+
+
+            }
+        });
 
        return viewGroup;
     }

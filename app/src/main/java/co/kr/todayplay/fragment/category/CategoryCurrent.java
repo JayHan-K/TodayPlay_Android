@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +20,9 @@ import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
 import co.kr.todayplay.adapter.RecommandCategoryAdapter;
 import co.kr.todayplay.adapter.TotalCategoryAdapter;
+import co.kr.todayplay.fragment.CategoryClickedFragment;
+import co.kr.todayplay.fragment.CategoryFragment;
+import co.kr.todayplay.fragment.SettingsFragment;
 import co.kr.todayplay.object.RecommandItem;
 import co.kr.todayplay.object.totalItem;
 
@@ -26,6 +32,8 @@ public class CategoryCurrent extends Fragment {
     RecyclerView total_rv;
     RecyclerDecoration spaceDecoration = new RecyclerDecoration(25,0);
     RecyclerDecoration spaceDecoration2 = new RecyclerDecoration(75,1);
+    ConstraintLayout linearlayout6;
+    FrameLayout ProfileFragmentChildFragment;
 
 
    public CategoryCurrent(){}
@@ -53,11 +61,29 @@ public class CategoryCurrent extends Fragment {
        RecommandCategoryAdapter recommandCategoryAdapter = new RecommandCategoryAdapter(data_recommand);
        TotalCategoryAdapter totalCategoryAdapter = new TotalCategoryAdapter(data_total);
 
+        recommandCategoryAdapter.setOnItemClickListener(new RecommandCategoryAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, int pos) {
+                CategoryFragment parentFrag = (CategoryFragment) CategoryCurrent.this.getParentFragment();
+                parentFrag.categoryChangeToclicked();
+            }
+        });
+
        recommand_rv.setAdapter(recommandCategoryAdapter);
        recommand_rv.addItemDecoration(spaceDecoration);
 
        total_rv.setAdapter(totalCategoryAdapter);
        total_rv.addItemDecoration(spaceDecoration2);
+       totalCategoryAdapter.setOnItemClickListener(new TotalCategoryAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(View v, int pos) {
+               CategoryFragment parentFrag = (CategoryFragment) CategoryCurrent.this.getParentFragment();
+               parentFrag.categoryChangeToclicked();
+
+
+           }
+       });
+
 
        return viewGroup;
     }
@@ -79,5 +105,7 @@ public class CategoryCurrent extends Fragment {
         data_total.add(new totalItem("서울 이외 지역"));
         return data_total;
     }
+
+
 
 }

@@ -50,21 +50,33 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
 
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position){
         RecommandItem recommandItem = data.get(position);
         RecommandHolder itemController = (RecommandHolder) holder;
         itemController.imageView.setImageResource(recommandItem.getDrawable());
         itemController.title_tv.setText(recommandItem.getTitle());
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(position != RecyclerView.NO_POSITION){
+                    if(mListener!=null){
+                        mListener.onItemClick(view,position);
+                    }
+                }
+
+            }
+        });
 
     }
 
     @Override
     public int getItemCount(){return data.size();}
+    public interface OnItemClickListener{
+        void onItemClick(View v,int pos);
+    }
+    private OnItemClickListener mListener;
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListener = listener;
+    }
 
 }
