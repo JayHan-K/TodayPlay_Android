@@ -118,8 +118,7 @@
                     app:layout_constraintStart_toStartOf="@id/vp_part"
                     app:layout_constraintEnd_toEndOf="@id/vp_part"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="30dp">
+                    android:paddingTop="20dp">
                 </androidx.viewpager.widget.ViewPager>
             </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

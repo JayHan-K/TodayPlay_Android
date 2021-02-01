@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "96666375013",
+    "firebase_url": "https://todayplay-be655-default-rtdb.firebaseio.com",
+    "project_id": "todayplay-be655",
+    "storage_bucket": "todayplay-be655.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96666375013:android:17af19725a8a4262fd878c",
+        "android_client_info": {
+          "package_name": "co.kr.todayplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96666375013-fi2f37b52f49ojd1eh4tj98sjuj0gfpi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96666375013-fi2f37b52f49ojd1eh4tj98sjuj0gfpi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

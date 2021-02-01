@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
+    android:background="#ffffff"
     android:paddingTop="36dp"
     android:paddingBottom="52dp">
     <ScrollView

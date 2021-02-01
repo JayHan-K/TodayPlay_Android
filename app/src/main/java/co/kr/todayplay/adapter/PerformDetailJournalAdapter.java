@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.object.Journal;
 
 public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -77,6 +79,13 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
         itemController.imageView.setImageResource(item.getDrawable());
         itemController.sub_tv.setText(item.getSub_title());
         itemController.title_tv.setText(item.getTitle());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
+            }
+        });
     }
 
     @Override

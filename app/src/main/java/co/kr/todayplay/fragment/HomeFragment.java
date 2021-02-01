@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import co.kr.todayplay.ItemClickListener;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.HomeAdMidPagerAdapter;
 import co.kr.todayplay.adapter.HomeAdPagerAdapter;
@@ -30,6 +31,7 @@ import co.kr.todayplay.adapter.HomeRankingViewPagerAdapter;
 import co.kr.todayplay.adapter.HomeShowAdapter;
 import co.kr.todayplay.adapter.JournalAdapter;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
+import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.object.Journal;
 import co.kr.todayplay.object.Show;
 import me.relex.circleindicator.CircleIndicator;
@@ -134,6 +136,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
 //                homeChangeToJournalDetail();
+                JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
+                ((MainActivity)getActivity()).replaceFragment(journalDetailFragment);
             }
 
             @Override
@@ -162,6 +166,8 @@ public class HomeFragment extends Fragment {
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
                 Show show =(Show)item;
 //                homeChangeToShowDetail(show);
+                PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+                ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
             }
 
             @Override

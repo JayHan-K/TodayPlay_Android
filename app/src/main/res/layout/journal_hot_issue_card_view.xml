@@ -11,16 +11,16 @@
         android:id="@+id/community_hot_issue_cv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-      <com.makeramen.roundedimageview.RoundedImageView
-          android:scaleType="centerCrop"
-          app:riv_oval="false"
-          app:riv_corner_radius="10dp"
-          android:src="@drawable/journal_image_sample2"
-          android:id="@+id/community_hot_issue_cv_iv"
-          android:layout_marginLeft="15dp"
-          android:layout_marginTop="10dp"
-          android:layout_width="106dp"
-          android:layout_height="86dp"></com.makeramen.roundedimageview.RoundedImageView>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:scaleType="centerCrop"
+            app:riv_oval="false"
+            app:riv_corner_radius="10dp"
+            android:src="@drawable/journal_image_sample2"
+            android:id="@+id/community_hot_issue_cv_iv"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="106dp"
+            android:layout_height="86dp"></com.makeramen.roundedimageview.RoundedImageView>
 
         <TextView
             android:textColor="#777777"

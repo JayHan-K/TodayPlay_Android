@@ -137,18 +137,6 @@
                     android:layout_marginTop="2dp">
                 </Button>
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <Button
-                android:id="@+id/write_rv_btn"
-                android:background="@drawable/perform_review_cat_icon"
-                android:layout_alignParentBottom="true"
-                android:layout_width="74dp"
-                android:layout_height="74dp"
-                android:layout_alignParentRight="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginRight="30dp">
-
-            </Button>
             <!--
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/journal_rv_part"
@@ -183,4 +171,15 @@
             -->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/write_rv_btn"
+        android:background="@drawable/perform_review_cat_icon"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"                app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="30dp">
+    </Button>
 </androidx.constraintlayout.widget.ConstraintLayout>

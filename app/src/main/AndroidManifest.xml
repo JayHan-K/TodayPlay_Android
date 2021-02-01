@@ -2,11 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.kr.todayplay">
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MyQnAActivity"/>
@@ -24,14 +26,19 @@
 <!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>-->
         <activity android:name=".Register_default"/>
 
-<!--        <activity android:name=".Customer_Service_Activity"-->
-<!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--        <activity android:name=".Customer_Service_Activity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>-->
+        <activity android:name=".JoinSettingProfileActivity"></activity>
+        <activity android:name=".FindIdPwActivity"></activity>
+        <activity android:name=".JoinPreferenceAnalysisGuideActivity"></activity>
+        <activity android:name=".JoinIdentificationActivity"></activity>
+        <activity android:name=".JoinIdentificationActivityVer2"></activity>
 
 <!--        <activity android:name=".Login_Home_Activity">-->
 <!--            <intent-filter>-->
@@ -41,13 +48,22 @@
 <!--            </intent-filter>-->
 <!--        </activity>-->
 
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+       <activity android:name=".Login_Home_Activity"
+           android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
     </application>
 
