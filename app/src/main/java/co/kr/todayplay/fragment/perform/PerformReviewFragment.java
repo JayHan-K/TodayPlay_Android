@@ -1,20 +1,32 @@
 package co.kr.todayplay.fragment.perform;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mordred.wordcloud.WordCloud;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,30 +43,10 @@ public class PerformReviewFragment extends Fragment {
     BarChart satisfy_ratio_chart;
     PerformTotalReviewFragment performTotalReviewFragment = new PerformTotalReviewFragment();
     PerformWriteReviewFragment performWriteReviewFragment = new PerformWriteReviewFragment();
+    PieChart recommend_ratio_chart;
+    ImageView keywords_iv;
 
     public PerformReviewFragment(){}
-
-    private ArrayList<BarEntry> average_satisfy_data(){
-        ArrayList<BarEntry> data_val = new ArrayList<>();
-        data_val.add(new BarEntry(0,1));
-        data_val.add(new BarEntry(1,2));
-        data_val.add(new BarEntry(2,3));
-        data_val.add(new BarEntry(3,5));
-        data_val.add(new BarEntry(4,2));
-        data_val.add(new BarEntry(5,1));
-        return data_val;
-    }
-
-    private ArrayList<BarEntry> perform_satisfy_data(){
-        ArrayList<BarEntry> data_val = new ArrayList<>();
-        data_val.add(new BarEntry(0,1));
-        data_val.add(new BarEntry(1,5));
-        data_val.add(new BarEntry(2,4));
-        data_val.add(new BarEntry(3,4));
-        data_val.add(new BarEntry(4,3));
-        data_val.add(new BarEntry(5,2));
-        return data_val;
-    }
 
     @Nullable
     @Override
@@ -65,30 +57,122 @@ public class PerformReviewFragment extends Fragment {
         write_review_btn = (Button)viewGroup.findViewById(R.id.write_rv_btn);
         more_review_btn = (Button)viewGroup.findViewById(R.id.more_rv_btn);
         satisfy_ratio_chart = (BarChart)viewGroup.findViewById(R.id.satisfy_ratio_barChart);
+        recommend_ratio_chart = (PieChart)viewGroup.findViewById(R.id.piechart);
+        keywords_iv = (ImageView)viewGroup.findViewById(R.id.keyword_iv);
 
         //--만족도 비율 차트 Start --
-        /*
-        final String xVal[]={"10대","20대","30대","40대","50대","60대+"};
-        XAxis xAxis = satisfy_ratio_chart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(){
-            @Override
-            public String getFormattedValue(float value) {
-                return xVal[(int) value-1];
-            }
-        });
-        */
-        BarDataSet barDataSet = new BarDataSet(average_satisfy_data(), "평균 만족도");
-        barDataSet.setColor(Color.WHITE);
-        BarDataSet barDataSet2 = new BarDataSet(perform_satisfy_data(),"이 공연 만족도");
-        barDataSet2.setColor(Color.YELLOW);
+        int yellowColor = getResources().getColor(R.color.yellow);
+        int whiteColor = getResources().getColor(R.color.white);
+        int lightGrayColor = getResources().getColor(R.color.lightgray);
+        ArrayList<BarEntry> dataset = new ArrayList<>();
+        dataset.add(new BarEntry(0,1f));
+        dataset.add(new BarEntry(0.9f, 1f));
+        dataset.add(new BarEntry(1.9f, 2f));
+        dataset.add(new BarEntry(2.9f, 3f));
+        dataset.add(new BarEntry(3.9f, 4f));
+        dataset.add(new BarEntry(4.9f, 5f));
 
-        BarData barData = new BarData();
-        barData.addDataSet(barDataSet);
-        barData.addDataSet(barDataSet2);
+        ArrayList<BarEntry> dataset2 = new ArrayList<>();
+        dataset2.add(new BarEntry(0.22f, 2f));
+        dataset2.add(new BarEntry(1.12f, 2f));
+        dataset2.add(new BarEntry(2.12f, 3f));
+        dataset2.add(new BarEntry(3.12f, 4f));
+        dataset2.add(new BarEntry(4.12f, 5f));
+        dataset2.add(new BarEntry(5.12f, 2f));
 
+        ArrayList<String> age = new ArrayList<>();
+        age.add("10대");
+        age.add("20대");
+        age.add("30대");
+        age.add("40대");
+        age.add("50대");
+        age.add("60대+");
+        satisfy_ratio_chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(age));
+        satisfy_ratio_chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        satisfy_ratio_chart.getXAxis().setTextColor(whiteColor);
+
+        float groupSpace = 0f;
+        float barSpace = 0.04f;
+        float barWidth = 0.15f;
+        BarDataSet barDataSet = new BarDataSet(dataset,"평균 만족도");
+        barDataSet.setColors(whiteColor);
+        barDataSet.setValueTextColor(Color.TRANSPARENT);
+        BarDataSet barDataSet1 = new BarDataSet(dataset2,"이 공연 만족도");
+        barDataSet1.setColors(yellowColor);
+        barDataSet1.setValueTextColor(Color.TRANSPARENT);
+        satisfy_ratio_chart.getLegend().setTextColor(whiteColor);
+        satisfy_ratio_chart.getLegend().setForm(Legend.LegendForm.CIRCLE);
+        satisfy_ratio_chart.getLegend().setXEntrySpace(20f);
+        satisfy_ratio_chart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        satisfy_ratio_chart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        satisfy_ratio_chart.getLegend().setDrawInside(false);
+        satisfy_ratio_chart.getLegend().setYOffset(15f);
+
+        BarData barData = new BarData(barDataSet, barDataSet1);
+        barData.setBarWidth(barWidth);
+        satisfy_ratio_chart.getXAxis().setDrawGridLines(false);
+        satisfy_ratio_chart.getAxisRight().setDrawGridLines(false);
+        satisfy_ratio_chart.getAxisLeft().setGridColor(lightGrayColor);
+        satisfy_ratio_chart.setFitBars(true);
         satisfy_ratio_chart.setData(barData);
+        satisfy_ratio_chart.getDescription().setEnabled(false);
+        satisfy_ratio_chart.getXAxis().setDrawAxisLine(false);
+        satisfy_ratio_chart.getAxisLeft().setDrawAxisLine(false);
+        satisfy_ratio_chart.getAxisRight().setDrawAxisLine(false);
+        satisfy_ratio_chart.animateY(1000);
+        satisfy_ratio_chart.getAxisLeft().setAxisMinimum(0f);
+        satisfy_ratio_chart.getAxisLeft().setAxisMaximum(5f);
+        satisfy_ratio_chart.getAxisLeft().setLabelCount(5);
+        satisfy_ratio_chart.getAxisLeft().setDrawLabels(true);
+        satisfy_ratio_chart.getAxisRight().setDrawLabels(false);
+        satisfy_ratio_chart.getAxisLeft().setTextColor(whiteColor);
         satisfy_ratio_chart.invalidate();
         //--만족도 비율 차트 End --
+
+        //--후기 추천 비율 차트 Start --
+        int[] colorArray = new int[] {whiteColor, yellowColor};
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry(27, ""));
+        pieEntries.add(new PieEntry(73, ""));
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet.setValueTextColor(Color.TRANSPARENT);
+        pieDataSet.setColors(colorArray);
+        PieData pieData = new PieData(pieDataSet);
+        recommend_ratio_chart.setDrawCenterText(true);
+        recommend_ratio_chart.setDrawEntryLabels(false);
+        recommend_ratio_chart.setCenterText("73%");
+        recommend_ratio_chart.setCenterTextColor(yellowColor);
+        recommend_ratio_chart.getDescription().setEnabled(false);
+        recommend_ratio_chart.setCenterTextSize(18);
+        recommend_ratio_chart.setData(pieData);
+        recommend_ratio_chart.setHoleColor(Color.TRANSPARENT);
+        recommend_ratio_chart.setHoleRadius(80);
+        recommend_ratio_chart.getLegend().setEnabled(false);
+        recommend_ratio_chart.animateXY(1000,1000);
+        recommend_ratio_chart.invalidate();
+        //--후기 추천 비율 차트 End --
+
+        //--후기 키워드 Start --
+        Map<String, Integer> wcData = new HashMap<>();
+        wcData.put("오늘의 공연",2);
+        wcData.put("라이어",7);
+        wcData.put("감동적인",6);
+        wcData.put("로맨스",2);
+        wcData.put("코믹",3);
+        wcData.put("코미디",2);
+        wcData.put("연극",2);
+        wcData.put("가족",3);
+        wcData.put("로맨틱",2);
+        wcData.put("로코",2);
+        wcData.put("오리지널",2);
+
+        WordCloud wordCloud = new WordCloud(wcData, 250, 250, yellowColor, Color.TRANSPARENT);
+        wordCloud.setWordColorOpacityAuto(true);
+        wordCloud.setPaddingX(20);
+        wordCloud.setPaddingY(15);
+        Bitmap generatedWordCloudBmp = wordCloud.generate();
+        keywords_iv.setImageBitmap(generatedWordCloudBmp);
+        //--후기 키워드 End --
 
         final ArrayList<PerformReviewAdapter.ReviewItem> data = new ArrayList<>();
         ArrayList<Integer> image_data = new ArrayList<>();
