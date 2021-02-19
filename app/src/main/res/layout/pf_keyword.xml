@@ -12,7 +12,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/notice_part"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="7dp"

@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -22,6 +24,8 @@ import co.kr.todayplay.adapter.CategoryPagerAdapter;
 public class CategoryFragment extends Fragment {
     ViewPager2 viewPager2;
     CategoryPagerAdapter adapter;
+    ConstraintLayout linearlayout5;
+    FrameLayout ProfileFragmentChildFragment3;
 
     public CategoryFragment(){
 
@@ -33,6 +37,8 @@ public class CategoryFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_category,container,false);
 
         final TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
+        linearlayout5 = rootView.findViewById(R.id.linearLayout5);
+        ProfileFragmentChildFragment3 = rootView.findViewById(R.id.pf_fragment_child_fragment3);
         tabLayout.addTab((tabLayout.newTab().setText("전체")));
         tabLayout.addTab((tabLayout.newTab().setText("뮤지컬")));
         tabLayout.addTab((tabLayout.newTab().setText("연극")));
@@ -55,6 +61,19 @@ public class CategoryFragment extends Fragment {
 
 
         return rootView;
+    }
+    public void categoryChangeToclicked(){
+        getChildFragmentManager().beginTransaction().replace(
+                R.id.pf_fragment_child_fragment3,
+                new CategoryClickedFragment()
+        ).commitAllowingStateLoss();
+        linearlayout5.setVisibility(View.GONE);
+        ProfileFragmentChildFragment3.setVisibility(View.VISIBLE);
+
+    }
+    public void BackToHome(){
+        ProfileFragmentChildFragment3.setVisibility(View.GONE);
+        linearlayout5.setVisibility(View.VISIBLE);
     }
 
 }
