@@ -81,4 +81,8 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
+    <style name="intro" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">#000000</item>
+    </style>
+
 </resources>
