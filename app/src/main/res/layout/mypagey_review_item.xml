@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="12dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="20dp"
+    android:elevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/review_top_part"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/btn_custom_rounded_gradient"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/play_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:text="연극 라이어"
+            android:textColor="#252525"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/play_year_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="2011"
+            android:textColor="#252525"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/play_title_tv"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/bad_icon2"
+        android:layout_width="14dp"
+        android:layout_height="14.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/perform_bad_icon_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/good_icon2" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/review_user_iv"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/editor_profile_3"
+        app:civ_border_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review_top_part"></com.mikhaellopez.circularimageview.CircularImageView>
+
+    <TextView
+        android:id="@+id/user_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="제인"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/review_user_iv"
+        app:layout_constraintTop_toBottomOf="@+id/review_top_part" />
+
+    <ImageView
+        android:id="@+id/thumb_img"
+        android:layout_width="11dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/perform_review_up_icon"
+        app:layout_constraintStart_toEndOf="@+id/review_user_iv"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_tv" />
+
+    <ImageView
+        android:id="@+id/good_icon2"
+        android:layout_width="14dp"
+        android:layout_height="14.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/perform_good_icon_black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review_user_iv" />
+
+    <TextView
+        android:id="@+id/textView74"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/btn_custom_rounded_yellow2"
+        android:gravity="center"
+        android:text="추천해요"
+        android:textColor="#252525"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/thumb_img"
+        app:layout_constraintTop_toBottomOf="@+id/age_level_tv" />
+
+    <TextView
+        android:id="@+id/good_review_tv"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        android:paddingLeft="15dp"
+        android:text="노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네여. 그리고 넘버들이 "
+        android:textColor="#000000"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/good_tv" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/review_photo_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/more_tv"></androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/age_level_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="20대, Beginner"
+        android:textColor="#252525"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/user_name_tv"
+        app:layout_constraintTop_toBottomOf="@+id/review_top_part" />
+
+    <ImageView
+        android:id="@+id/heart_icon"
+        android:layout_width="10dp"
+        android:layout_height="9dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:src="@drawable/perform_info_heart_icon"
+        app:layout_constraintStart_toEndOf="@+id/textView74"
+        app:layout_constraintTop_toBottomOf="@+id/age_level_tv" />
+
+    <TextView
+        android:id="@+id/num_heart_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="23"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/heart_icon"
+        app:layout_constraintTop_toBottomOf="@+id/age_level_tv" />
+
+    <ImageView
+        android:id="@+id/review_icon"
+        android:layout_width="10dp"
+        android:layout_height="9dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="7dp"
+        android:src="@drawable/perform_review_comment_icon"
+        app:layout_constraintStart_toEndOf="@+id/num_heart_tv"
+        app:layout_constraintTop_toBottomOf="@+id/age_level_tv" />
+
+    <TextView
+        android:id="@+id/num_review_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="23"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/review_icon"
+        app:layout_constraintTop_toBottomOf="@+id/age_level_tv" />
+
+    <TextView
+        android:id="@+id/review_date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="30dp"
+        android:text="2020.10.23 작성"
+        android:textColor="#252525"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/review_top_part" />
+
+    <TextView
+        android:id="@+id/good_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="19dp"
+        android:text="좋았어요"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/good_icon2"
+        app:layout_constraintTop_toBottomOf="@+id/thumb_img" />
+
+    <TextView
+        android:id="@+id/bad_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:text="아쉬워요"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/bad_icon2"
+        app:layout_constraintTop_toBottomOf="@+id/good_review_tv" />
+
+    <TextView
+        android:id="@+id/bad_review_tv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="30dp"
+        android:paddingLeft="15dp"
+        android:text="무대장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 "
+        android:textColor="#000000"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bad_icon2" />
+
+    <TextView
+        android:id="@+id/more_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="2dp"
+        android:text="···더보기"
+        android:textColor="#252525"
+        android:textSize="12sp"
+        android:gravity="center"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bad_review_tv" />
+</androidx.constraintlayout.widget.ConstraintLayout>
