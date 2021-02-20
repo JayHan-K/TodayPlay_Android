@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment.Journal;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -72,7 +78,10 @@ public class JournalDetailFragment extends Fragment {
         if(webView == null){
             Log.d("webView", "onCreateView: webView is null");
         }
-        webView.loadUrl("file:///android_asset/journal1.html");
+        //webView.getSettings().setJavaScriptEnabled(true);
+        //webView.loadUrl("file:///android_asset/journal4/index.xhtml");
+        loadHtmlPage();
+
 
         back_btn = (ImageButton) viewGroup.findViewById(R.id.back_btn);
         bookmark_btn = (ImageButton) viewGroup.findViewById(R.id.bookmark_btn);
@@ -111,4 +120,33 @@ public class JournalDetailFragment extends Fragment {
 
         return viewGroup;
     }
+
+    /** * Gets html content from the assets folder. */
+    private String getHtmlFromAsset() {
+        InputStream is; StringBuilder builder = new StringBuilder();
+        String htmlString = null;
+        try {
+            is = getActivity().getAssets().open("index.xhtml");
+            if (is != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+                htmlString = builder.toString();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return htmlString;
+    } /** * Loads html page with the content. */
+
+    private void loadHtmlPage()
+    {
+        String htmlString = getHtmlFromAsset();
+        if (htmlString != null) webView.loadDataWithBaseURL("file:///android_asset/journal4/", htmlString, "text/html", "UTF-8", null);
+        else Toast.makeText(getActivity(), "html이 없습니다", Toast.LENGTH_LONG).show();
+    }
+
 }
