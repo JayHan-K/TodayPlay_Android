@@ -80,8 +80,6 @@ public class Intro_Activity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
 //                videoView.setVisibility(View.GONE);
-                if(done=="not")
-                progressBar.setVisibility(View.GONE);
 
                 if(done=="done"||done2=="done"){
                     Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);

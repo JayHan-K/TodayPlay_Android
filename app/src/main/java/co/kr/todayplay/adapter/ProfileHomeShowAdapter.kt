@@ -9,11 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.todayplay.ItemClickListener
+import co.kr.todayplay.MainActivity
 import co.kr.todayplay.R
 import co.kr.todayplay.`object`.Show
+import co.kr.todayplay.fragment.PerformInfoFragment
 
 
-class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context : Context, itemClickListener: ItemClickListener) :
+class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context: Context, itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<ProfileHomeShowAdapter.HomeShowHolder>() {
     var homeShows: ArrayList<Show> = homeShows
     var context: Context = context
@@ -27,10 +29,13 @@ class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context : Context, item
         val homeShow : Show = homeShows.get(position)
         holder.pf_homeShowIV.setBackgroundResource(homeShow.imageSource)
         holder.pf_homeShow_TV.text = homeShow.showName
-        setMarginsInDp(holder.pf_homeShowIV, 0,0,40, 0)
+        setMarginsInDp(holder.pf_homeShowIV, 0, 0, 40, 0)
         holder.pf_homeShow_num.text = (position+1).toString()
         holder.pf_homeShowIV.setOnClickListener(View.OnClickListener {
             itemClickListener.onItemClicked(holder, homeShow, position)
+            val performInfoFragment = PerformInfoFragment()
+            (context as MainActivity).replaceFragment(performInfoFragment)
+            Toast.makeText(context, "위치=" + position.toString(), Toast.LENGTH_SHORT).show()
         })
 
     }
@@ -48,7 +53,7 @@ class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context : Context, item
         if(view.layoutParams is ViewGroup.MarginLayoutParams){
             val screenDensity : Float = view.context.resources.displayMetrics.density
             val params: ViewGroup.MarginLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-            params.setMargins(left*screenDensity.toInt(), top*screenDensity.toInt(), right*screenDensity.toInt(), bottom*screenDensity.toInt())
+            params.setMargins(left * screenDensity.toInt(), top * screenDensity.toInt(), right * screenDensity.toInt(), bottom * screenDensity.toInt())
             view.requestLayout()
         }
     }

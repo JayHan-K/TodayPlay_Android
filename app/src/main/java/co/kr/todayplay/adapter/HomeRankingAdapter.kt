@@ -37,6 +37,7 @@ class HomeRankingAdapter(show1: ArrayList<Show>, context: Context,itemClickListe
         holder.ranking_num.text = (position+1).toString()
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClicked(holder,show,position)
+            Toast.makeText(context, "위치=" + position.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
