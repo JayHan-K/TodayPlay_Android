@@ -1,6 +1,6 @@
 package co.kr.todayplay.PlayDB;
 
-public class Perform {
+public class Play {
     int play_id;
     String title;
     String category;
@@ -11,9 +11,11 @@ public class Perform {
     String thumbnail1;
     String thumbnail2;
     String videos;
+    String play_crew;
+    int num_of_heart;
 
 
-    public Perform(int play_id, String title, String category, String keywords, int main_journal, String thumbnail1, String thumbnail2, String relative_journal, String videos, String poster){
+    public Play(int play_id, String title, String category,String poster,  int main_journal, String thumbnail1, String thumbnail2, String keywords, String videos,  String play_crew,int num_of_heart, String relative_journal){
         this.play_id = play_id;
         this.title = title;
         this.category = category;
@@ -24,6 +26,8 @@ public class Perform {
         this.relative_journal = relative_journal;
         this.videos = videos;
         this.poster = poster;
+        this.play_crew =play_crew;
+        this.num_of_heart =num_of_heart;
 
     }
 
@@ -101,5 +105,13 @@ public class Perform {
 
     public void setVideos(String videos) {
         this.videos = videos;
+    }
+
+    public String getPlay_crew() {
+        return play_crew;
+    }
+
+    public int getNum_of_heart() {
+        return num_of_heart;
     }
 }
