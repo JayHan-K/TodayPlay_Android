@@ -11,15 +11,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 public class JoinIdentificationActivityVer2 extends AppCompatActivity {
     EditText user_name_et, user_birth_et, user_phone_et, identifi_num_et, job_et;
     Button phone_certification_btn, check_btn, next_btn;
+    FirebaseAuth mAuth;
+    String codeSent;
+    private int counter = 60;
     int sub;
 
     @Override
@@ -29,6 +45,11 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
         Intent intent = getIntent();
         sub = intent.getIntExtra("sub",0);
         Log.d("sub", "onCreate: sub = " + sub);
+
+        //sms auth init
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.setLanguageCode("ko");
+
 
         user_name_et = (EditText)findViewById(R.id.join_user_name_et);
         user_birth_et = (EditText)findViewById(R.id.join_user_birth_et);
@@ -163,7 +184,16 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
         phone_certification_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sendVerificationCode();
 
+            }
+        });
+
+        check_btn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                verifySignInCode();
             }
         });
 
@@ -191,4 +221,78 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
 
 
     }
+
+    private void verifySignInCode(){
+        String code = identifi_num_et.getText().toString();
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //인증 성공한 이후 코드 작성
+                            Toast.makeText(getApplicationContext(), "Verification Successful", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Incorrect Verification Code ", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    private void sendVerificationCode(){
+
+        String phone = user_phone_et.getText().toString();
+
+        if(phone.isEmpty()){
+            user_phone_et.setError("Phone number is required");
+            user_phone_et.requestFocus();
+            return;
+        }
+
+        if(phone.length() < 10 ){
+            user_phone_et.setError("Please enter a valid phone");
+            user_phone_et.requestFocus();
+            return;
+        }
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber("+82" + phone)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallbacks)
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+
+
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            Log.d("Complete", "Complete");
+        }
+
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Log.d("Failed", e.toString());
+        }
+
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            Toast.makeText(JoinIdentificationActivityVer2.this, "code sent : " + s, Toast.LENGTH_SHORT).show();
+            codeSent = s;
+        }
+    };
+
+
+
 }

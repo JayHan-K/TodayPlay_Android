@@ -51,6 +51,7 @@ public class Login_Home_Activity extends AppCompatActivity {
         google_login_bt.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("Login_Home_Activity", "Google Login Start");
                 Intent googleSignInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(googleSignInIntent, RC_SIGN_IN);
             }
@@ -85,6 +86,7 @@ public class Login_Home_Activity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
 
             }catch (ApiException e){
+                Log.w("Login_Home_Activity", "Google Sign in Failed", e);
 
             }
         }
@@ -97,8 +99,18 @@ public class Login_Home_Activity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Log.d("Login", "signInWithCredential:success");
+                            Log.d("Login_Home_Activity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String email = user.getEmail();
+                            Log.d("Login_Home_Activity" , email.toString());
+
+                            // 여기서 email 주소를 가지고 서버에서 url 요청을 합니다.
+                            // http://183.111.253.75/request_user_email_duplicate/
+                            // request POST에 email 이란 항목으로 email 주소를 보내셔야 중복 확인이 가능합니다.
+                            // 이메일 회원가입에서도 위 방식으로 중복확인해주세요
+                            // 위 요청으로 중복이 있으면 홈으로 이동
+                            // 없으면 회원가입창 이동해주시고 email 정보를 같이 보내주세요.
+
                         }else{
                             Log.d("Login", "signInWithCredential:failurer");
                         }
