@@ -45,7 +45,7 @@ public class Login_Home_Activity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Button button6 = findViewById(R.id.button6);
-        Button button4 = findViewById(R.id.button4);
+        Button email_regit = findViewById(R.id.button4);
         Button google_login_bt = findViewById(R.id.google_login_bt);
 
         google_login_bt.setOnClickListener((new View.OnClickListener() {
@@ -57,7 +57,7 @@ public class Login_Home_Activity extends AppCompatActivity {
             }
         }));
 
-        button4.setOnClickListener((new View.OnClickListener() {
+        email_regit.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Register_default.class);

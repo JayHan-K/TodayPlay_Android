@@ -17,8 +17,11 @@ import androidx.fragment.app.Fragment;
 import java.util.List;
 
 import co.kr.todayplay.Customer_Service_Activity;
+import co.kr.todayplay.JoinSettingProfileActivity;
+import co.kr.todayplay.NoticeActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.SettingsListAdapter;
+import co.kr.todayplay.object.Notice;
 
 public class SettingsFragment extends Fragment {
     ListView mListView;
@@ -38,6 +41,10 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
+                    case 0:
+                        Intent intent2 = new Intent(getContext(), NoticeActivity.class);
+                        startActivity(intent2);
+                        break;
                     case 1:
                         Intent intent = new Intent(getContext(), Customer_Service_Activity.class);
                         startActivity(intent);
