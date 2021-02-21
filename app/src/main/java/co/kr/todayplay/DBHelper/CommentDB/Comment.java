@@ -1,4 +1,4 @@
-package co.kr.todayplay.CommentDB;
+package co.kr.todayplay.DBHelper.CommentDB;
 
 public class Comment {
     int comment_id;

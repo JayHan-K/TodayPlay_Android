@@ -1,4 +1,4 @@
-package co.kr.todayplay.CrewDB;
+package co.kr.todayplay.DBHelper.CrewDB;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -33,6 +33,14 @@ public class CrewDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //update
+    public void update_crew(int id, String name, String pic, String position){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE Crew SET crew_name = '" + name + "', crew_pic = '" + pic + "', crew_position = '"+ position +"' WHERE crew_id = '" + id + "';");
+        Log.d("update_crew", "insert_crew: " + id + "|" + name + "|" + pic + "|" + position);
+        db.close();
+    }
+
     //delete
     public void delete_crew(int id){
         SQLiteDatabase db = getWritableDatabase();
@@ -54,6 +62,18 @@ public class CrewDBHelper extends SQLiteOpenHelper {
             Log.d("getAllCrew", "getAllCrew: " + crewArrayList.get(i).getId() +" | "+ crewArrayList.get(i).getName() +" | "+ crewArrayList.get(i).getPic() +" | "+ crewArrayList.get(i).getPosition());
         }
         return crewArrayList;
+    }
+
+    public boolean isExistCrewID(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor;
+        cursor = db.rawQuery("SELECT crew_name FROM Crew WHERE crew_id = "+ id +"", null);
+        boolean check = false;
+        while(cursor.moveToNext()){
+            check = true;
+        }
+        Log.i("isExistCrew", "crew_id = " + id + " is Exist!!");
+        return check;
     }
 
     public String getCrewName(int id){

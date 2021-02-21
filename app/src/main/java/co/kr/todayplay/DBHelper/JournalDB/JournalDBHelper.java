@@ -1,4 +1,4 @@
-package co.kr.todayplay.JournalDB;
+package co.kr.todayplay.DBHelper.JournalDB;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -33,6 +33,15 @@ public class JournalDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //update
+    public void update_journal(int id, String title, String subtitle, String editor, String category, int num_of_scrap, String comments, int num_of_view, String relation_play, String relation_journal, String keyword, String banner_img, String thumbnail1_img, String thumbnail2_img, String file){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("UPDATE Journal SET journal_title='" + title + "', journal_subtitle= '" + subtitle + "', journal_editor= '" + editor +"', journal_category= '" + category + "',journal_num_of_scrap= '" + num_of_scrap + "',journal_comments= '" + comments + "', journal_num_of_view= '" + num_of_view + "', journal_relation_play = '" + relation_play + "', journal_relation_journal = '" + relation_journal + "', journal_keyword='" + keyword + "', journal_banner_img='" + banner_img + "', journal_thumbnail1_img = '"+ thumbnail1_img +"', journal_thumbnail2_img = '"+ thumbnail2_img +"', journal_file = '"+ file+"' WHERE journal_id = '" + id + "';");
+        Log.d("update_journal", "update_Journal: " + id + "|" + title + "|" + subtitle + "|" + editor + "|" + category + "|" + num_of_scrap + "|" + comments + "|" + num_of_view + "|" + relation_play + "|" + relation_journal + "|" + keyword + "|" + banner_img + "|" + thumbnail1_img + "|" + thumbnail2_img + "|" + file);
+        db.close();
+    }
+
+
     //delete
     public void delete_journal(int id){
         SQLiteDatabase db = getWritableDatabase();
@@ -54,6 +63,17 @@ public class JournalDBHelper extends SQLiteOpenHelper {
             Log.d("getAllJournal", "getAllJournal: " + journalArrayList.get(i).getTitle() +" | "+ journalArrayList.get(i).getSubtitle() +" | "+ journalArrayList.get(i).getEditor() +" | "+ journalArrayList.get(i).getCategory() +" | "+ journalArrayList.get(i).getNum_of_scrap() +" | " + journalArrayList.get(i).getComments()  +" | "+ journalArrayList.get(i).getNum_of_view()  +" | "+ journalArrayList.get(i).getRelation_play()  +" | "+ journalArrayList.get(i).getRelation_journal()  +" | "+ journalArrayList.get(i).getKeyword()  +" | "+ journalArrayList.get(i).getBanner_img()  +" | "+ journalArrayList.get(i).getThumbnail1_img()  +" | "+ journalArrayList.get(i).getThumbnail2_img()  +" | "+ journalArrayList.get(i).getFile());
         }
         return journalArrayList;
+    }
+
+    public boolean isExistJournalID(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT journal_title FROM Journal WHERE journal_id = "+ id +"", null);
+        boolean check = false;
+        while(cursor.moveToNext()){
+            check = true;
+        }
+        if (check) Log.d("isExistJournalID: ", "journal_id = " + id + " is already exists!!");
+        return check;
     }
 
     public String getJournalTitle(int id){

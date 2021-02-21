@@ -1,4 +1,4 @@
-package co.kr.todayplay.CommentDB;
+package co.kr.todayplay.DBHelper.CommentDB;
 
 import android.content.Context;
 import android.database.Cursor;

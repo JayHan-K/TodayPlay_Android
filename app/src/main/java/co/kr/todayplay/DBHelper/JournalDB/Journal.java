@@ -1,4 +1,4 @@
-package co.kr.todayplay.JournalDB;
+package co.kr.todayplay.DBHelper.JournalDB;
 
 public class Journal {
     int id;

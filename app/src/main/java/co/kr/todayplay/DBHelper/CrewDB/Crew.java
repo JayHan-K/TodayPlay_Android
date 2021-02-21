@@ -1,4 +1,4 @@
-package co.kr.todayplay.CrewDB;
+package co.kr.todayplay.DBHelper.CrewDB;
 
 public class Crew {
     int id;
