@@ -11,8 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import co.kr.todayplay.ItemClickListener
+import co.kr.todayplay.MainActivity
 import co.kr.todayplay.R
 import co.kr.todayplay.`object`.Show
+import co.kr.todayplay.fragment.PerformInfoFragment
 import org.w3c.dom.Text
 
 
@@ -37,7 +39,8 @@ class HomeRankingAdapter(show1: ArrayList<Show>, context: Context,itemClickListe
         holder.ranking_num.text = (position+1).toString()
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClicked(holder,show,position)
-            Toast.makeText(context, "위치=" + position.toString(), Toast.LENGTH_SHORT).show()
+            val performInfoFragment = PerformInfoFragment()
+            (context as MainActivity).replaceFragment(performInfoFragment)
         }
     }
 

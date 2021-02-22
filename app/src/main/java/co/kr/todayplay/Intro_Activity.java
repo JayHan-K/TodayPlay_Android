@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -36,17 +33,42 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import co.kr.todayplay.adapter.ImgTestAdapter;
+import co.kr.todayplay.DBHelper.CrewDB.CrewDBHelper;
+import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 
 public class Intro_Activity extends AppCompatActivity {
+
     VideoView videoView;
-    String url = "http://183.111.253.75/db_api/v1/resource_list/play/";
-    String jsonString;
+
+    //DB Update 관련 변수들
+    //play all file_name
+    String play_file_name_url = "http://183.111.253.75/db_api/v1/resource_list/play/";
+    String play_file_name_jsonString;
+    JSONArray play_filename_jsonArray;
+
+    //journal all DB
+    JournalDBHelper journalDBHelper;
+    String journal_all_jsonString;
+    String all_journal_result_url = "http://183.111.253.75/request_journal_info/";
+    JSONArray journal_all_jsonArray;
+
+    //play all DB
+    PlayDBHelper playDBHelper;
+    String play_all_jsonString;
+    String all_play_result_url = "http://183.111.253.75/request_play_info/";
+    JSONArray play_all_jsonArray;
+
+    //crew all DB
+    CrewDBHelper crewDBHelper;
+    String crew_all_jsonString;
+    String all_crew_result_url = "http://183.111.253.75/all_crew_list/";
+    JSONArray crew_all_jsonArray;
+
     public ImageView imgView;
     public ProgressBar progressBar;
     File outputFile;
     File path;
-    JSONArray jsonArray;
     String done;
     String done2;
 
@@ -55,6 +77,7 @@ public class Intro_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceStare){
         super.onCreate(savedInstanceStare);
         setContentView(R.layout.activity_intro);
+
         progressBar = (ProgressBar)findViewById(R.id.progressBar2);
         done="not";
         done2="not";
@@ -69,12 +92,28 @@ public class Intro_Activity extends AppCompatActivity {
             }
         });
         progressBar.setVisibility(View.GONE);
-
         progressBar.setIndeterminate(true);
         path = getFilesDir();
-        Intro_Activity.GetFileName getFileName = new Intro_Activity.GetFileName();
-        getFileName.execute();
 
+        //리소스 다운로드 실행
+        GetFileName getFileName = new GetFileName();
+        //getFileName.execute();
+        getFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        //Journal DB Update
+        journalDBHelper = new JournalDBHelper(getApplicationContext(), "Journal.db", null, 1);
+        UpdateJournalDB updateJournalDB = new UpdateJournalDB();
+        updateJournalDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        //Play DB Update
+        playDBHelper = new PlayDBHelper(getApplicationContext(), "Play.db", null, 1);
+        UpdatePlayDB updatePlayDB = new UpdatePlayDB();
+        updatePlayDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        //Play DB Update
+        crewDBHelper = new CrewDBHelper(getApplicationContext(), "Crew.db", null, 1);
+        UpdateCrewDB updateCrewDB = new UpdateCrewDB();
+        updateCrewDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -99,8 +138,8 @@ public class Intro_Activity extends AppCompatActivity {
         URL jsonUrl = new URL(url);
         URLConnection dc = jsonUrl.openConnection();
 
-        dc.setConnectTimeout(5000);
-        dc.setReadTimeout(5000);
+        dc.setConnectTimeout(10000);
+        dc.setReadTimeout(10000);
 
         inputStream = new BufferedReader(new InputStreamReader(
                 dc.getInputStream()));
@@ -110,6 +149,7 @@ public class Intro_Activity extends AppCompatActivity {
         return jsonResult;
     }
 
+    //-- Resource 다운로드 AsyncTask Start --
     public class GetFileName extends AsyncTask<Void, Void, Integer> {
         ArrayList<String[]> download_list = new ArrayList<String[]>();
         @Override
@@ -120,16 +160,16 @@ public class Intro_Activity extends AppCompatActivity {
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
-                jsonString = getJsonFromServer(url);
-                Log.d("jsonString", jsonString);
-                JSONObject jsonObject = new JSONObject(jsonString);
+                play_file_name_jsonString = getJsonFromServer(play_file_name_url);
+                Log.d("PlayFile_jsonString", play_file_name_jsonString);
+                JSONObject jsonObject = new JSONObject(play_file_name_jsonString);
                 //JSONParser parser = new JSONParser();
                 //Object obj = parser.parse(jsonString);
-                Log.d("jsonObject", jsonObject.toString());
-                jsonArray = jsonObject.getJSONArray("filename");
-                for(int i=0; i<jsonArray.length(); i++){
-                    String filename = jsonArray.get(i).toString();
-                    System.out.println(jsonArray.get(i));
+                Log.d("PlayFile_jsonObject", jsonObject.toString());
+                play_filename_jsonArray = jsonObject.getJSONArray("filename");
+                for(int i=0; i<play_filename_jsonArray.length(); i++){
+                    String filename = play_filename_jsonArray.get(i).toString();
+                    System.out.println(play_filename_jsonArray.get(i));
                     outputFile = new File(path, filename);
                     if(outputFile.exists()){
                         Log.d("already", "doInBackground: " + filename + "파일 존재");
@@ -160,9 +200,9 @@ public class Intro_Activity extends AppCompatActivity {
             else {
                 progressBar.setVisibility(View.GONE);
                 ArrayList<String> test_data = new ArrayList<>();
-                for(int i=0; i<jsonArray.length(); i++){
+                for(int i=0; i<play_filename_jsonArray.length(); i++){
                     try {
-                        String filename = jsonArray.get(i).toString();
+                        String filename = play_filename_jsonArray.get(i).toString();
                         String imgpath = getFilesDir() + "/"  + filename;
                         test_data.add(imgpath);
                     } catch (JSONException e) {
@@ -182,7 +222,7 @@ public class Intro_Activity extends AppCompatActivity {
         private PowerManager.WakeLock mWakeLock;
 
         public DownloadFilesTask(Context context){
-            this.context =context;
+            this.context = context;
         }
 
         @Override
@@ -264,7 +304,117 @@ public class Intro_Activity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
     }
+    //-- Resource 다운로드 AsyncTask End --
 
+    //-- UpdateJournalDB AsyncTask End --
+    public class UpdateJournalDB extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                journal_all_jsonString = getJsonFromServer(all_journal_result_url);
+                Log.d("journal_all_jsonString", journal_all_jsonString);
+                JSONObject jsonObject = new JSONObject(journal_all_jsonString);
+                Log.d("Journal jsonObject", jsonObject.toString());
+                journal_all_jsonArray = jsonObject.getJSONArray("journal");
+                for(int i=0; i<journal_all_jsonArray.length(); i++){
+                    JSONObject journal_object = (JSONObject) journal_all_jsonArray.get(i);
+                    int journal_id = (int) journal_object.get("journal_id");
+                    Log.d("JournalObject", "Object " + i + ": " + journal_all_jsonArray.get(i).toString());
+                    Log.d("journal_id", "journal_id = " + journal_id);
+                    if(!journalDBHelper.isExistJournalID(journal_id)){
+                        journalDBHelper.insert_journal(journal_id, (String)journal_object.get("journal_title"), (String)journal_object.get("journal_subtitle"), (String)journal_object.get("journal_editor"), (String)journal_object.get("journal_category"), 0, "", 0, (String)journal_object.get("journal_relation_play"), (String)journal_object.get("journal_relation_journal"), (String)journal_object.get("journal_keyword"), (String)journal_object.get("journal_banner_img"), (String)journal_object.get("journal_thumbnail1_img"), (String)journal_object.get("journal_thumbnail2_img"), (String)journal_object.get("journal_file"));
+                    }
+                    else{
+                        journalDBHelper.update_journal(journal_id, (String)journal_object.get("journal_title"), (String)journal_object.get("journal_subtitle"), (String)journal_object.get("journal_editor"), (String)journal_object.get("journal_category"), 0, "", 0, (String)journal_object.get("journal_relation_play"), (String)journal_object.get("journal_relation_journal"), (String)journal_object.get("journal_keyword"), (String)journal_object.get("journal_banner_img"), (String)journal_object.get("journal_thumbnail1_img"), (String)journal_object.get("journal_thumbnail2_img"), (String)journal_object.get("journal_file"));
+                    }
+                }
 
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+    //-- UpdateJournalDB Asynctask End --
+
+    //-- UpdatePlayDB AsyncTask End --
+    public class UpdatePlayDB extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                play_all_jsonString = getJsonFromServer(all_play_result_url);
+                Log.d("play_all_jsonString", play_all_jsonString);
+                JSONObject jsonObject = new JSONObject(play_all_jsonString);
+                Log.d("play jsonObject", jsonObject.toString());
+                play_all_jsonArray = jsonObject.getJSONArray("play");
+                for(int i=0; i<play_all_jsonArray.length(); i++){
+                    JSONObject play_object = (JSONObject) play_all_jsonArray.get(i);
+                    int play_id = (int) play_object.get("play_id");
+                    Log.d("playObject", "playObject " + i + ": " + play_all_jsonArray.get(i).toString());
+                    Log.d("play_id", "play_id = " + play_id);
+                    if(!playDBHelper.isExistPlayID(play_id)){
+                        playDBHelper.insert_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), (String)play_object.get("play_crew"), 0, "",  (String)play_object.get("play_history"));
+                    }
+                    else{
+                        playDBHelper.update_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), (String)play_object.get("play_crew"), 0, "",  (String)play_object.get("play_history"));
+                    }
+                }
+
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+    }
+    //-- UpdatePlayDB Asynctask End --
+
+    //-- UpdateCrewDB AsyncTask End --
+    public class UpdateCrewDB extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                crew_all_jsonString = getJsonFromServer(all_crew_result_url);
+                Log.d("crew_all_jsonString", crew_all_jsonString);
+                JSONObject jsonObject = new JSONObject(crew_all_jsonString);
+                Log.d("crew jsonObject", jsonObject.toString());
+                crew_all_jsonArray = jsonObject.getJSONArray("crew");
+                for (int i = 0; i < crew_all_jsonArray.length(); i++) {
+                    JSONObject crew_object = (JSONObject) crew_all_jsonArray.get(i);
+                    int crew_id = (int) crew_object.get("crew_id");
+                    Log.d("crewObject", "crewObject " + i + ": " + crew_all_jsonArray.get(i).toString());
+                    Log.d("crew_id", "crew_id = " + crew_id);
+                    if (!crewDBHelper.isExistCrewID(crew_id)) {
+                        crewDBHelper.insert_crew(crew_id, (String) crew_object.get("crew_name"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
+                    } else{
+                        crewDBHelper.update_crew(crew_id, (String) crew_object.get("crew_name"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
+                    }
+                }
+
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+    }
+    //-- UpdateCrewDB Asynctask End --
 }
