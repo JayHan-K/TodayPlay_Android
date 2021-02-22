@@ -43,10 +43,12 @@ import co.kr.todayplay.adapter.HomeAdPagerAdapter;
 import co.kr.todayplay.adapter.HomeRankingViewPagerAdapter;
 import co.kr.todayplay.adapter.HomeShowAdapter;
 import co.kr.todayplay.adapter.JournalAdapter;
+import co.kr.todayplay.adapter.JournalAdapter2;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.Journal;
+import co.kr.todayplay.object.Recommend;
 import co.kr.todayplay.object.Show;
 import me.relex.circleindicator.CircleIndicator;
 
@@ -56,12 +58,21 @@ public class HomeFragment extends Fragment {
     ScrollView homeFragmentMainScrollView;
     FrameLayout homeFragmentChildFragment;
     PlayDBHelper playDBHelper;
+    //homebanner정보 가져오기
+    String HomeBanner_all_jsonString;
+    String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
+    JSONArray HomeBanner_all_jsonArray;
+    ArrayList<Banner> banners = new ArrayList();
+    ArrayList banner_chosen;
+    ArrayList recommend_chosen;
+    ArrayList journal_chosen;
 
 
 
-
-    public HomeFragment(){
-
+    public HomeFragment(ArrayList<Banner> banners,ArrayList<Recommend>recommend,ArrayList<Recommend>recommendj){
+        this.banner_chosen = banners;
+        this.recommend_chosen = recommend;
+        this.journal_chosen = recommendj;
     }
 
     @Nullable
@@ -73,8 +84,10 @@ public class HomeFragment extends Fragment {
         homeFragmentChildFragment = viewGroup.findViewById(R.id.home_fragment_child_fragment);
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
 
+
+
         ViewPager homeViewPager = (ViewPager) viewGroup.findViewById(R.id.home_main_ad_vp);
-        homeViewPager.setAdapter(new HomeAdPagerAdapter(getChildFragmentManager()));
+        homeViewPager.setAdapter(new HomeAdPagerAdapter(getChildFragmentManager(),banner_chosen));
 
         final ViewPager homeViewmidPager = (ViewPager) viewGroup.findViewById(R.id.ad_mid);
         homeViewmidPager.setAdapter(new HomeAdMidPagerAdapter(getChildFragmentManager()));
@@ -171,7 +184,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        JournalAdapter journalAdapter = new JournalAdapter(journalList,getContext(),listener);
+        JournalAdapter2 journalAdapter = new JournalAdapter2(recommend_chosen,getContext(),listener);
 
         homeJournalRV.setLayoutManager(journalLayoutManager);
         homeJournalRV.setAdapter(journalAdapter);
@@ -201,7 +214,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        HomeShowAdapter personalAdapter = new HomeShowAdapter(PersonalizedShow,getContext(),mListener);
+        HomeShowAdapter personalAdapter = new HomeShowAdapter(recommend_chosen,getContext(),mListener);
         homePersonalRV.setLayoutManager(personalLayoutManger);
         homePersonalRV.setAdapter(personalAdapter);
 
@@ -324,6 +337,9 @@ public class HomeFragment extends Fragment {
         homeFragmentMainScrollView.setVisibility(View.VISIBLE);
         homeFragmentChildFragment.setVisibility(View.INVISIBLE);
     }
+
+
+
 
 //    public void homeChangeToJournalDetail(){
 //        homeFragmentMainScrollView.setVisibility(View.INVISIBLE);

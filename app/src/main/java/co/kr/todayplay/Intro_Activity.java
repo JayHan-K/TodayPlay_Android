@@ -199,10 +199,9 @@ public class Intro_Activity extends AppCompatActivity {
             JSONArray filename_jsonArray;
             String file_name_jsonString;
 //            File path = new File(getFilesDir() + "/" + strings[0][0]);
-
-
             JSONObject jsonObject;
             try {
+                //파일 주소 폴더명은 strings[0][0] 폴더가 존재하지 않으면 mkdirs로 만들어 준다.
                 File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + strings[0][0]);
                 if(!dir.exists()){
                     dir.mkdirs();

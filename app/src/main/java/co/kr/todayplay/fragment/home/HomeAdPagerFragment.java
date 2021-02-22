@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.adapter.HomeAdPagerAdapter;
 import co.kr.todayplay.adapter.PerformHistoryAdapter;
 import co.kr.todayplay.fragment.PerformInfoFragment;
 import co.kr.todayplay.fragment.perform.PerformDetailFragment;
@@ -47,12 +49,11 @@ public class HomeAdPagerFragment extends Fragment {
 
     ArrayList<Banner> banners = new ArrayList();
     Banner banneritem;
+    String file = "file";
 
 
-    public HomeAdPagerFragment(int position) {
-        this.position = position;
-//        this.banneritem=banneritem;
-//        this.banners =banners;
+    public HomeAdPagerFragment(Banner banneritem) {
+        this.banneritem =banneritem;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState) {
@@ -66,10 +67,9 @@ public class HomeAdPagerFragment extends Fragment {
                 ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
             }
         });
-//        TextView homeMaindAdTX = (TextView) viewGroup.findViewById(R.id.home_main_ad_tx);
-//        imgpath = getContext().getFilesDir().toString() + "/play/"+banneritem.getBanner();
-//        Bitmap bm = BitmapFactory.decodeFile(imgpath);
-//        homeMainAdIV.setImageBitmap(bm);
+        String imgpath = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/" + file + "/" +banneritem.getBanner();
+        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+        homeMainAdIV.setImageBitmap(bm);
         return viewGroup;
     }
 
