@@ -35,7 +35,6 @@ class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context: Context, itemC
             itemClickListener.onItemClicked(holder, homeShow, position)
             val performInfoFragment = PerformInfoFragment()
             (context as MainActivity).replaceFragment(performInfoFragment)
-            Toast.makeText(context, "위치=" + position.toString(), Toast.LENGTH_SHORT).show()
         })
 
     }

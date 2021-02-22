@@ -4,18 +4,18 @@
 
     <item
         android:id="@+id/bottom_category"
-        android:icon="@drawable/category"
+        android:icon="@drawable/category2"
         android:title="카테고리"
         app:showAsAction="always" />
     <item
         android:id="@+id/bottom_search"
-        android:icon="@drawable/search"
+        android:icon="@drawable/search2"
         android:title="검색"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/bottom_home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/home2"
         android:title="홈"
         app:showAsAction="always"
         />
@@ -23,11 +23,11 @@
     <item
         app:showAsAction="always"
         android:id="@+id/bottom_community"
-        android:icon="@drawable/community"
+        android:icon="@drawable/journal2"
         android:title="커뮤니티"/>
     <item
         app:showAsAction="always"
         android:id="@+id/bottom_profile"
-        android:icon="@drawable/profile"
+        android:icon="@drawable/mypage3"
         android:title="마이페이지"/>
 </menu>
