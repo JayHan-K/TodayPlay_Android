@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
@@ -41,12 +42,6 @@ public class Intro_Activity extends AppCompatActivity {
 
     VideoView videoView;
 
-    //DB Update 관련 변수들
-    //play all file_name
-    String play_file_name_url = "http://183.111.253.75/db_api/v1/resource_list/play/";
-    String play_file_name_jsonString;
-    JSONArray play_filename_jsonArray;
-
     //journal all DB
     JournalDBHelper journalDBHelper;
     String journal_all_jsonString;
@@ -67,8 +62,6 @@ public class Intro_Activity extends AppCompatActivity {
 
     public ImageView imgView;
     public ProgressBar progressBar;
-    File outputFile;
-    File path;
     int cnt;
 
 
@@ -91,12 +84,13 @@ public class Intro_Activity extends AppCompatActivity {
         });
         progressBar.setVisibility(View.GONE);
         progressBar.setIndeterminate(true);
-        path = getFilesDir();
 
-        //리소스 다운로드 실행
-        GetFileName getFileName = new GetFileName();
-        //getFileName.execute();
-        getFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //Play 리소스 다운로드
+        GetFileName getPlayFileName = new GetFileName();
+        String[] play = {"play", "http://183.111.253.75/db_api/v1/resource_list/play"};
+        getPlayFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, play);
+
+        //Journal 리소스
 
         //Journal DB Update
         journalDBHelper = new JournalDBHelper(getApplicationContext(), "Journal.db", null, 1);
@@ -142,33 +136,34 @@ public class Intro_Activity extends AppCompatActivity {
     }
 
     //-- Resource 다운로드 AsyncTask Start --
-    public class GetFileName extends AsyncTask<Void, Void, Integer> {
+    public class GetFileName extends AsyncTask<String[], Void, Integer> {
         ArrayList<String[]> download_list = new ArrayList<String[]>();
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Integer doInBackground(Void... voids) {
+        protected Integer doInBackground(String[]... strings) {
+            JSONArray filename_jsonArray;
+            String file_name_jsonString;
+            File path = new File(getFilesDir() + "/" + strings[0][0]);
+            JSONObject jsonObject;
             try {
-                play_file_name_jsonString = getJsonFromServer(play_file_name_url);
-                Log.d("PlayFile_jsonString", play_file_name_jsonString);
-                JSONObject jsonObject = new JSONObject(play_file_name_jsonString);
-                //JSONParser parser = new JSONParser();
-                //Object obj = parser.parse(jsonString);
-                Log.d("PlayFile_jsonObject", jsonObject.toString());
-                play_filename_jsonArray = jsonObject.getJSONArray("filename");
-                for(int i=0; i<play_filename_jsonArray.length(); i++){
-                    String filename = play_filename_jsonArray.get(i).toString();
-                    System.out.println(play_filename_jsonArray.get(i));
-                    outputFile = new File(path, filename);
+                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + strings[0][0]);
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                file_name_jsonString = getJsonFromServer(strings[0][1]);
+                Log.d("File_jsonString", strings[0][0] + " Folder = " + file_name_jsonString);
+                jsonObject = new JSONObject(file_name_jsonString);
+                Log.d("File_jsonObject", strings[0][0] + " Folder = " + jsonObject.toString());
+                filename_jsonArray = jsonObject.getJSONArray("filename");
+                for(int i=0; i<filename_jsonArray.length(); i++){
+                    String filename = filename_jsonArray.get(i).toString();
+                    System.out.println(filename_jsonArray.get(i));
+                    File outputFile = new File(path, filename);
                     if(outputFile.exists()){
-                        Log.d("already", "doInBackground: " + filename + "파일 존재");
+                        Log.d("already", strings[0][0] + "Folder: " + filename + "파일 존재");
                     }
                     else{
-                        String fileURL = "http://183.111.253.75/db_api/download/play/"+filename;
-                        download_list.add(new String[]{filename, fileURL});
+                        String fileURL = "http://183.111.253.75/db_api/download/" + strings[0][0] + "/" + filename;
+                        download_list.add(new String[]{filename, fileURL, strings[0][0]});
                     }
                 }
 
@@ -176,7 +171,13 @@ public class Intro_Activity extends AppCompatActivity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
             return download_list.size();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
 
         @Override
@@ -185,10 +186,10 @@ public class Intro_Activity extends AppCompatActivity {
             if(list_size > 0){
                 for(int i=0; i < list_size; i++){
                     final DownloadFilesTask downloadFilesTask = new DownloadFilesTask(Intro_Activity.this);
-                    downloadFilesTask.execute(download_list.get(i)[0], download_list.get(i)[1]);
+                    downloadFilesTask.execute(download_list.get(i)[0], download_list.get(i)[1], download_list.get(i)[2]);
                 }
                 cnt++;
-                if(cnt==4){
+                if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -197,6 +198,7 @@ public class Intro_Activity extends AppCompatActivity {
             }
             else {
                 progressBar.setVisibility(View.GONE);
+                /*
                 ArrayList<String> test_data = new ArrayList<>();
                 for(int i=0; i<play_filename_jsonArray.length(); i++){
                     try {
@@ -206,11 +208,11 @@ public class Intro_Activity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-//                recyclerView.setAdapter(new ImgTestAdapter(test_data));
+                recyclerView.setAdapter(new ImgTestAdapter(test_data));
+                 */
                 cnt++;
-                if(cnt==4){
+                if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -251,9 +253,11 @@ public class Intro_Activity extends AppCompatActivity {
 
                 FileSize = connection.getContentLength();
                 input = new BufferedInputStream(url.openStream(),8192);
-                path = getFilesDir();
-                outputFile= new File(path, download_info[0].toString()); //파일명까지 포함함 경로의 File 객체 생성
-
+                String path = getFilesDir() + File.separator + download_info[2];
+                File outputFile= new File(path, download_info[0].toString()); //파일명까지 포함함 경로의 File 객체 생성
+                if(outputFile == null){
+                    Log.d("OutputFile", "Error!! ");
+                }
                 // SD카드에 저장하기 위한 Output stream
                 output = new FileOutputStream(outputFile);
 
@@ -339,7 +343,7 @@ public class Intro_Activity extends AppCompatActivity {
                 Log.d("journal_done?","journal_done");
 
                 cnt++;
-                if(cnt==4){
+                if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -384,7 +388,7 @@ public class Intro_Activity extends AppCompatActivity {
                 }
                 Log.d("play_done?","play_done");
                 cnt++;
-                if(cnt==4){
+                if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
@@ -429,7 +433,7 @@ public class Intro_Activity extends AppCompatActivity {
                 }
                 Log.d("crew_done?","crew_done");
                 cnt++;
-                if(cnt==4){
+                if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();

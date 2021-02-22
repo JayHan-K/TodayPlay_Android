@@ -2,6 +2,8 @@ package co.kr.todayplay.adapter;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +23,16 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public ArrayList<JournalTotalListViewHolder> itemController = new ArrayList<>();
 
     public static class Item{
-        private int drawable;
+        private String img_path;
         private String subtitle;
         private String title;
 
-        public Item(){
+        public Item(String journalThumbnail2_img){
 
         }
-        public Item(int drawable, String subtitle, String title){
+        public Item(String img_path, String subtitle, String title){
             this.subtitle = subtitle;
-            this.drawable = drawable;
+            this.img_path = img_path;
             this.title = title;
         }
 
@@ -41,8 +43,9 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public String getSubtitle() {
             return subtitle;
         }
-        public int getDrawable(){
-            return drawable;
+
+        public String getImg_path() {
+            return img_path;
         }
     }
 
@@ -80,7 +83,8 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         Item item = data.get(position);
         JournalTotalListViewHolder itemController = (JournalTotalListViewHolder) holder;
         itemController.journal_subtitle_tv.setText(item.getSubtitle());
-        itemController.imageView.setImageResource(item.getDrawable());
+        Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+        itemController.imageView.setImageBitmap(bm);
         itemController.journal_title_tv.setText(item.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
