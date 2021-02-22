@@ -2,14 +2,18 @@ package co.kr.todayplay;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import co.kr.todayplay.DBHelper.CrewDB.Crew;
+import co.kr.todayplay.DBHelper.CrewDB.CrewDBHelper;
+import co.kr.todayplay.DBHelper.JournalDB.Journal;
+import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 public class DBTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
