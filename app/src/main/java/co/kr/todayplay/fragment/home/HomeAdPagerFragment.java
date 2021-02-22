@@ -1,5 +1,8 @@
 package co.kr.todayplay.fragment.home;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +14,18 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformHistoryAdapter;
@@ -20,21 +35,30 @@ import co.kr.todayplay.fragment.perform.PerformHistoryFragment;
 import co.kr.todayplay.fragment.perform.PerformReviewFragment;
 import co.kr.todayplay.fragment.perform.PerformTotalReviewFragment;
 import co.kr.todayplay.fragment.perform.PerformVideoFragment;
+import co.kr.todayplay.object.Banner;
 
 public class HomeAdPagerFragment extends Fragment {
     PerformInfoFragment performInfoFragment = new PerformInfoFragment();
-    private int imageResource;
-    private String ad_name;
 
-    public HomeAdPagerFragment(int imageResource, String ad_name) {
-        this.imageResource = imageResource;
-        this.ad_name = ad_name;
+
+    String imgpath;
+    int position;
+    File path;
+
+    ArrayList<Banner> banners = new ArrayList();
+    Banner banneritem;
+
+
+    public HomeAdPagerFragment(int position) {
+        this.position = position;
+//        this.banneritem=banneritem;
+//        this.banners =banners;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home_ad_fragment, container, false);
-
         ImageView homeMainAdIV = (ImageView) viewGroup.findViewById(R.id.home_main_ad_iv);
+//        banneritem = banners.get(position);
         homeMainAdIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,9 +66,14 @@ public class HomeAdPagerFragment extends Fragment {
                 ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
             }
         });
-        TextView homeMaindAdTX = (TextView) viewGroup.findViewById(R.id.home_main_ad_tx);
-        homeMainAdIV.setBackgroundResource(imageResource);
-        homeMaindAdTX.setText(ad_name);
+//        TextView homeMaindAdTX = (TextView) viewGroup.findViewById(R.id.home_main_ad_tx);
+//        imgpath = getContext().getFilesDir().toString() + "/play/"+banneritem.getBanner();
+//        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+//        homeMainAdIV.setImageBitmap(bm);
         return viewGroup;
     }
+
+
+
+
 }

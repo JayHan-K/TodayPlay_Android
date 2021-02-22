@@ -1,5 +1,7 @@
 package co.kr.todayplay.fragment;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +22,15 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
@@ -35,6 +45,7 @@ import co.kr.todayplay.adapter.HomeShowAdapter;
 import co.kr.todayplay.adapter.JournalAdapter;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
+import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.Journal;
 import co.kr.todayplay.object.Show;
 import me.relex.circleindicator.CircleIndicator;
@@ -45,6 +56,10 @@ public class HomeFragment extends Fragment {
     ScrollView homeFragmentMainScrollView;
     FrameLayout homeFragmentChildFragment;
     PlayDBHelper playDBHelper;
+
+
+
+
     public HomeFragment(){
 
     }
@@ -55,8 +70,6 @@ public class HomeFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.activity_home_fragment,container,false);
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db", null, 1);
         String poster= playDBHelper.getPlayPoster(506);
-
-
         homeFragmentChildFragment = viewGroup.findViewById(R.id.home_fragment_child_fragment);
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
 
@@ -194,6 +207,7 @@ public class HomeFragment extends Fragment {
 
         return viewGroup;
     }
+
 
     public ArrayList getJournals(){
         ArrayList journals = new ArrayList();
