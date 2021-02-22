@@ -69,18 +69,16 @@ public class Intro_Activity extends AppCompatActivity {
     public ProgressBar progressBar;
     File outputFile;
     File path;
-    String done;
-    String done2;
+    int cnt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceStare){
         super.onCreate(savedInstanceStare);
         setContentView(R.layout.activity_intro);
+        cnt = 0;
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar2);
-        done="not";
-        done2="not";
 
         videoView = (VideoView)findViewById(R.id.videoView);
         Uri uri = Uri.parse("android.resource://"+ getPackageName() + "/" + R.raw.introvi);
@@ -115,19 +113,13 @@ public class Intro_Activity extends AppCompatActivity {
         UpdateCrewDB updateCrewDB = new UpdateCrewDB();
         updateCrewDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-//                videoView.setVisibility(View.GONE);
 
-                if(done=="done"||done2=="done"){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-            }
-        });
+//        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+////                videoView.setVisibility(View.GONE);
+//            }
+//        });
 
     }
 
@@ -195,7 +187,13 @@ public class Intro_Activity extends AppCompatActivity {
                     final DownloadFilesTask downloadFilesTask = new DownloadFilesTask(Intro_Activity.this);
                     downloadFilesTask.execute(download_list.get(i)[0], download_list.get(i)[1]);
                 }
-                done="done";
+                cnt++;
+                if(cnt==4){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
             else {
                 progressBar.setVisibility(View.GONE);
@@ -210,8 +208,13 @@ public class Intro_Activity extends AppCompatActivity {
                     }
 
                 }
-                done2="done";
 //                recyclerView.setAdapter(new ImgTestAdapter(test_data));
+                cnt++;
+                if(cnt==4){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         }
     }
@@ -333,6 +336,15 @@ public class Intro_Activity extends AppCompatActivity {
                         journalDBHelper.update_journal(journal_id, (String)journal_object.get("journal_title"), (String)journal_object.get("journal_subtitle"), (String)journal_object.get("journal_editor"), (String)journal_object.get("journal_category"), 0, "", 0, (String)journal_object.get("journal_relation_play"), (String)journal_object.get("journal_relation_journal"), (String)journal_object.get("journal_keyword"), (String)journal_object.get("journal_banner_img"), (String)journal_object.get("journal_thumbnail1_img"), (String)journal_object.get("journal_thumbnail2_img"), (String)journal_object.get("journal_file"));
                     }
                 }
+                Log.d("journal_done?","journal_done");
+
+                cnt++;
+                if(cnt==4){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
 
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
@@ -370,6 +382,14 @@ public class Intro_Activity extends AppCompatActivity {
                         playDBHelper.update_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), (String)play_object.get("play_crew"), 0, "",  (String)play_object.get("play_history"));
                     }
                 }
+                Log.d("play_done?","play_done");
+                cnt++;
+                if(cnt==4){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
 
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
@@ -407,6 +427,13 @@ public class Intro_Activity extends AppCompatActivity {
                         crewDBHelper.update_crew(crew_id, (String) crew_object.get("crew_name"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
                     }
                 }
+                Log.d("crew_done?","crew_done");
+                cnt++;
+                if(cnt==4){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
@@ -417,4 +444,5 @@ public class Intro_Activity extends AppCompatActivity {
 
     }
     //-- UpdateCrewDB Asynctask End --
+
 }

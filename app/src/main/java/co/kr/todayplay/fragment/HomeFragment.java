@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
+import co.kr.todayplay.Intro_Activity;
 import co.kr.todayplay.ItemClickListener;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Show> PersonalizedShow = new ArrayList<Show>();
     ScrollView homeFragmentMainScrollView;
     FrameLayout homeFragmentChildFragment;
+    PlayDBHelper playDBHelper;
     public HomeFragment(){
 
     }
@@ -49,6 +53,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.activity_home_fragment,container,false);
+        playDBHelper = new PlayDBHelper(this.getContext(), "Play.db", null, 1);
+        String poster= playDBHelper.getPlayPoster(506);
+
 
         homeFragmentChildFragment = viewGroup.findViewById(R.id.home_fragment_child_fragment);
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
@@ -64,6 +71,7 @@ public class HomeFragment extends Fragment {
         button.setOnClickListener((new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        Log.d("postername",poster);
                        if(hidden.getVisibility() == View.VISIBLE){
                            hidden.setVisibility(View.GONE);
                        }else if (hidden.getVisibility() == View.GONE){
