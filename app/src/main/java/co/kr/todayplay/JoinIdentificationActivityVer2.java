@@ -37,6 +37,7 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
     String codeSent;
     private int counter = 60;
     int sub;
+    String email, password;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +45,11 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
         setContentView(R.layout.activity_join_identification_ver2);
         Intent intent = getIntent();
         sub = intent.getIntExtra("sub",0);
-        Log.d("sub", "onCreate: sub = " + sub);
+        email = intent.getStringExtra("email");
+        password = intent.getStringExtra("password");
+        Log.d("Join", "onCreate: sub = " + sub);
+        Log.d("Join", "onCreate: email = " + email);
+        Log.d("Join", "onCreate: password = " + password);
 
         //sms auth init
         mAuth = FirebaseAuth.getInstance();
@@ -202,8 +207,16 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(sub==0){
+                    String name = user_name_et.getText().toString();
+                    String birth = user_birth_et.getText().toString();
+                    String phone = user_phone_et.getText().toString();
+                    String job = job_et.getText().toString();
                     Intent intent = new Intent(getApplicationContext(), JoinSettingProfileActivity.class);
                     intent.putExtra("sub", sub);
+                    intent.putExtra("name", name);
+                    intent.putExtra("birth", birth);
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("job", job);
                     startActivity(intent);
                 }
                 //id 찾기
@@ -235,7 +248,9 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //인증 성공한 이후 코드 작성
-                            Toast.makeText(getApplicationContext(), "Verification Successful", Toast.LENGTH_LONG).show();
+                            // 번호 입력창 인증번호 입력창 막아주시고 버튼 색깔 변경해주세요.
+
+                            Toast.makeText(getApplicationContext(), "인증이 성공되었습니다.", Toast.LENGTH_LONG).show();
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(getApplicationContext(),
@@ -288,7 +303,7 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-            Toast.makeText(JoinIdentificationActivityVer2.this, "code sent : " + s, Toast.LENGTH_SHORT).show();
+            Toast.makeText(JoinIdentificationActivityVer2.this, "인증번호를 전송했습니다. 번호를 확인 후 입력해주세요.", Toast.LENGTH_SHORT).show();
             codeSent = s;
         }
     };

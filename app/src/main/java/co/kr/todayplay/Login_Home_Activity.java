@@ -10,6 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,6 +29,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login_Home_Activity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
@@ -104,6 +114,9 @@ public class Login_Home_Activity extends AppCompatActivity {
                             String email = user.getEmail();
                             Log.d("Login_Home_Activity" , email.toString());
 
+                            String result = postData(email);
+                            Log.d("Login_Home_Activity", result);
+
                             // 여기서 email 주소를 가지고 서버에서 url 요청을 합니다.
                             // http://183.111.253.75/request_user_email_duplicate/
                             // request POST에 email 이란 항목으로 email 주소를 보내셔야 중복 확인이 가능합니다.
@@ -111,10 +124,66 @@ public class Login_Home_Activity extends AppCompatActivity {
                             // 위 요청으로 중복이 있으면 홈으로 이동
                             // 없으면 회원가입창 이동해주시고 email 정보를 같이 보내주세요.
 
+                            if (result=="1") {
+                                //go to main and login
+                            }else{
+                                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
+                                intent.putExtra("email", email);
+                                intent.putExtra("password", "goog");
+                                startActivityForResult(intent,sub);
+                            }
+
+
                         }else{
                             Log.d("Login", "signInWithCredential:failurer");
                         }
                     }
                 });
+    }
+
+    public String postData(String email){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://183.111.253.75/request_user_email_duplicate/";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("Login_Home", data);
+                    resposeData[0] = data;
+
+
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("Login_Home", error.toString());
+                }
+            })
+            {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("Content-Type","application/json");
+                    params.put("email", email);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        }catch(Exception e){
+            Log.d("Login_Home", e.toString());
+
+        }
+        return "0";
     }
 }

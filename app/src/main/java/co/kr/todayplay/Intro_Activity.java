@@ -248,7 +248,7 @@ public class Intro_Activity extends AppCompatActivity {
                 }
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -271,7 +271,7 @@ public class Intro_Activity extends AppCompatActivity {
 //                 */
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -405,7 +405,7 @@ public class Intro_Activity extends AppCompatActivity {
 
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -450,7 +450,7 @@ public class Intro_Activity extends AppCompatActivity {
                 Log.d("play_done?","play_done");
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -495,7 +495,7 @@ public class Intro_Activity extends AppCompatActivity {
                 Log.d("crew_done?","crew_done");
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
                     startActivity(intent);
                     finish();
                 }
