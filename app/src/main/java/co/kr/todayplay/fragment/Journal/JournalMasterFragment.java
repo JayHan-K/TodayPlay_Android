@@ -38,13 +38,13 @@ public class JournalMasterFragment extends Fragment {
     ArrayList<JournalHotListAdapter.Item> journal_Master_up_data = new ArrayList<>();
     ArrayList<JournalHotListAdapter.Item> journal_Master_bottom_data = new ArrayList<>();
     String journal_Master_jsonString;
-    String journal_Master_result_url = "http://183.111.253.75/request_journal_id_Master/";
+    String journal_Master_result_url = "http://183.111.253.75/request_journal_id_master/";
     JSONArray journal_Master_jsonArray;
 
     //Journal Master Hot 인기 저널 로드 관련 변수
     ArrayList<PerformDetailJournalAdapter.JournalItem> hot_journal_data = new ArrayList<>();
     String journal_hot_Master_jsonString;
-    String journal_hot_Master_result_url = "http://183.111.253.75/request_journal_id_Master_hot/";
+    String journal_hot_Master_result_url = "http://183.111.253.75/request_journal_id_master_hot/";
     JSONArray journal_hot_Master_jsonArray;
     
     public static JournalMasterFragment newInstance(){ return new JournalMasterFragment(); }

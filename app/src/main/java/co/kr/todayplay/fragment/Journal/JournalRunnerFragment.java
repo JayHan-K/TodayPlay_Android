@@ -38,13 +38,13 @@ public class JournalRunnerFragment extends Fragment {
     ArrayList<JournalHotListAdapter.Item> journal_Runner_up_data = new ArrayList<>();
     ArrayList<JournalHotListAdapter.Item> journal_Runner_bottom_data = new ArrayList<>();
     String journal_Runner_jsonString;
-    String journal_Runner_result_url = "http://183.111.253.75/request_journal_id_Runner/";
+    String journal_Runner_result_url = "http://183.111.253.75/request_journal_id_runner/";
     JSONArray journal_Runner_jsonArray;
 
     //Journal Runner Hot 인기 저널 로드 관련 변수
     ArrayList<PerformDetailJournalAdapter.JournalItem> hot_journal_data = new ArrayList<>();
     String journal_hot_Runner_jsonString;
-    String journal_hot_Runner_result_url = "http://183.111.253.75/request_journal_id_Runner_hot/";
+    String journal_hot_Runner_result_url = "http://183.111.253.75/request_journal_id_runner_hot/";
     JSONArray journal_hot_Runner_jsonArray;
     
     public static JournalRunnerFragment newInstance(){ return new JournalRunnerFragment(); }
@@ -85,7 +85,7 @@ public class JournalRunnerFragment extends Fragment {
         journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
         storyteller_rv.setAdapter(new JournalStorytellerAdapter(journal_storyteller_data));
 
-        //hot_rv2 = (RecyclerView)viewGroup.findViewById(R.id.hot_rv2);
+        hot_rv2 = (RecyclerView)viewGroup.findViewById(R.id.hot_rv2);
         //hot_rv2.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL, false));
         //ArrayList<JournalHotListAdapter.Item> data2 = new ArrayList<>();
         //data2.add(new JournalHotListAdapter.Item(R.drawable.hot_issue_sample1,"명동에 극장이 있다고!", "오이디푸스I"));

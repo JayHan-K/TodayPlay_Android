@@ -49,7 +49,7 @@
             android:name=".Activity_FAQ"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
 
-        <activity android:name=".Login_Actitivty" />
+        <activity android:name=".Login_Actitivty" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".Register_default" />
         <activity android:name=".JoinSettingProfileActivity" />
         <activity android:name=".FindIdPwActivity" />

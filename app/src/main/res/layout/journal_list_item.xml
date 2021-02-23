@@ -10,6 +10,7 @@
         android:id="@+id/journal_iv"
         android:layout_width="302dp"
         android:layout_height="151dp"
+        android:scaleType="centerCrop"
         android:layout_gravity="center" />
 
     <TextView
