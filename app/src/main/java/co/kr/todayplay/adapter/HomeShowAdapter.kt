@@ -32,12 +32,13 @@ class HomeShowAdapter(homeShows: ArrayList<Recommend>, context: Context, itemCli
     }
     override fun onBindViewHolder(holder: HomeShowHolder, position: Int) {
         val homeShow : Recommend = homeShows.get(position)
-        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(homeShow.play_id);
+//        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(homeShow.play_id);
+        val imgpath = context.filesDir.toString()+"/"+ playDBHelper.getPlayPoster(homeShow.play_id);
         val bm = BitmapFactory.decodeFile(imgpath)
 
 
         if(playDBHelper.getPlayPoster(homeShow.play_id)!=""){
-            val resize = Bitmap.createScaledBitmap(bm,150,190,true);
+//            val resize = Bitmap.createScaledBitmap(bm,150,190,true);
             holder.homeShowIV.setImageBitmap(bm);
         }
 

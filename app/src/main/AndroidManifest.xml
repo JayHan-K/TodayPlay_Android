@@ -26,16 +26,16 @@
 
         <activity android:name=".NoticeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
         <activity android:name=".Intro_Activity"
             android:theme="@style/intro">
-<!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
--->
         </activity>
+
         <activity android:name=".MyQnAActivity" />
 
         <activity
@@ -65,11 +65,11 @@
             android:name=".Login_Home_Activity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".MainActivity"

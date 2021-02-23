@@ -37,7 +37,8 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>, context: Context,itemClick
     override fun onBindViewHolder(holder: RankingHolder, position: Int) {
         val get_ranking: Ranking = rankings.get(position)
         val layoutParams = holder.itemView.layoutParams
-        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(get_ranking.play_id);
+//        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(get_ranking.play_id);
+        val imgpath =context.filesDir.toString()+"/"+playDBHelper.getPlayPoster(get_ranking.play_id)
         val bm = BitmapFactory.decodeFile(imgpath)
         holder.ranking_tv.text = playDBHelper.getPlayTitle(get_ranking.play_id)
         setMarginsInDp(holder.ranking_iv,0,0,0,0)

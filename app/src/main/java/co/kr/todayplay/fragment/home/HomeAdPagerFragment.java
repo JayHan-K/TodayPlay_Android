@@ -67,7 +67,10 @@ public class HomeAdPagerFragment extends Fragment {
                 ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
             }
         });
-        String imgpath = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/" + file + "/" +banneritem.getBanner();
+//        String imgpath = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/" + file + "/" +banneritem.getBanner();
+        String imgpath = getContext().getFilesDir().toString() + "/" + banneritem.getBanner();
+//        String imgpath = getParentFragment().getContext().getFileStreamPath(banneritem.getBanner()).toString();
+//        String imgpath2 =imgpath +"/"+ banneritem.getBanner();
         Bitmap bm = BitmapFactory.decodeFile(imgpath);
         homeMainAdIV.setImageBitmap(bm);
         return viewGroup;

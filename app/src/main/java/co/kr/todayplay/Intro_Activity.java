@@ -48,33 +48,33 @@ import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 public class Intro_Activity extends AppCompatActivity {
 
 
-    static final int PERMISSION_REQUEST_CODE = 1;
-    String[] PERMISSIONS = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE"};
-    private File outputFile; //파일명까지 포함한 경로
-    private File path;//디렉토리경로
+//    static final int PERMISSION_REQUEST_CODE = 1;
+//    String[] PERMISSIONS = {"android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE"};
+//    private File outputFile; //파일명까지 포함한 경로
+//    private File path;//디렉토리경로
 
-    private boolean hasPermissions(String[] permissions) {
-        int res = 0;
-        //스트링 배열에 있는 퍼미션들의 허가 상태 여부 확인
-        for (String perms : permissions){
-            res = checkCallingOrSelfPermission(perms);
-            if (!(res == PackageManager.PERMISSION_GRANTED)){
-                //퍼미션 허가 안된 경우
-                return false;
-            }
+//    private boolean hasPermissions(String[] permissions) {
+//        int res = 0;
+//        //스트링 배열에 있는 퍼미션들의 허가 상태 여부 확인
+//        for (String perms : permissions){
+//            res = checkCallingOrSelfPermission(perms);
+//            if (!(res == PackageManager.PERMISSION_GRANTED)){
+//                //퍼미션 허가 안된 경우
+//                return false;
+//            }
+//
+//        }
+//        //퍼미션이 허가된 경우
+//        return true;
+//    }
 
-        }
-        //퍼미션이 허가된 경우
-        return true;
-    }
 
-
-    private void requestNecessaryPermissions(String[] permissions) {
-        //마시멜로( API 23 )이상에서 런타임 퍼미션(Runtime Permission) 요청
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(permissions, PERMISSION_REQUEST_CODE);
-        }
-    }
+//    private void requestNecessaryPermissions(String[] permissions) {
+//        //마시멜로( API 23 )이상에서 런타임 퍼미션(Runtime Permission) 요청
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            requestPermissions(permissions, PERMISSION_REQUEST_CODE);
+//        }
+//    }
 
 
 
@@ -110,11 +110,11 @@ public class Intro_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceStare);
         setContentView(R.layout.activity_intro);
 
-        if (!hasPermissions(PERMISSIONS)) { //퍼미션 허가를 했었는지 여부를 확인
-            requestNecessaryPermissions(PERMISSIONS);//퍼미션 허가안되어 있다면 사용자에게 요청
-        } else {
-            //이미 사용자에게 퍼미션 허가를 받음.
-        }
+//        if (!hasPermissions(PERMISSIONS)) { //퍼미션 허가를 했었는지 여부를 확인
+//            requestNecessaryPermissions(PERMISSIONS);//퍼미션 허가안되어 있다면 사용자에게 요청
+//        } else {
+//            //이미 사용자에게 퍼미션 허가를 받음.
+//        }
 
         cnt = 0;
 
@@ -158,7 +158,7 @@ public class Intro_Activity extends AppCompatActivity {
         UpdatePlayDB updatePlayDB = new UpdatePlayDB();
         updatePlayDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        //Play DB Update
+        //crew DB Update
         crewDBHelper = new CrewDBHelper(getApplicationContext(), "Crew.db", null, 1);
         UpdateCrewDB updateCrewDB = new UpdateCrewDB();
         updateCrewDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -202,10 +202,11 @@ public class Intro_Activity extends AppCompatActivity {
             JSONObject jsonObject;
             try {
                 //파일 주소 폴더명은 strings[0][0] 폴더가 존재하지 않으면 mkdirs로 만들어 준다.
-                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + strings[0][0]);
-                if(!dir.exists()){
-                    dir.mkdirs();
-                }
+//                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + strings[0][0]);
+//                if(!dir.exists()){
+//                    dir.mkdirs();
+//                }
+                File dir = getFilesDir();
                 File path = dir;
 
                 file_name_jsonString = getJsonFromServer(strings[0][1]);
@@ -271,7 +272,7 @@ public class Intro_Activity extends AppCompatActivity {
 //                 */
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -312,7 +313,8 @@ public class Intro_Activity extends AppCompatActivity {
                 FileSize = connection.getContentLength();
                 input = new BufferedInputStream(url.openStream(),8192);
 //                String path = getFilesDir() + File.separator + download_info[2];
-                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + download_info[2]);
+//                File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + download_info[2]);
+                File dir = getFilesDir();
                 File path = dir;
                 File outputFile= new File(path, download_info[0].toString()); //파일명까지 포함함 경로의 File 객체 생성
                 Log.d("outputFile Path",outputFile.getPath());
@@ -366,7 +368,7 @@ public class Intro_Activity extends AppCompatActivity {
         protected void onPostExecute(Long size) { //5
             super.onPostExecute(size);
             if ( size > 0) {
-//                Toast.makeText(getApplicationContext(), "다운로드 완료되었습니다. 파일 크기=" + size.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "다운로드 완료되었습니다. 파일 크기=" + size.toString(), Toast.LENGTH_SHORT).show();
             }
             else Toast.makeText(getApplicationContext(), "다운로드 에러", Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
@@ -405,7 +407,7 @@ public class Intro_Activity extends AppCompatActivity {
 
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -450,7 +452,7 @@ public class Intro_Activity extends AppCompatActivity {
                 Log.d("play_done?","play_done");
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -495,7 +497,7 @@ public class Intro_Activity extends AppCompatActivity {
                 Log.d("crew_done?","crew_done");
                 cnt++;
                 if(cnt==6){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -512,48 +514,48 @@ public class Intro_Activity extends AppCompatActivity {
 
     //-- Pemission 관련 --
 
-    @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
-        switch(permsRequestCode){
-
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0) {
-                    boolean readAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                        if ( !readAccepted || !writeAccepted  )
-                        {
-                            showDialogforPermission("앱을 실행하려면 퍼미션을 허가하셔야합니다.");
-                            return;
-                        }
-                    }
-                }
-                break;
-        }
-    }
-
-    private void showDialogforPermission(String msg) {
-
-        final AlertDialog.Builder myDialog = new AlertDialog.Builder(  Intro_Activity.this);
-        myDialog.setTitle("알림");
-        myDialog.setMessage(msg);
-        myDialog.setCancelable(false);
-        myDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(PERMISSIONS, PERMISSION_REQUEST_CODE);
-                }
-
-            }
-        });
-        myDialog.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                finish();
-            }
-        });
-        myDialog.show();
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
+//        switch(permsRequestCode){
+//
+//            case PERMISSION_REQUEST_CODE:
+//                if (grantResults.length > 0) {
+//                    boolean readAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+//                    boolean writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//                        if ( !readAccepted || !writeAccepted  )
+//                        {
+//                            showDialogforPermission("앱을 실행하려면 퍼미션을 허가하셔야합니다.");
+//                            return;
+//                        }
+//                    }
+//                }
+//                break;
+//        }
+//    }
+//
+//    private void showDialogforPermission(String msg) {
+//
+//        final AlertDialog.Builder myDialog = new AlertDialog.Builder(  Intro_Activity.this);
+//        myDialog.setTitle("알림");
+//        myDialog.setMessage(msg);
+//        myDialog.setCancelable(false);
+//        myDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface arg0, int arg1) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    requestPermissions(PERMISSIONS, PERMISSION_REQUEST_CODE);
+//                }
+//
+//            }
+//        });
+//        myDialog.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface arg0, int arg1) {
+//                finish();
+//            }
+//        });
+//        myDialog.show();
+//    }
 
 }
