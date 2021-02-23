@@ -49,7 +49,7 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>, context: Context,itemClick
         holder.ranking_num.text = (position+1).toString()
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClicked(holder,get_ranking,position)
-            val performInfoFragment = PerformInfoFragment()
+            val performInfoFragment = PerformInfoFragment(get_ranking.play_id)
             (context as MainActivity).replaceFragment(performInfoFragment)
         }
     }

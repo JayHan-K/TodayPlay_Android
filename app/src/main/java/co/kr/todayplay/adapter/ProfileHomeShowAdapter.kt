@@ -33,7 +33,7 @@ class ProfileHomeShowAdapter(homeShows: ArrayList<Show>, context: Context, itemC
         holder.pf_homeShow_num.text = (position+1).toString()
         holder.pf_homeShowIV.setOnClickListener(View.OnClickListener {
             itemClickListener.onItemClicked(holder, homeShow, position)
-            val performInfoFragment = PerformInfoFragment()
+            val performInfoFragment = PerformInfoFragment(3)
             (context as MainActivity).replaceFragment(performInfoFragment)
         })
 

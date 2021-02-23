@@ -172,8 +172,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
 //                homeChangeToJournalDetail();
-                JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
-                ((MainActivity)getActivity()).replaceFragment(journalDetailFragment);
             }
 
             @Override
@@ -202,8 +200,7 @@ public class HomeFragment extends Fragment {
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
                 Recommend show =(Recommend)item;
 //                homeChangeToShowDetail(show);
-                PerformInfoFragment performInfoFragment = new PerformInfoFragment();
-                ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
+
             }
 
             @Override

@@ -584,7 +584,8 @@ public class Intro_Activity extends AppCompatActivity {
             }
         }
     }
-    //-- UpdateCrewDB Asynctask End --
+    //-- UpdateCrewDB Asynctask End --\
+
 
     //-- Pemission 관련 --
 

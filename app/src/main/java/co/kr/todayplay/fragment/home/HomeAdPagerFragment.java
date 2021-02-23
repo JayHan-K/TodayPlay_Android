@@ -40,17 +40,14 @@ import co.kr.todayplay.fragment.perform.PerformVideoFragment;
 import co.kr.todayplay.object.Banner;
 
 public class HomeAdPagerFragment extends Fragment {
-    PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+    ArrayList<Banner> banners = new ArrayList();
+    Banner banneritem;
+    String file = "file";
 
 
     String imgpath;
     int position;
     File path;
-
-    ArrayList<Banner> banners = new ArrayList();
-    Banner banneritem;
-    String file = "file";
-
 
     public HomeAdPagerFragment(Banner banneritem) {
         this.banneritem =banneritem;
@@ -59,6 +56,7 @@ public class HomeAdPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home_ad_fragment, container, false);
         ImageView homeMainAdIV = (ImageView) viewGroup.findViewById(R.id.home_main_ad_iv);
+        PerformInfoFragment performInfoFragment = new PerformInfoFragment(banneritem.getPlay_id());
 //        banneritem = banners.get(position);
         homeMainAdIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +67,7 @@ public class HomeAdPagerFragment extends Fragment {
         });
 //        String imgpath = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/" + file + "/" +banneritem.getBanner();
         String imgpath = getContext().getFilesDir().toString() + "/" + banneritem.getBanner();
+        Log.d("HomeAdPage","banner name="+banneritem.getBanner()+" "+ banneritem.getPlay_id());
 //        String imgpath = getParentFragment().getContext().getFileStreamPath(banneritem.getBanner()).toString();
 //        String imgpath2 =imgpath +"/"+ banneritem.getBanner();
         Bitmap bm = BitmapFactory.decodeFile(imgpath);

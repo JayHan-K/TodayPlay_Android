@@ -9,6 +9,6 @@
         android:background="@drawable/ad_sample1"
         android:layout_width="150dp"
         android:layout_height="190dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="centerCrop"/>
 
 </LinearLayout>

@@ -58,7 +58,7 @@ public class ProfileMypickAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+                PerformInfoFragment performInfoFragment = new PerformInfoFragment(3);
                 ((MainActivity)view.getContext()).replaceFragment(performInfoFragment);            }
         });
 

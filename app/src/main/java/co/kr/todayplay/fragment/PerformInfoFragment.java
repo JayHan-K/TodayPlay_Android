@@ -1,5 +1,6 @@
 package co.kr.todayplay.fragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,33 +29,80 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import co.kr.todayplay.BlurredImage;
+import co.kr.todayplay.DBHelper.PlayDB.Play;
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformPagerAdapter;
+import co.kr.todayplay.object.Banner;
+import co.kr.todayplay.object.Ranking;
 
 public class PerformInfoFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
     PerformPagerAdapter performPagerAdapter;
     ConstraintLayout poster;
-    public PerformInfoFragment(){}
+    ImageView realposter;
+    ArrayList<Banner>banners;
+    ArrayList<Ranking>rankings;
+    Banner banneritem;
+    ImageButton back_btn;
+    int play_id;
+    TextView perform_title_tv;
+    PlayDBHelper playDBHelper;
+
+    public PerformInfoFragment(int play_id){
+        this.play_id = play_id;
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
+        realposter = (ImageView)viewGroup.findViewById(R.id.perfrom_img);
+        back_btn = (ImageButton)viewGroup.findViewById(R.id.back_btn);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
+        playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
+        perform_title_tv = viewGroup.findViewById(R.id.perfrom_title_tv);
+        String poster2 = playDBHelper.getPlayPoster(play_id);
+        Log.d("poster2","poster2="+poster2);
+
 
         BitmapFactory.Options options = new BitmapFactory.Options();
+        Log.d("perform Play_id","play_id="+play_id);
         options.inSampleSize = 7;
+        String category = playDBHelper.getPlayCategory(play_id);
+        String title = playDBHelper.getPlayTitle(play_id);
+        String sum = category+" "+title;
 
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.poster_sample16, options);
-        Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
-        //Bitmap scaledImg = imageZoom(newImg,10);
-        //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
-        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
-        poster.setBackground(bitmapDrawable);
+
+        perform_title_tv.setText(sum);
+
+
+        String imgpath = this.getContext().getFilesDir().toString() + "/" + poster2;
+        Log.d("perform path","path="+playDBHelper.getPlayPoster(play_id));
+
+        if(!poster2.equals("")){
+            Bitmap image = BitmapFactory.decodeFile(imgpath);
+            realposter.setImageBitmap(image);
+            Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
+            //Bitmap scaledImg = imageZoom(newImg,10);
+            //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
+            poster.setBackground(bitmapDrawable);
+        }else{
+            Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.poster_sample16, options);
+            realposter.setImageBitmap(image);
+            Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
+            //Bitmap scaledImg = imageZoom(newImg,10);
+            //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
+            poster.setBackground(bitmapDrawable);
+        }
 
         tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("상세 정보"));
@@ -77,6 +128,13 @@ public class PerformInfoFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) { }
 
+        });
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
         });
 
         return viewGroup;
