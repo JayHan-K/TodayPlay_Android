@@ -37,7 +37,7 @@
             app:layout_constraintStart_toEndOf="@+id/ranking_num_tv"
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/ad_sample1" />
+            app:srcCompat="@drawable/ad_sample2" />
 
         <TextView
             android:id="@+id/ranking_num_tv"

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.service.notification.NotificationListenerService;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import co.kr.todayplay.fragment.JournalFragment;
 import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.fragment.SearchFragment;
 import co.kr.todayplay.object.Banner;
+import co.kr.todayplay.object.Ranking;
 import co.kr.todayplay.object.Recommend;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Recommend> recommandj =new ArrayList();
     Recommend data2;
 
+    //핫랭크 인기 순위
+    String Ranking_all_jsonString;
+    String all_Ranking_result_url="http://183.111.253.75/request_hot_rank/";
+    JSONArray Ranking_all_jsonArray;
+    ArrayList<Ranking> rankings = new ArrayList<Ranking>();
+    Ranking data3;
+
 
 
 
@@ -74,19 +83,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
         updateBannerInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        //추천정보
         UpdateRecommendInfo updateRecommendInfo =new UpdateRecommendInfo();
         updateRecommendInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        //저널정보
         UpdateJournalInfo updateJournalInfo = new UpdateJournalInfo();
         updateJournalInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //인기작정보
+        UpdateRankingInfo updateRankingInfo = new UpdateRankingInfo();
+        updateRankingInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         BottomNavigationView main_bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         main_bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
-        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj);
+        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 
         main_bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -95,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
                 switch (menuItem.getItemId()){
                     case R.id.bottom_home:
-                        transaction.replace(R.id.main_frameLayout, new HomeFragment(banners,recommands,recommandj)).commitAllowingStateLoss();
+                        transaction.replace(R.id.main_frameLayout, new HomeFragment(banners,recommands,recommandj,rankings)).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_category:
                         transaction.replace(R.id.main_frameLayout, new CategoryFragment()).commitAllowingStateLoss();
@@ -158,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         String jsonResult = inputStream.readLine();
         return jsonResult;
     }
-
+//상단배너
     public class UpdateBannerInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -195,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
-
+//오늘의 추천
     public class UpdateRecommendInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -230,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
-
+// 오늘의 저널
     public class UpdateJournalInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -255,6 +268,41 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 Log.d("journal_done?","journal_done");
+
+
+
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+//인기작
+    public class UpdateRankingInfo extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Ranking_all_jsonString = getJsonFromServer(all_Ranking_result_url);
+                Log.d("Ranking_all_jsonString", Ranking_all_jsonString);
+                JSONObject jsonObject = new JSONObject(Ranking_all_jsonString);
+                Log.d("Ranking jsonObject", jsonObject.toString());
+                Ranking_all_jsonArray = jsonObject.getJSONArray("hot_rank");
+                for(int i=0; i<Ranking_all_jsonArray.length(); i++){
+                    JSONObject Ranking_object = (JSONObject) Ranking_all_jsonArray.get(i);
+                    int play_id = (int) Ranking_object.get("play_id");
+                    Log.d("Ranking_object", "Object " + i + ": " + Ranking_all_jsonArray.get(i).toString());
+                    Log.d("play_id", "play_id = " + play_id);
+                    data3 = new Ranking((String)Ranking_object.get("category"),(int)Ranking_object.get("order"),play_id);
+                    rankings.add(data3);
+
+                }
+                Log.d("ranking_done?","ranking_done");
 
 
 

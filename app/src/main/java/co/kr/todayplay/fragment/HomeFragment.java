@@ -48,6 +48,7 @@ import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.Journal;
+import co.kr.todayplay.object.Ranking;
 import co.kr.todayplay.object.Recommend;
 import co.kr.todayplay.object.Show;
 import me.relex.circleindicator.CircleIndicator;
@@ -62,17 +63,18 @@ public class HomeFragment extends Fragment {
     String HomeBanner_all_jsonString;
     String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
     JSONArray HomeBanner_all_jsonArray;
-    ArrayList<Banner> banners = new ArrayList();
-    ArrayList banner_chosen;
-    ArrayList recommend_chosen;
-    ArrayList journal_chosen;
+    ArrayList<Banner> banner_chosen;
+    ArrayList<Recommend> recommend_chosen;
+    ArrayList<Recommend> journal_chosen;
+    ArrayList<Ranking> ranking_chosen;
 
 
 
-    public HomeFragment(ArrayList<Banner> banners,ArrayList<Recommend>recommend,ArrayList<Recommend>recommendj){
+    public HomeFragment(ArrayList<Banner> banners, ArrayList<Recommend>recommend, ArrayList<Recommend>recommendj, ArrayList<Ranking>rankings){
         this.banner_chosen = banners;
         this.recommend_chosen = recommend;
         this.journal_chosen = recommendj;
+        this.ranking_chosen = rankings;
     }
 
     @Nullable
@@ -111,7 +113,7 @@ public class HomeFragment extends Fragment {
         final CircleIndicator homeViewPagerIndicator = (CircleIndicator) viewGroup.findViewById(R.id.home_main_ad_ci);
 
         final ViewPager2 mpager = (ViewPager2)viewGroup.findViewById(R.id.rankingview);
-        mpager.setAdapter(new HomeRankingViewPagerAdapter(this,4));
+        mpager.setAdapter(new HomeRankingViewPagerAdapter(this,4,ranking_chosen));
         mpager.setCurrentItem(1000);
         mpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         mpager.setOffscreenPageLimit(3);
@@ -184,7 +186,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        JournalAdapter2 journalAdapter = new JournalAdapter2(recommend_chosen,getContext(),listener);
+        JournalAdapter2 journalAdapter = new JournalAdapter2(journal_chosen,getContext(),listener);
 
         homeJournalRV.setLayoutManager(journalLayoutManager);
         homeJournalRV.setAdapter(journalAdapter);
@@ -198,7 +200,7 @@ public class HomeFragment extends Fragment {
         ItemClickListener mListener = (ItemClickListener)(new ItemClickListener(){
             @Override
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
-                Show show =(Show)item;
+                Recommend show =(Recommend)item;
 //                homeChangeToShowDetail(show);
                 PerformInfoFragment performInfoFragment = new PerformInfoFragment();
                 ((MainActivity)getActivity()).replaceFragment(performInfoFragment);

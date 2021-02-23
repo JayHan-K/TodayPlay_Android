@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import android.view.LayoutInflater
@@ -33,7 +34,13 @@ class HomeShowAdapter(homeShows: ArrayList<Recommend>, context: Context, itemCli
         val homeShow : Recommend = homeShows.get(position)
         val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(homeShow.play_id);
         val bm = BitmapFactory.decodeFile(imgpath)
-        holder.homeShowIV.setImageBitmap(bm);
+
+
+        if(playDBHelper.getPlayPoster(homeShow.play_id)!=""){
+            val resize = Bitmap.createScaledBitmap(bm,150,190,true);
+            holder.homeShowIV.setImageBitmap(bm);
+        }
+
         setMarginsInDp(holder.homeShowIV, 0, 0, 25, 0)
         holder.homeShowIV.setOnClickListener(View.OnClickListener {
             itemClickListener.onItemClicked(holder, homeShow, position)

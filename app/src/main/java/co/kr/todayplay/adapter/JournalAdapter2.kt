@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import android.view.LayoutInflater
@@ -33,10 +34,13 @@ class JournalAdapter2(journals: ArrayList<Recommend>, context: Context, itemClic
     override fun onBindViewHolder(holder: JournalHolder, position: Int) {
         val journal: Recommend = journals.get(position)
 
-        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "journal" + "/" +journalDBHelper.getJournalBanner_img(journal.play_id);
+        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "journal" + "/" +journalDBHelper.getJournalThumbnail2_img(journal.play_id);
         val bm = BitmapFactory.decodeFile(imgpath)
+        System.out.println("jouranl_Adapter2"+journal.play_id);
+        System.out.println("journal_Adapter2"+journalDBHelper.getJournalThumbnail2_img(journal.play_id));
         holder.journal_tv.setText(journalDBHelper.getJournalComments(journal.play_id));
-        holder.journal_iv.setImageBitmap(bm);
+        val resize = Bitmap.createScaledBitmap(bm,302,151,true);
+        holder.journal_iv.setImageBitmap(resize);
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClicked(holder, journal, position)
         }
