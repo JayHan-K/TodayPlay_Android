@@ -1,5 +1,7 @@
 package co.kr.todayplay.adapter;
 
+import android.os.Bundle;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.fragment.category.CategoryMusical;
 import co.kr.todayplay.fragment.category.CategoryPlay;
 import co.kr.todayplay.fragment.category.CategoryTotal;
@@ -17,10 +20,12 @@ import co.kr.todayplay.fragment.perform.PerformVideoFragment;
 
 public class PerformPagerAdapter extends FragmentStatePagerAdapter {
     int num;
+    int play_id;
 
-    public PerformPagerAdapter(FragmentManager fm, int num) {
+    public PerformPagerAdapter(FragmentManager fm, int num, int play_id) {
         super(fm);
         this.num = num;
+        this.play_id = play_id;
 
     }
 
@@ -28,7 +33,10 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
+                Bundle bundle = new Bundle();
+                bundle.putInt("play_id", this.play_id);
                 PerformDetailFragment tab1 = new PerformDetailFragment();
+                tab1.setArguments(bundle);
                 return tab1;
 
             case 1:

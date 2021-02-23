@@ -68,24 +68,21 @@ public class PerformInfoFragment extends Fragment {
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         perform_title_tv = viewGroup.findViewById(R.id.perfrom_title_tv);
-        String poster2 = playDBHelper.getPlayPoster(play_id);
-        Log.d("poster2","poster2="+poster2);
-
 
         BitmapFactory.Options options = new BitmapFactory.Options();
-        Log.d("perform Play_id","play_id="+play_id);
         options.inSampleSize = 7;
+
+        Log.d("perform Play_id","play_id="+play_id);
         String category = playDBHelper.getPlayCategory(play_id);
         String title = playDBHelper.getPlayTitle(play_id);
         String sum = category+" "+title;
 
-
         perform_title_tv.setText(sum);
-
-
-        String imgpath = this.getContext().getFilesDir().toString() + "/" + poster2;
         Log.d("perform path","path="+playDBHelper.getPlayPoster(play_id));
-
+        String main_poster_path = getActivity().getApplicationContext().getFileStreamPath(playDBHelper.getPlayPoster(play_id)).toString();
+        Bitmap bm = BitmapFactory.decodeFile(main_poster_path);
+        realposter.setImageBitmap(bm);
+        /*
         if(!poster2.equals("")){
             Bitmap image = BitmapFactory.decodeFile(imgpath);
             realposter.setImageBitmap(image);
@@ -95,15 +92,15 @@ public class PerformInfoFragment extends Fragment {
             BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
             poster.setBackground(bitmapDrawable);
         }else{
-            Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.poster_sample16, options);
-            realposter.setImageBitmap(image);
-            Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
+            //Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+            //realposter.setImageBitmap(bm);
+            //Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
             //Bitmap scaledImg = imageZoom(newImg,10);
             //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
-            poster.setBackground(bitmapDrawable);
+            //BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
+            //poster.setBackground(bitmapDrawable);
         }
-
+*/
         tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("상세 정보"));
         tabLayout.addTab(tabLayout.newTab().setText("후기 분석"));
@@ -111,7 +108,7 @@ public class PerformInfoFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("History"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        performPagerAdapter = new PerformPagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+        performPagerAdapter = new PerformPagerAdapter(getFragmentManager(), tabLayout.getTabCount(), play_id);
         viewPager = (ViewPager)viewGroup.findViewById(R.id.viewPager);
         viewPager.setAdapter(performPagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
