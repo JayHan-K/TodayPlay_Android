@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,17 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class JoinSettingProfileActivity extends AppCompatActivity {
     ImageView profile_iv;
@@ -26,7 +38,20 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
         next_btn = (Button)findViewById(R.id.next_btn);
         nickname_check_btn = (Button)findViewById(R.id.nickname_check_btn);
         total_certification_btn = (Button)findViewById(R.id.total_certification_btn);
-
+    
+        nickname_check_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nickname = nickname_et.getText().toString();
+                String result = postData(nickname);
+                if(result=="0"){
+                    //중복없음
+                }else{
+                    //중복
+                }
+            }
+        });
+            
         nickname_et.addTextChangedListener(watcher);
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,4 +98,50 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
             }
         }
     };
+
+    public String postData(String nickname){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://183.111.253.75/request_user_nickname_duplicate/";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("Login_Home", data);
+                    resposeData[0] = data;
+
+
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("Login_Home", error.toString());
+                }
+            })
+            {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("Content-Type","application/json");
+                    params.put("nickname", nickname);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        }catch(Exception e){
+            Log.d("Login_Home", e.toString());
+
+        }
+        return "0";
+    }
 }

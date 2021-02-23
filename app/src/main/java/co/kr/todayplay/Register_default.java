@@ -5,15 +5,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register_default extends AppCompatActivity {
 
@@ -54,8 +67,19 @@ public class Register_default extends AppCompatActivity {
         register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
-                startActivity(intent);
+                String get_email_st = get_email.getText().toString();
+                String result = postData(get_email_st);
+                if(result=="0"){
+                    //중복없음
+                    String get_password_st = get_password.getText().toString();
+                    Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
+                    intent.putExtra("email", get_email_st);
+                    intent.putExtra("password", get_password_st);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "이미 사용중인 이메일입니다. 다른 이메일을 사용해주세요.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -136,28 +160,50 @@ public class Register_default extends AppCompatActivity {
             }
         });
 
+    }
+    public String postData(String email){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://183.111.253.75/request_user_email_duplicate/";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
 
 
+                    String data = response;
+                    Log.d("Login_Home", data);
+                    resposeData[0] = data;
 
 
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("Login_Home", error.toString());
+                }
+            })
+            {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("Content-Type","application/json");
+                    params.put("email", email);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
 
 
+        }catch(Exception e){
+            Log.d("Login_Home", e.toString());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+        return "0";
     }
 }
