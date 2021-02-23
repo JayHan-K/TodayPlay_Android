@@ -2,6 +2,7 @@ package co.kr.todayplay.adapter;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -23,17 +24,20 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public ArrayList<JournalTotalListViewHolder> itemController = new ArrayList<>();
 
     public static class Item{
+        private int journal_id;
         private String img_path;
         private String subtitle;
         private String title;
 
-        public Item(String journalThumbnail2_img){
-
-        }
-        public Item(String img_path, String subtitle, String title){
+        public Item(int journal_id, String img_path, String subtitle, String title){
+            this.journal_id = journal_id;
             this.subtitle = subtitle;
             this.img_path = img_path;
             this.title = title;
+        }
+
+        public int getJournal_id() {
+            return journal_id;
         }
 
         public String getTitle() {

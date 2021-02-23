@@ -2,6 +2,7 @@ package co.kr.todayplay.fragment.Journal;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,8 +100,8 @@ public class JournalTotalFragment extends Fragment {
                     //Log.d("journalObject", "journalObject " + i + ": " + journal_total_jsonArray.get(i).toString());
                     Log.d("journal_id", "journal_id = " + journal_id);
                     if (journalDBHelper.isExistJournalID(journal_id)) {
-                        String thumbnail2_path = getParentFragment().getContext().getFilesDir() + journalDBHelper.getJournalThumbnail2_img(journal_id);
-                        journal_total_data.add(new JournalHotListAdapter.Item(thumbnail2_path, journalDBHelper.getJournalSubtitle(journal_id), journalDBHelper.getJournalTitle(journal_id)));
+                        String thumbnail2_path = getParentFragment().getContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(journal_id)).toString();
+                        journal_total_data.add(new JournalHotListAdapter.Item(journal_id, thumbnail2_path, journalDBHelper.getJournalSubtitle(journal_id), journalDBHelper.getJournalTitle(journal_id)));
                     } else{
                         Log.d("FailedLoadJournalItem","journal_id = " + journal_id);
                     }

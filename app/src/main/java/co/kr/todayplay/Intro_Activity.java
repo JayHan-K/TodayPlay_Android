@@ -103,6 +103,14 @@ public class Intro_Activity extends AppCompatActivity {
     public ProgressBar progressBar;
     int cnt;
 
+    GetFileName getPlayFileName = new GetFileName();
+    GetFileName getJournalFileName = new GetFileName();
+    GetFileName getFileFileName = new GetFileName();
+    UpdateJournalDB updateJournalDB = new UpdateJournalDB();
+    UpdatePlayDB updatePlayDB = new UpdatePlayDB();
+    UpdateCrewDB updateCrewDB = new UpdateCrewDB();
+
+
 
 
     @Override
@@ -133,36 +141,37 @@ public class Intro_Activity extends AppCompatActivity {
 
 
         //Play 리소스 다운로드
-        GetFileName getPlayFileName = new GetFileName();
         String[] play = {"play", "http://183.111.253.75/db_api/v1/resource_list/play"};
 
         getPlayFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, play);
 
         //Journal 리소스 다운로드
-        GetFileName getJournalFileName = new GetFileName();
         String[] journal = {"journal","http://183.111.253.75/db_api/v1/resource_list/journal/"};
         getJournalFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, journal);
 
         //File 리소스 다운로드
-        GetFileName getFileFileName = new GetFileName();
         String[] file = {"file","http://183.111.253.75/db_api/v1/resource_list/file/"};
         getFileFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,file);
 
         //Journal DB Update
         journalDBHelper = new JournalDBHelper(getApplicationContext(), "Journal.db", null, 1);
-        UpdateJournalDB updateJournalDB = new UpdateJournalDB();
         updateJournalDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         //Play DB Update
         playDBHelper = new PlayDBHelper(getApplicationContext(), "Play.db", null, 1);
-        UpdatePlayDB updatePlayDB = new UpdatePlayDB();
         updatePlayDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         //crew DB Update
         crewDBHelper = new CrewDBHelper(getApplicationContext(), "Crew.db", null, 1);
-        UpdateCrewDB updateCrewDB = new UpdateCrewDB();
         updateCrewDB.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+        //Update 완료 체크
+        if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+         == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+            Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+            startActivity(intent);
+            finish();
+        }
 
 //        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 //            @Override
@@ -242,20 +251,31 @@ public class Intro_Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer list_size) {
             super.onPostExecute(list_size);
+            String resource_group = "";
             if(list_size > 0){
                 for(int i=0; i < list_size; i++){
                     final DownloadFilesTask downloadFilesTask = new DownloadFilesTask(Intro_Activity.this);
+                    resource_group = download_list.get(i)[2];
                     downloadFilesTask.execute(download_list.get(i)[0], download_list.get(i)[1], download_list.get(i)[2]);
                 }
+                /*
                 cnt++;
                 if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
                     startActivity(intent);
                     finish();
                 }
-
+                */
+                //Update 완료 체크
+                if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                        == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
-            else {
+
+            //else {
 //                progressBar.setVisibility(View.GONE);
 //                /*
 //                ArrayList<String> test_data = new ArrayList<>();
@@ -269,14 +289,27 @@ public class Intro_Activity extends AppCompatActivity {
 //                    }
 //                }
 //                recyclerView.setAdapter(new ImgTestAdapter(test_data));
-//                 */
+//
+/*
                 cnt++;
                 if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
+*/
+
+            //}
+            //Update 완료 체크
+            Log.d("DownLoaded", "Finish " + resource_group + " files download");
+
+            if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                    == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                startActivity(intent);
+                finish();
             }
+
         }
     }
 
@@ -372,6 +405,14 @@ public class Intro_Activity extends AppCompatActivity {
             }
             else Toast.makeText(getApplicationContext(), "다운로드 에러", Toast.LENGTH_LONG).show();
             progressBar.setVisibility(View.GONE);
+
+            //Update 완료 체크
+            if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                    == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
     //-- Resource 다운로드 AsyncTask End --
@@ -404,20 +445,40 @@ public class Intro_Activity extends AppCompatActivity {
                     }
                 }
                 Log.d("journal_done?","journal_done");
-
+/*
                 cnt++;
                 if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-
+*/
+                //Update 완료 체크
+                if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                        == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //Update 완료 체크
+            Log.d("JournalUpdated", "Finish JournalUpdate");
+            if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                    == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
     //-- UpdateJournalDB Asynctask End --
@@ -450,14 +511,21 @@ public class Intro_Activity extends AppCompatActivity {
                     }
                 }
                 Log.d("play_done?","play_done");
+/*
                 cnt++;
                 if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-
-
+*/
+                //Update 완료 체크
+                if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                        == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -465,6 +533,19 @@ public class Intro_Activity extends AppCompatActivity {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //Update 완료 체크
+            Log.d("PlayUpdated", "Finish PlayUpdate");
+
+            if(getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                    == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
     //-- UpdatePlayDB Asynctask End --
 
@@ -495,13 +576,21 @@ public class Intro_Activity extends AppCompatActivity {
                     }
                 }
                 Log.d("crew_done?","crew_done");
+/*
                 cnt++;
                 if(cnt==6){
                     Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-
+*/
+                //Update 완료 체크
+                if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
+                        == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -509,6 +598,18 @@ public class Intro_Activity extends AppCompatActivity {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //Update 완료 체크
+            Log.d("CrewUpdated", "Finish CrewUpdate");
+            if(getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                Log.d("Finish", "All update Finished!!");
+                Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
     //-- UpdateCrewDB Asynctask End --
 

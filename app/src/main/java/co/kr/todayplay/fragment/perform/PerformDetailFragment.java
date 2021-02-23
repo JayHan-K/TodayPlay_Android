@@ -63,8 +63,8 @@ public class PerformDetailFragment extends Fragment {
         journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         //journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
-        data2.add(new PerformDetailJournalAdapter.JournalItem(R.drawable.journal_image_sample1, "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
-        data2.add(new PerformDetailJournalAdapter.JournalItem(R.drawable.journal_image_sample2, "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
+        //data2.add(new PerformDetailJournalAdapter.JournalItem(R.drawable.journal_image_sample1, "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
+        //data2.add(new PerformDetailJournalAdapter.JournalItem(R.drawable.journal_image_sample2, "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
         PerformDetailJournalAdapter performDetailJournalAdapter = new PerformDetailJournalAdapter(data2);
         journal_rv.setAdapter(performDetailJournalAdapter);
 

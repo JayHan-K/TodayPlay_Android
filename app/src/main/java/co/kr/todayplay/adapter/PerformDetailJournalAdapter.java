@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +23,20 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
     private ArrayList<JournalHolder> itemController = new ArrayList<>();
 
     public static class JournalItem{
-        private int drawable;
+        private int journal_id;
+        private String img_path;
         private String sub_title;
         private String title;
 
-        public JournalItem(){}
-        public JournalItem(int drawable, String sub_title, String title){
-            this.drawable = drawable;
+        public JournalItem(int journal_id, String img_path, String sub_title, String title){
+            this.journal_id = journal_id;
+            this.img_path = img_path;
             this.sub_title = sub_title;
             this.title = title;
+        }
+
+        public int getJournal_id() {
+            return journal_id;
         }
 
         public String getSub_title() {
@@ -39,8 +46,9 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
         public String getTitle() {
             return title;
         }
-        public int getDrawable(){
-            return drawable;
+
+        public String getImg_path() {
+            return img_path;
         }
     }
 
@@ -76,7 +84,8 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         JournalItem item = data.get(position);
         JournalHolder itemController = (JournalHolder) holder;
-        itemController.imageView.setImageResource(item.getDrawable());
+        Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+        itemController.imageView.setImageBitmap(bm);
         itemController.sub_tv.setText(item.getSub_title());
         itemController.title_tv.setText(item.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
