@@ -489,11 +489,12 @@ public class Intro_Activity extends AppCompatActivity {
                     int play_id = (int) play_object.get("play_id");
                     Log.d("playObject", "playObject " + i + ": " + play_all_jsonArray.get(i).toString());
                     Log.d("play_id", "play_id = " + play_id);
+                    String play_crew = (String)play_object.get("play_crew");
                     if(!playDBHelper.isExistPlayID(play_id)){
-                        playDBHelper.insert_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), (String)play_object.get("play_crew"), 0, "",  (String)play_object.get("play_history"));
+                        playDBHelper.insert_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), play_crew.replaceAll("'","\''"), 0, "",  (String)play_object.get("play_history"));
                     }
                     else{
-                        playDBHelper.update_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), (String)play_object.get("play_crew"), 0, "",  (String)play_object.get("play_history"));
+                        playDBHelper.update_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), play_crew.replaceAll("'","\''"), 0, "",  (String)play_object.get("play_history"));
                     }
                 }
                 Log.d("play_done?","play_done");
@@ -549,10 +550,13 @@ public class Intro_Activity extends AppCompatActivity {
                     int crew_id = (int) crew_object.get("crew_id");
                     Log.d("crewObject", "crewObject " + i + ": " + crew_all_jsonArray.get(i).toString());
                     Log.d("crew_id", "crew_id = " + crew_id);
+
+                    String crew_name = (String) crew_object.get("crew_name");
+
                     if (!crewDBHelper.isExistCrewID(crew_id)) {
-                        crewDBHelper.insert_crew(crew_id, (String) crew_object.get("crew_name"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
+                        crewDBHelper.insert_crew(crew_id, crew_name.replaceAll("'","\''"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
                     } else{
-                        crewDBHelper.update_crew(crew_id, (String) crew_object.get("crew_name"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
+                        crewDBHelper.update_crew(crew_id, crew_name.replaceAll("'","\''"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
                     }
                 }
                 Log.d("crew_done?","crew_done");
