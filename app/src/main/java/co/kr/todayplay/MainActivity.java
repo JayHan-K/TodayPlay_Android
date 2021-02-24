@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private final JournalFragment journalFragment = new JournalFragment();
 
 
+
+
+
+
     //상단 배너부분 정보
     String HomeBanner_all_jsonString;
     String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     JSONArray Ranking_all_jsonArray;
     ArrayList<Ranking> rankings = new ArrayList<Ranking>();
     Ranking data3;
+    int cnt;
 
 
 
@@ -82,25 +87,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        cnt=0;
+        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings);
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
         updateBannerInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //추천정보
         UpdateRecommendInfo updateRecommendInfo =new UpdateRecommendInfo();
-        updateRecommendInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        updateRecommendInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         //저널정보
         UpdateJournalInfo updateJournalInfo = new UpdateJournalInfo();
-        updateJournalInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        updateJournalInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
         //인기작정보
         UpdateRankingInfo updateRankingInfo = new UpdateRankingInfo();
-        updateRankingInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        updateRankingInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
         BottomNavigationView main_bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         main_bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
-        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+
+
 
         main_bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -197,6 +204,10 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("in banner"+banners);
                 }
                 Log.d("banner_done?","banner_done");
+                cnt++;
+
+
+
 //                final HomeFragment homeFragment = new HomeFragment(banners,recommands);
 //                getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 
@@ -233,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 Log.d("recommend_done?","recommend_done");
+                cnt++;
 
 
 
@@ -268,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 Log.d("journal_done?","journal_done");
+                cnt++;
 
 
 
@@ -303,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 Log.d("ranking_done?","ranking_done");
+                cnt++;
 
 
 

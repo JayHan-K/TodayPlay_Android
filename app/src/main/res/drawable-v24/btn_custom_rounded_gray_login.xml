@@ -10,7 +10,7 @@
                 android:color="#fed700"/>
             <size
                 android:width="36dp"
-                android:height="50dp"/>
+                android:height="37dp"/>
             <solid
                 android:color="#fed700"/>
 
@@ -28,7 +28,7 @@
                 android:color="#D3D3D3"/>
             <size
                 android:width="36dp"
-                android:height="50dp"/>
+                android:height="37dp"/>
             <solid
                 android:color="#D3D3D3"/>
 

@@ -254,7 +254,7 @@ public class Intro_Activity extends AppCompatActivity {
                     final DownloadFilesTask downloadFilesTask = new DownloadFilesTask(Intro_Activity.this);
                     lastDownload = downloadFilesTask;
                     resource_group = download_list.get(i)[2];
-                    downloadFilesTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, download_list.get(i)[0], download_list.get(i)[1], download_list.get(i)[2]);
+                    downloadFilesTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, download_list.get(i)[0], download_list.get(i)[1], download_list.get(i)[2]);
                 }
                 /*
                 cnt++;
@@ -318,7 +318,7 @@ public class Intro_Activity extends AppCompatActivity {
             super.onPreExecute();
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,getClass().getName());
-            mWakeLock.acquire();
+//            mWakeLock.acquire(10*60*1000L /*10 minutes*/);
         }
 
         @Override
@@ -383,7 +383,7 @@ public class Intro_Activity extends AppCompatActivity {
                         input.close();
                 } catch (IOException ignored) {
                 }
-                mWakeLock.release();
+//                mWakeLock.release();
             }
             return FileSize;
         }
@@ -430,10 +430,10 @@ public class Intro_Activity extends AppCompatActivity {
                     Log.d("JournalObject", "Object " + i + ": " + journal_all_jsonArray.get(i).toString());
                     Log.d("journal_id", "journal_id = " + journal_id);
                     if(!journalDBHelper.isExistJournalID(journal_id)){
-                        journalDBHelper.insert_journal(journal_id, (String)journal_object.get("journal_title"), (String)journal_object.get("journal_subtitle"), (String)journal_object.get("journal_editor"), (String)journal_object.get("journal_category"), 0, "", 0, (String)journal_object.get("journal_relation_play"), (String)journal_object.get("journal_relation_journal"), (String)journal_object.get("journal_keyword"), (String)journal_object.get("journal_banner_img"), (String)journal_object.get("journal_thumbnail1_img"), (String)journal_object.get("journal_thumbnail2_img"), (String)journal_object.get("journal_file"));
+                        journalDBHelper.insert_journal(journal_id, journal_object.get("journal_title").toString(), journal_object.get("journal_subtitle").toString(), journal_object.get("journal_editor").toString(), journal_object.get("journal_category").toString(), 0, "", 0, journal_object.get("journal_relation_play").toString(), journal_object.get("journal_relation_journal").toString(), journal_object.get("journal_keyword").toString(), journal_object.get("journal_banner_img").toString(), journal_object.get("journal_thumbnail1_img").toString(), journal_object.get("journal_thumbnail2_img").toString(), journal_object.get("journal_file").toString());
                     }
                     else{
-                        journalDBHelper.update_journal(journal_id, (String)journal_object.get("journal_title"), (String)journal_object.get("journal_subtitle"), (String)journal_object.get("journal_editor"), (String)journal_object.get("journal_category"), 0, "", 0, (String)journal_object.get("journal_relation_play"), (String)journal_object.get("journal_relation_journal"), (String)journal_object.get("journal_keyword"), (String)journal_object.get("journal_banner_img"), (String)journal_object.get("journal_thumbnail1_img"), (String)journal_object.get("journal_thumbnail2_img"), (String)journal_object.get("journal_file"));
+                        journalDBHelper.update_journal(journal_id, journal_object.get("journal_title").toString(), journal_object.get("journal_subtitle").toString(), journal_object.get("journal_editor").toString(), journal_object.get("journal_category").toString(), 0, "", 0, journal_object.get("journal_relation_play").toString(), journal_object.get("journal_relation_journal").toString(), journal_object.get("journal_keyword").toString(), journal_object.get("journal_banner_img").toString(), journal_object.get("journal_thumbnail1_img").toString(), journal_object.get("journal_thumbnail2_img").toString(), journal_object.get("journal_file").toString());
                     }
                 }
                 Log.d("journal_done?","journal_done");
@@ -489,12 +489,12 @@ public class Intro_Activity extends AppCompatActivity {
                     int play_id = (int) play_object.get("play_id");
                     Log.d("playObject", "playObject " + i + ": " + play_all_jsonArray.get(i).toString());
                     Log.d("play_id", "play_id = " + play_id);
-                    String play_crew = (String)play_object.get("play_crew");
+                    String play_crew = play_object.get("play_crew").toString();
                     if(!playDBHelper.isExistPlayID(play_id)){
-                        playDBHelper.insert_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), play_crew.replaceAll("'","\''"), 0, "",  (String)play_object.get("play_history"));
+                        playDBHelper.insert_Play(play_id, play_object.get("play_title").toString(), play_object.get("play_category").toString(), play_object.get("play_main_poster").toString(), play_object.get("play_main_journal_file").toString(), play_object.get("play_journal_thumbnail1_img").toString(), play_object.get("play_journal_thumbnail2_img").toString(), play_object.get("play_keyword").toString(), play_object.get("play_youtube_links").toString(), play_crew.replaceAll("'","\''"), 0, "",  play_object.get("play_history").toString());
                     }
                     else{
-                        playDBHelper.update_Play(play_id, (String)play_object.get("play_title"), (String)play_object.get("play_category"), (String)play_object.get("play_main_poster"), (String)play_object.get("play_main_journal_file"), (String)play_object.get("play_journal_thumbnail1_img"), (String)play_object.get("play_journal_thumbnail2_img"), (String)play_object.get("play_keyword"), (String)play_object.get("play_youtube_links"), play_crew.replaceAll("'","\''"), 0, "",  (String)play_object.get("play_history"));
+                        playDBHelper.update_Play(play_id, play_object.get("play_title").toString(), play_object.get("play_category").toString(), play_object.get("play_main_poster").toString(), play_object.get("play_main_journal_file").toString(), play_object.get("play_journal_thumbnail1_img").toString(), play_object.get("play_journal_thumbnail2_img").toString(), play_object.get("play_keyword").toString(), play_object.get("play_youtube_links").toString(), play_crew.replaceAll("'","\''"), 0, "",  play_object.get("play_history").toString());
                     }
                 }
                 Log.d("play_done?","play_done");
@@ -551,7 +551,7 @@ public class Intro_Activity extends AppCompatActivity {
                     Log.d("crewObject", "crewObject " + i + ": " + crew_all_jsonArray.get(i).toString());
                     Log.d("crew_id", "crew_id = " + crew_id);
 
-                    String crew_name = (String) crew_object.get("crew_name");
+                    String crew_name =  crew_object.get("crew_name").toString();
 
                     if (!crewDBHelper.isExistCrewID(crew_id)) {
                         crewDBHelper.insert_crew(crew_id, crew_name.replaceAll("'","\''"), crew_object.get("crew_position").toString(), crew_object.get("crew_pic").toString());

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,14 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
     ImageView profile_iv;
     EditText nickname_et;
     Button next_btn, nickname_check_btn, total_certification_btn;
+    int sub;
+    String email;
+    String password;
+    String name;
+    String birth;
+    String phone;
+    String job;
+    String nickname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,29 +47,64 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
         next_btn = (Button)findViewById(R.id.next_btn);
         nickname_check_btn = (Button)findViewById(R.id.nickname_check_btn);
         total_certification_btn = (Button)findViewById(R.id.total_certification_btn);
-    
-        nickname_check_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nickname = nickname_et.getText().toString();
-                String result = postData(nickname);
-                if(result=="0"){
-                    //중복없음
-                }else{
-                    //중복
-                }
-            }
-        });
-            
+        nickname_check_btn.setEnabled(false);
+        next_btn.setEnabled(false);
+        Intent intent = getIntent();
+        sub =intent.getIntExtra("sub",0);
+        email = intent.getStringExtra("email");
+        password = intent.getStringExtra("password");
+        name = intent.getStringExtra("name");
+        birth = intent.getStringExtra("birth");
+        phone = intent.getStringExtra("phone");
+        job = intent.getStringExtra("job");
+
+        Log.d("btn enabel","enabled"+nickname_check_btn.isEnabled());
+
         nickname_et.addTextChangedListener(watcher);
+
         next_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), JoinPreferenceAnalysisGuideActivity.class);
+                intent.putExtra("sub",sub);
+                intent.putExtra("email",email);
+                intent.putExtra("pasword",password);
+                intent.putExtra("name", name);
+                intent.putExtra("birth", birth);
+                intent.putExtra("phone", phone);
+                intent.putExtra("job", job);
+                intent.putExtra("nickname",nickname);
                 startActivity(intent);
+
             }
         });
-    }
+
+        Log.d("btn enabel","enabled"+nickname_check_btn.isEnabled());
+
+        nickname_check_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nickname = nickname_et.getText().toString();
+                String result = postData(nickname,new VolleyCallback(){
+                    @Override
+                    public void onSuccess(String data){
+                        Log.d("success volley??",data);
+                        if(data.equals("0")){
+                            Toast.makeText(getApplicationContext(),"중복없음",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"중복있음",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+
+
+        Log.d("btn enabel","enabled"+next_btn.isEnabled());
+
+        }
+
 
     private final TextWatcher watcher = new TextWatcher() {
         @Override
@@ -99,7 +143,8 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
         }
     };
 
-    public String postData(String nickname){
+
+    public String postData(String nickname, VolleyCallback callback){
 
         try{
             String[] resposeData = {""};
@@ -112,8 +157,10 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
 
 
                     String data = response;
-                    Log.d("Login_Home", data);
+                    Log.d("DB_response", data);
                     resposeData[0] = data;
+
+                    callback.onSuccess(data);
 
 
                 }
@@ -121,7 +168,7 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.d("Login_Home", error.toString());
+                    Log.d("volleyerror", error.toString());
                 }
             })
             {
@@ -139,9 +186,14 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
 
 
         }catch(Exception e){
-            Log.d("Login_Home", e.toString());
+            Log.d("excoption e", e.toString());
 
         }
         return "0";
     }
+
+
+
+
 }
+

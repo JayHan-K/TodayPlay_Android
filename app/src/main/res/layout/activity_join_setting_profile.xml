@@ -97,6 +97,7 @@
                 android:id="@+id/next_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:saveEnabled="false"
                 android:text="약관 동의하고 시작"
                 android:textSize="16sp"
                 android:textColor="#252525"

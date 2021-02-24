@@ -109,23 +109,23 @@ public class Login_Home_Activity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d("Login_Home_Activity", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             String email = user.getEmail();
-                            Log.d("Login_Home_Activity" , email.toString());
+                            Log.d("Login_Home_Activity", email.toString());
 
                             String result = postData(email, new VolleyCallback() {
                                 @Override
                                 public void onSuccess(String data) {
                                     Toast.makeText(getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                                    if (data=="1") {
-                                        //go to main and login
-                                    }else{
+                                    if (data == "1") {
+
+                                    } else {
                                         Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
                                         intent.putExtra("email", email);
                                         intent.putExtra("password", "goog");
-                                        startActivityForResult(intent,sub);
+                                        startActivityForResult(intent, sub);
                                     }
                                 }
 
@@ -141,24 +141,21 @@ public class Login_Home_Activity extends AppCompatActivity {
                             // 없으면 회원가입창 이동해주시고 email 정보를 같이 보내주세요.
 
 
-
-
-                        }else{
+                        } else {
                             Log.d("Login", "signInWithCredential:failurer");
                         }
                     }
                 });
     }
 
-    public String postData(String email, final VolleyCallback callback) {
+    public String postData(String email, VolleyCallback callback){
 
-
-
-        try {
+        try{
             String[] resposeData = {""};
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://183.111.253.75/request_user_email_duplicate/";
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            String url = "http://183.111.253.75/request_user_eamil_duplicate/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
 
                 @Override
                 public void onResponse(String response) {

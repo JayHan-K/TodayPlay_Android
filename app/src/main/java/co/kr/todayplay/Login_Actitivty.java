@@ -5,16 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login_Actitivty extends AppCompatActivity {
 
@@ -87,7 +100,7 @@ public class Login_Actitivty extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String email_st = email.getText().toString();
-                String password_st = email.getText().toString();
+                String password_st = password.getText().toString();
                 email_input = email_st;
                 password_input = password_st;
                 if(email_input != null && password_input != null){
@@ -110,7 +123,7 @@ public class Login_Actitivty extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String email_st = email.getText().toString();
-                String password_st = email.getText().toString();
+                String password_st = password.getText().toString();
                 email_input = email_st;
                 password_input = password_st;
                 if(email_input != null && password_input != null){
@@ -128,14 +141,83 @@ public class Login_Actitivty extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                String email_st = email.getText().toString();
+                String password_st = password.getText().toString();
+                String salt ="todayplay";
+                String newPassword =SHA256Util.getEncrypt(password_st,salt);
+                Log.d("newpassword","newpassword="+newPassword+" "+email_st);
+                if(email_st.equals("todayplay") && password_st.equals("0000")){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+//                String result = postData(email_st, newPassword, new VolleyCallback() {
+//                    @Override
+//                    public void onSuccess(String data) {
+//                        Toast.makeText(getApplicationContext(),"Result"+data,Toast.LENGTH_SHORT).show();
+//                        if(data =="1"){
+//                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                            startActivity(intent);
+//                            finish();
+//                        }else{
+//
+//                        }
+//                    }
+//                });
+
+
             }
         });
 
 
 
 
+    }
+
+    public String postData(String email,String password,VolleyCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://183.111.253.75/request_login_state/";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("Login_Home", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("Login_Home", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("email", email);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("Login_Home", e.toString());
+
+        }
+        return "0";
     }
 }

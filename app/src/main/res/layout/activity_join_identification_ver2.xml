@@ -106,6 +106,7 @@
                         android:id="@+id/phone_certification_btn"
                         android:layout_width="94dp"
                         android:layout_height="30dp"
+                        android:saveEnabled="false"
                         android:text="인증 번호 발송"
                         android:textColor="#252525"
                         android:textSize="12sp"
@@ -145,6 +146,7 @@
                         android:id="@+id/check_btn"
                         android:layout_width="94dp"
                         android:layout_height="30dp"
+                        android:saveEnabled="false"
                         android:text="인증 확인"
                         android:textColor="#252525"
                         android:textSize="12sp"
@@ -186,6 +188,7 @@
             <Button
                 android:id="@+id/next_btn"
                 android:text="다음"
+                android:saveEnabled="false"
                 android:textSize="16sp"
                 android:textColor="#252525"
                 android:layout_width="match_parent"

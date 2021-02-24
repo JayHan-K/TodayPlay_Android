@@ -56,6 +56,7 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
         mAuth.setLanguageCode("ko");
 
 
+
         user_name_et = (EditText)findViewById(R.id.join_user_name_et);
         user_birth_et = (EditText)findViewById(R.id.join_user_birth_et);
         user_phone_et = (EditText)findViewById(R.id.user_phone_et);
@@ -68,6 +69,10 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
         phone_certification_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
         check_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
         next_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
+
+        phone_certification_btn.setEnabled(false);
+        check_btn.setEnabled(false);
+        next_btn.setEnabled(false);
 
         user_name_et.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,6 +87,7 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
                 }
                 else{
                     phone_certification_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
+
                 }
             }
 
@@ -123,9 +129,11 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
                 if(user_name_et.getText().toString().length() > 0 && user_birth_et.getText().toString().length() > 0 && user_phone_et.getText().toString().length() > 0){
                     phone_certification_btn.setBackgroundResource(R.drawable.rounded_border_8dp_fed700);
+                    phone_certification_btn.setEnabled(true);
                 }
                 else{
                     phone_certification_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
+                    phone_certification_btn.setEnabled(false);
                 }
                 check_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
                 next_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
@@ -147,9 +155,13 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
                 if(identifi_num_et.getText().toString().length() > 0 && user_name_et.getText().toString().length() > 0 && user_birth_et.getText().toString().length() > 0 && user_phone_et.getText().toString().length() > 0){
                     check_btn.setBackgroundResource(R.drawable.rounded_border_8dp_fed700);
+                    phone_certification_btn.setEnabled(true);
+                    check_btn.setEnabled(true);
                 }
                 else{
                     check_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
+                    phone_certification_btn.setEnabled(false);
+                    check_btn.setEnabled(false);
                 }
                 phone_certification_btn.setBackgroundResource(R.drawable.rounded_border_8dp_fed700);
                 next_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
@@ -172,10 +184,14 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
                 if(job_et.getText().toString().length() > 0 && identifi_num_et.getText().toString().length() > 0 && user_name_et.getText().toString().length() > 0 && user_birth_et.getText().toString().length() > 0 && user_phone_et.getText().toString().length() > 0){
                     check_btn.setBackgroundResource(R.drawable.rounded_border_8dp_fed700);
                     phone_certification_btn.setBackgroundResource(R.drawable.rounded_border_8dp_fed700);
+                    phone_certification_btn.setEnabled(true);
+                    next_btn.setEnabled(true);
                     next_btn.setBackgroundResource(R.drawable.rounded_border_8dp_fed700);
                 }
                 else{
                     next_btn.setBackgroundResource(R.drawable.rounded_border_8dp_d3d3d3);
+                    phone_certification_btn.setEnabled(true);
+                    next_btn.setEnabled(false);
                 }
             }
 
@@ -213,6 +229,8 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
                     String job = job_et.getText().toString();
                     Intent intent = new Intent(getApplicationContext(), JoinSettingProfileActivity.class);
                     intent.putExtra("sub", sub);
+                    intent.putExtra("email",email);
+                    intent.putExtra("pasword",password);
                     intent.putExtra("name", name);
                     intent.putExtra("birth", birth);
                     intent.putExtra("phone", phone);
