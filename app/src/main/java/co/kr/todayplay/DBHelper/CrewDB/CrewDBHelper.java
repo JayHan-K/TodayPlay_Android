@@ -26,18 +26,18 @@ public class CrewDBHelper extends SQLiteOpenHelper {
     }
 
     //insert
-    public void insert_crew(int id, String name, String pic, String position){
+    public void insert_crew(int id, String name, String position, String  pic) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO Crew(crew_id, crew_name, crew_pic, crew_position) VALUES('" + id + "', '" + name + "', '" + pic + "', '"+ position +"');");
-        Log.d("insert_crew", "insert_crew: " + id + "|" + name + "|" + pic + "|" + position);
+        db.execSQL("INSERT INTO Crew(crew_id, crew_name ,crew_position, crew_pic) VALUES('" + id + "', '" + name + "', '" + position + "', '"+ pic +"');");
+        Log.d("insert_crew", "insert_crew: " + id + "|" + name + "|" +position  + "|" + pic);
         db.close();
     }
 
     //update
-    public void update_crew(int id, String name, String pic, String position){
+    public void update_crew(int id, String name, String position, String  pic){
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("UPDATE Crew SET crew_name = '" + name + "', crew_pic = '" + pic + "', crew_position = '"+ position +"' WHERE crew_id = '" + id + "';");
-        Log.d("update_crew", "insert_crew: " + id + "|" + name + "|" + pic + "|" + position);
+        db.execSQL("UPDATE Crew SET crew_name = '" + name + "',  crew_position= '" +  position + "', crew_pic = '"+  pic +"' WHERE crew_id = '" + id + "';");
+        Log.d("update_crew", "insert_crew: " + id + "|" + name + "|" + position + "|" +  pic);
         db.close();
     }
 
