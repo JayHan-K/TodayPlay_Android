@@ -5,20 +5,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#252525"
     android:layout_marginTop="10dp">
-    <ImageView
-        android:id="@+id/perform_video_iv"
+    <kr.co.prnd.YouTubePlayerView
+        android:id="@+id/perform_video_pv"
         android:layout_width="150dp"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/poster_sample16"
         android:scaleType="centerCrop"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_part"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/perform_video_iv"
+        app:layout_constraintStart_toEndOf="@id/perform_video_pv"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp">
         <TextView

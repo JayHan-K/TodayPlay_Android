@@ -31,9 +31,8 @@ public class PerformVideoFragment extends Fragment {
         //video_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL, false));
         video_rv.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
         ArrayList<PerformVideoAdapter.Item> data = new ArrayList<>();
-        data.add(new PerformVideoAdapter.Item(R.drawable.poster_sample3,"뮤지컬 라이어 쇼케이스","(2020.10.30)", "뮤지컬 라이어 유튜브 공식 채널", "10만회"));
-        data.add(new PerformVideoAdapter.Item(R.drawable.poster_sample4,"뮤지컬 라이어 쇼케이스","(2020.10.30)", "뮤지컬 라이어 유튜브 공식 채널", "10만회"));
-        data.add(new PerformVideoAdapter.Item(R.drawable.poster_sample5,"뮤지컬 라이어 쇼케이스","(2020.10.30)", "뮤지컬 라이어 유튜브 공식 채널", "10만회"));
+        data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=WAdWghqAeGY","뮤지컬 라이어 쇼케이스","(2020.10.30)", "뮤지컬 라이어 유튜브 공식 채널", "10만회"));
+        data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=AWAPJ0uDA_Y","뮤지컬 라이어 쇼케이스","(2020.10.30)", "뮤지컬 라이어 유튜브 공식 채널", "10만회"));
         PerformVideoAdapter performVideoAdapter = new PerformVideoAdapter(data);
         video_rv.setAdapter(performVideoAdapter);
 

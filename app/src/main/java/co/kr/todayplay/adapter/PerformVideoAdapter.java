@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,14 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
+import kr.co.prnd.YouTubePlayerView;
 
 public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public ArrayList<Item> data;
     public ArrayList<VideoListViewHolder> itemController = new ArrayList<>();
 
     public static class Item{
-        private int drawable;
+        private String url;
         private String video_title;
         private String date;
         private String channel;
@@ -26,16 +28,16 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public Item(){}
 
-        public Item(int drawable, String video_title, String date, String channel, String hits){
-            this.drawable = drawable;
+        public Item(String url, String video_title, String date, String channel, String hits){
+            this.url = url;
             this.video_title = video_title;
             this.date = date;
             this.channel = channel;
             this.hits = hits;
         }
 
-        public int getDrawable() {
-            return drawable;
+        public String getUrl() {
+            return url;
         }
 
         public String getDate() {
@@ -56,6 +58,7 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public static class VideoListViewHolder extends RecyclerView.ViewHolder{
+        public YouTubePlayerView youTubePlayerView;
         public ImageView imageView;
         public TextView video_title_tv;
         public TextView date_tv;
@@ -64,7 +67,7 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public VideoListViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = (ImageView)itemView.findViewById(R.id.perform_video_iv);
+            youTubePlayerView = (YouTubePlayerView)itemView.findViewById(R.id.perform_video_pv);
             video_title_tv = (TextView)itemView.findViewById(R.id.perform_video_title_tv);
             date_tv = (TextView)itemView.findViewById(R.id.perform_video_date_tv);
             channel_tv = (TextView)itemView.findViewById(R.id.perform_video_channel_tv);
@@ -91,7 +94,10 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Item item = data.get(position);
         final VideoListViewHolder itemController = (VideoListViewHolder) holder;
-        itemController.imageView.setImageResource(item.getDrawable());
+        String videoUrl = item.getUrl();
+        String viedoId = videoUrl.split("v=")[1];
+        Log.d("Video Adapter", viedoId);
+        itemController.youTubePlayerView.play(viedoId, null);
         itemController.video_title_tv.setText(item.getVideo_title());
         itemController.date_tv.setText(item.getDate());
         itemController.channel_tv.setText(item.getChannel());
