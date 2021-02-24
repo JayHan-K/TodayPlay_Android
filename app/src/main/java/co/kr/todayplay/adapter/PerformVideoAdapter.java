@@ -9,11 +9,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import org.jetbrains.annotations.NotNull;
+
 import co.kr.todayplay.R;
-import kr.co.prnd.YouTubePlayerView;
+
 
 public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public ArrayList<Item> data;
@@ -22,26 +38,20 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static class Item{
         private String url;
         private String video_title;
-        private String date;
         private String channel;
         private String hits;
 
         public Item(){}
 
-        public Item(String url, String video_title, String date, String channel, String hits){
+        public Item(String url, String video_title, String channel, String hits){
             this.url = url;
             this.video_title = video_title;
-            this.date = date;
             this.channel = channel;
             this.hits = hits;
         }
 
         public String getUrl() {
             return url;
-        }
-
-        public String getDate() {
-            return date;
         }
 
         public String getChannel() {
@@ -69,7 +79,6 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             youTubePlayerView = (YouTubePlayerView)itemView.findViewById(R.id.perform_video_pv);
             video_title_tv = (TextView)itemView.findViewById(R.id.perform_video_title_tv);
-            date_tv = (TextView)itemView.findViewById(R.id.perform_video_date_tv);
             channel_tv = (TextView)itemView.findViewById(R.id.perform_video_channel_tv);
             hits_tv = (TextView)itemView.findViewById(R.id.perform_video_hits_tv);
         }
@@ -97,9 +106,14 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         String videoUrl = item.getUrl();
         String viedoId = videoUrl.split("v=")[1];
         Log.d("Video Adapter", viedoId);
-        itemController.youTubePlayerView.play(viedoId, null);
+        itemController.youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.loadVideo(viedoId,0);
+                youTubePlayer.pause();
+            }
+        });
         itemController.video_title_tv.setText(item.getVideo_title());
-        itemController.date_tv.setText(item.getDate());
         itemController.channel_tv.setText(item.getChannel());
         itemController.hits_tv.setText(item.getHits());
     }
@@ -108,4 +122,7 @@ public class PerformVideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return data.size();
     }
+
+
+
 }

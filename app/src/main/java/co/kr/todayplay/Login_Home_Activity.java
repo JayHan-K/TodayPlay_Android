@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -114,7 +115,22 @@ public class Login_Home_Activity extends AppCompatActivity {
                             String email = user.getEmail();
                             Log.d("Login_Home_Activity" , email.toString());
 
-                            String result = postData(email);
+                            String result = postData(email, new VolleyCallback() {
+                                @Override
+                                public void onSuccess(String data) {
+                                    Toast.makeText(getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                                    if (data=="1") {
+                                        //go to main and login
+                                    }else{
+                                        Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
+                                        intent.putExtra("email", email);
+                                        intent.putExtra("password", "goog");
+                                        startActivityForResult(intent,sub);
+                                    }
+                                }
+
+                            });
+
                             Log.d("Login_Home_Activity", result);
 
                             // 여기서 email 주소를 가지고 서버에서 url 요청을 합니다.
@@ -124,14 +140,7 @@ public class Login_Home_Activity extends AppCompatActivity {
                             // 위 요청으로 중복이 있으면 홈으로 이동
                             // 없으면 회원가입창 이동해주시고 email 정보를 같이 보내주세요.
 
-                            if (result=="1") {
-                                //go to main and login
-                            }else{
-                                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
-                                intent.putExtra("email", email);
-                                intent.putExtra("password", "goog");
-                                startActivityForResult(intent,sub);
-                            }
+
 
 
                         }else{
@@ -141,13 +150,15 @@ public class Login_Home_Activity extends AppCompatActivity {
                 });
     }
 
-    public String postData(String email){
+    public String postData(String email, final VolleyCallback callback) {
 
-        try{
+
+
+        try {
             String[] resposeData = {""};
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "http://183.111.253.75/request_user_email_duplicate/";
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
                 @Override
                 public void onResponse(String response) {
@@ -157,21 +168,22 @@ public class Login_Home_Activity extends AppCompatActivity {
                     Log.d("Login_Home", data);
                     resposeData[0] = data;
 
+                    callback.onSuccess(data);
+
 
                 }
-            }, new Response.ErrorListener(){
+            }, new Response.ErrorListener() {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.d("Login_Home", error.toString());
                 }
-            })
-            {
+            }) {
 
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put("Content-Type","application/json");
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
                     params.put("email", email);
                     return params;
                 }
@@ -180,10 +192,15 @@ public class Login_Home_Activity extends AppCompatActivity {
             return resposeData[0];
 
 
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.d("Login_Home", e.toString());
 
         }
         return "0";
     }
+
 }
+interface VolleyCallback{
+    void onSuccess(String data);
+}
+
