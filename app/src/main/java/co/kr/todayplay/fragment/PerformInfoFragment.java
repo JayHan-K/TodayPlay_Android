@@ -91,7 +91,7 @@ public class PerformInfoFragment extends Fragment {
             //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
             BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
             poster.setBackground(bitmapDrawable);
-        }else{
+        }else {
             //Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
             //realposter.setImageBitmap(bm);
             //Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
@@ -100,7 +100,7 @@ public class PerformInfoFragment extends Fragment {
             //BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
             //poster.setBackground(bitmapDrawable);
         }
-*/
+         */
         tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("상세 정보"));
         tabLayout.addTab(tabLayout.newTab().setText("후기 분석"));

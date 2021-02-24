@@ -32,14 +32,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformVideoAdapter;
 import kotlinx.coroutines.GlobalScope;
 
 public class PerformVideoFragment extends Fragment {
+    PlayDBHelper playDBHelper;
+
     public RecyclerView video_rv;
     private Context mContext;
-    public String result="";
+    public String[] result;
+    int play_id;
     public HashMap<String, String> youtubeDataResult = new HashMap<>();
     public ArrayList<PerformVideoAdapter.Item> data = new ArrayList<>();
     public PerformVideoFragment(){}
@@ -49,6 +53,20 @@ public class PerformVideoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_video, container, false);
+        playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
+
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            play_id = bundle.getInt("play_id");
+            Log.d("Bundle result", "play_id: " + play_id);
+        }
+
+        String youtube_link_string = playDBHelper.getPlayVideos(play_id);
+        result = youtube_link_string.split(",");
+        for(int i=0; i<result.length; i++){
+            Log.d("youtube_result", result[i]);
+        }
+
         video_rv = (RecyclerView)viewGroup.findViewById(R.id.video_rv);
         //video_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL, false));
         video_rv.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));

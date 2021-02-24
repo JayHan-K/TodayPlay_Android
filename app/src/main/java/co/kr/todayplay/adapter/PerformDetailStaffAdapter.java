@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +20,18 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<StaffHolder> itemController = new ArrayList<>();
     public static class StaffItem{
         private int drawable;
+        private String img_path;
         private String job;
         private String name;
 
         public StaffItem(){}
-        public StaffItem(int drawable, String job, String name){
+        public StaffItem(int drawable, String img_path, String job, String name){
             this.drawable = drawable;
+            this.img_path = img_path;
             this.job = job;
             this.name = name;
         }
+
         public int getDrawable(){
             return drawable;
         }
@@ -35,6 +40,10 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
         }
         public String getName(){
             return name;
+        }
+
+        public String getImg_path() {
+            return img_path;
         }
     }
 
@@ -69,7 +78,10 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
         StaffItem item = data.get(position);
         StaffHolder itemController = (StaffHolder)holder;
         itemController.name_tv.setText(item.getName());
-        itemController.imageView.setImageResource(item.getDrawable());
+        if(!item.getImg_path().equals("")){
+            Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+            itemController.imageView.setImageBitmap(bm);
+        }else itemController.imageView.setImageResource(item.getDrawable());
         itemController.job_tv.setText(item.getJob());
     }
 

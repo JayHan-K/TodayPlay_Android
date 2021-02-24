@@ -40,15 +40,27 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
                 return tab1;
 
             case 1:
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("play_id", this.play_id);
                 PerformReviewFragment tab2 = new PerformReviewFragment();
+                tab2.setArguments(bundle2);
+
                 return tab2;
 
             case 2:
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("play_id", this.play_id);
                 PerformVideoFragment tab3 = new PerformVideoFragment();
+                tab3.setArguments(bundle3);
+
                 return tab3;
 
             case 3:
+                Bundle bundle4 = new Bundle();
+                bundle4.putInt("play_id", this.play_id);
                 PerformHistoryFragment tab4 = new PerformHistoryFragment();
+                tab4.setArguments(bundle4);
+
                 return tab4;
             default:
                 return null;

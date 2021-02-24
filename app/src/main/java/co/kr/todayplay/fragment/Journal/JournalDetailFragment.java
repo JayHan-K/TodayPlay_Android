@@ -157,8 +157,10 @@ public class JournalDetailFragment extends Fragment {
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        //webView.setScrollbarFadingEnabled(false);
-        webView.loadUrl("http://183.111.253.75/media/journal/journal"+ journal_id +"/index.html");
+        webView.setScrollbarFadingEnabled(false);
+        String file = journalDBHelper.getJournalFile(journal_id);
+        String[] file_name = file.split("[.]");
+        webView.loadUrl("http://183.111.253.75/media/journal/" + file_name[0] + "/index.html");
 
         //Comments part
         final ArrayList<PerformReviewCommentAdapter.CommentItem> comment_data = new ArrayList<>();
