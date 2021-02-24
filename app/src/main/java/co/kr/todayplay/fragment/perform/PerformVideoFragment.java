@@ -43,7 +43,6 @@ public class PerformVideoFragment extends Fragment {
     public HashMap<String, String> youtubeDataResult = new HashMap<>();
     public ArrayList<PerformVideoAdapter.Item> data = new ArrayList<>();
     public PerformVideoFragment(){}
-    public ArrayList<String> urls = new ArrayList<>();
     PerformVideoAdapter performVideoAdapter;
 
     @Nullable
@@ -54,21 +53,24 @@ public class PerformVideoFragment extends Fragment {
         //video_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL, false));
         video_rv.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
         performVideoAdapter = new PerformVideoAdapter(data);
-        video_rv.setAdapter(performVideoAdapter);
-
-
-        urls.add("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=WAdWghqAeGY&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM");
-        urls.add("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=AWAPJ0uDA_Y&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM");
 
 
 
-        /*getDataFromYoutube("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=WAdWghqAeGY&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM");
-        Log.d("Video", result);
-        data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=WAdWghqAeGY",youtubeDataResult.get("title"), youtubeDataResult.get("channelTitle"), youtubeDataResult.get("viewCount")));
-        getDataFromYoutube("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=AWAPJ0uDA_Y&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM");
-        data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=AWAPJ0uDA_Y",youtubeDataResult.get("title"), youtubeDataResult.get("channelTitle"), youtubeDataResult.get("viewCount")));
 
-        */
+        getDataFromYoutube("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=WAdWghqAeGY&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM", new YoutubeVolleyCallback() {
+            @Override
+            public void onSuccess(String title, String channelTitle, String viewCount) {
+                data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=WAdWghqAeGY",title,channelTitle, viewCount));
+            }
+        });
+
+        getDataFromYoutube("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=AWAPJ0uDA_Y&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM", new YoutubeVolleyCallback() {
+            @Override
+            public void onSuccess(String title, String channelTitle, String viewCount) {
+                data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=AWAPJ0uDA_Y",title,channelTitle, viewCount));
+                video_rv.setAdapter(performVideoAdapter);
+            }
+        });
 
         return viewGroup;
     }
@@ -76,7 +78,7 @@ public class PerformVideoFragment extends Fragment {
 
 
 
-    public String getDataFromYoutube(String url){
+    public String getDataFromYoutube(String url, final YoutubeVolleyCallback callback){
 
         try{
             final String[] response_var = {""};
@@ -93,11 +95,22 @@ public class PerformVideoFragment extends Fragment {
 
                     String snippet = response.split("snippet")[1];
                     String title = snippet.split("title")[1].split("\",")[0];
-                    String channleTitle = snippet.split("channelTitle")[1].split("\",")[0];
+                    String channelTitle = snippet.split("channelTitle")[1].split("\",")[0];
                     String statistics = response.split("statistics")[1];
                     String viewCount = statistics.split("viewCount")[1].split("\",")[0];
-                    data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=WAdWghqAeGY",title, channleTitle, viewCount));
-                    video_rv.setAdapter(performVideoAdapter);
+                    title = title.replaceAll(":", "");
+                    title = title.replaceAll("\"", "");
+                    title = title.trim();
+                    channelTitle = channelTitle.replaceAll(":", "");
+                    channelTitle = channelTitle.replaceAll("\"", "");
+                    channelTitle = channelTitle.trim();
+                    viewCount = viewCount.replaceAll(":", "");
+                    viewCount = viewCount.replaceAll("\"", "");
+                    viewCount = viewCount.trim();
+
+
+
+                    callback.onSuccess(title, channelTitle, viewCount);
                 }
             }, new Response.ErrorListener(){
 
@@ -120,56 +133,10 @@ public class PerformVideoFragment extends Fragment {
         return "";
     }
 
-/*
-    class YoutubeDataTask extends AsyncTask<ArrayList<String>, Integer, Long>{
-        String result = "";
+}
 
-        @Override
-        protected Long doInBackground(ArrayList<String>... urls) {
-            ArrayList<String> urlData = urls[0];
-
-            for(int i=0;i< urlData.size();i++){
-
-                String url = urlData.get(i);
-                Log.d("Video", url);
-                RequestQueue queue = Volley.newRequestQueue(getContext());
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>(){
-
-                    @Override
-                    public void onResponse(String response) {
-
-
-                        String snippet = response.split("snippet")[1];
-                        String title = snippet.split("title")[1].split("\",")[0];
-                        String channleTitle = snippet.split("channelTitle")[1].split("\",")[0];
-                        String statistics = response.split("statistics")[1];
-                        String viewCount = statistics.split("viewCount")[1].split("\",")[0];
-                        data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=WAdWghqAeGY",title, channleTitle, viewCount));
-                    }
-                }, new Response.ErrorListener(){
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Video", error.toString());
-                    }
-                })
-                {
-
-                };
-                queue.add(stringRequest);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Long aLong) {
-            Log.d("Video", "result : " + result);
-
-        }
-    }
-*/
-
+interface YoutubeVolleyCallback{
+    void onSuccess(String title, String channelTitle, String viewCount);
 }
 
 
