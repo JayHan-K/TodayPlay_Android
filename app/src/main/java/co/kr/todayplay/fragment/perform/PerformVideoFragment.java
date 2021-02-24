@@ -61,34 +61,41 @@ public class PerformVideoFragment extends Fragment {
             Log.d("Bundle result", "play_id: " + play_id);
         }
 
-        String youtube_link_string = playDBHelper.getPlayVideos(play_id);
-        result = youtube_link_string.split(",");
-        for(int i=0; i<result.length; i++){
-            Log.d("youtube_result", result[i]);
-        }
-
         video_rv = (RecyclerView)viewGroup.findViewById(R.id.video_rv);
         //video_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL, false));
         video_rv.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
         performVideoAdapter = new PerformVideoAdapter(data);
 
-
-
-
-        getDataFromYoutube("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=WAdWghqAeGY&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM", new YoutubeVolleyCallback() {
-            @Override
-            public void onSuccess(String title, String channelTitle, String viewCount) {
-                data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=WAdWghqAeGY",title,channelTitle, viewCount));
+        String youtube_link_string = playDBHelper.getPlayVideos(play_id);
+        result = youtube_link_string.split(",");
+        for(int i=0; i<result.length; i++){
+            Log.d("youtube", result[i]);
+            String videoID = "";
+            try{
+                videoID = result[i].split("v=")[1];
+            }catch(Exception e){
+                videoID = result[i].split("be/")[1];
             }
-        });
-
-        getDataFromYoutube("https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=AWAPJ0uDA_Y&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM", new YoutubeVolleyCallback() {
-            @Override
-            public void onSuccess(String title, String channelTitle, String viewCount) {
-                data.add(new PerformVideoAdapter.Item("https://www.youtube.com/watch?v=AWAPJ0uDA_Y",title,channelTitle, viewCount));
-                video_rv.setAdapter(performVideoAdapter);
+            String apiUrl = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=" + videoID + "&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM";
+            if(i==result.length-1){
+                getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
+                    @Override
+                    public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
+                        data.add(new PerformVideoAdapter.Item(returnUrl,title,channelTitle, viewCount));
+                        video_rv.setAdapter(performVideoAdapter);
+                    }
+                });
             }
-        });
+            else {
+
+                getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
+                    @Override
+                    public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
+                        data.add(new PerformVideoAdapter.Item(returnUrl, title, channelTitle, viewCount));
+                    }
+                });
+            }
+        }
 
         return viewGroup;
     }
@@ -126,9 +133,10 @@ public class PerformVideoFragment extends Fragment {
                     viewCount = viewCount.replaceAll("\"", "");
                     viewCount = viewCount.trim();
 
+                    String returnUrl = "https://www.youtube.com/watch?v=" + url.split("id=")[1].split("&")[0];
 
 
-                    callback.onSuccess(title, channelTitle, viewCount);
+                    callback.onSuccess(returnUrl, title, channelTitle, viewCount);
                 }
             }, new Response.ErrorListener(){
 
@@ -154,7 +162,7 @@ public class PerformVideoFragment extends Fragment {
 }
 
 interface YoutubeVolleyCallback{
-    void onSuccess(String title, String channelTitle, String viewCount);
+    void onSuccess(String url, String title, String channelTitle, String viewCount);
 }
 
 

@@ -554,9 +554,9 @@ public class Intro_Activity extends AppCompatActivity {
                     String crew_name = (String) crew_object.get("crew_name");
 
                     if (!crewDBHelper.isExistCrewID(crew_id)) {
-                        crewDBHelper.insert_crew(crew_id, crew_name.replaceAll("'","\''"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
+                        crewDBHelper.insert_crew(crew_id, crew_name.replaceAll("'","\''"), crew_object.get("crew_position").toString(), crew_object.get("crew_pic").toString());
                     } else{
-                        crewDBHelper.update_crew(crew_id, crew_name.replaceAll("'","\''"), (String) crew_object.get("crew_position"), (String) crew_object.get("crew_pic"));
+                        crewDBHelper.update_crew(crew_id, crew_name.replaceAll("'","\''"), crew_object.get("crew_position").toString(), crew_object.get("crew_pic").toString());
                     }
                 }
                 Log.d("crew_done?","crew_done");
