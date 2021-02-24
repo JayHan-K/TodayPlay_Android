@@ -1,5 +1,6 @@
 package co.kr.todayplay.fragment.Journal;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class JournalDetailFragment extends Fragment {
 
     public JournalDetailFragment(){}
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -153,11 +155,16 @@ public class JournalDetailFragment extends Fragment {
         if(webView == null){
             Log.d("webView", "onCreateView: webView is null");
         }
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setInitialScale(1);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
+        webView.clearCache(true);
+        webView.clearHistory();
+
         String file = journalDBHelper.getJournalFile(journal_id);
         String[] file_name = file.split("[.]");
         webView.loadUrl("http://183.111.253.75/media/journal/" + file_name[0] + "/index.html");
