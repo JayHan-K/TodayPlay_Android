@@ -3,6 +3,7 @@ package co.kr.todayplay;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -147,9 +148,18 @@ public class Login_Actitivty extends AppCompatActivity {
                 String newPassword =SHA256Util.getEncrypt(password_st,salt);
                 Log.d("newpassword","newpassword="+newPassword+" "+email_st);
                 if(email_st.equals("todayplay") && password_st.equals("0000")){
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    String userId = SharedPreference.getAttribute(getApplicationContext(),"userId");
+                    if(userId == null){
+                        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                        intent.putExtra("userId",userId);
+                        startActivity(intent);
+                        finish();
+                    }
+
                 }
 //                String result = postData(email_st, newPassword, new VolleyCallback() {
 //                    @Override

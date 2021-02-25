@@ -73,6 +73,7 @@ public class Login_Home_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Register_default.class);
                 startActivityForResult(intent,sub);
+                finish();
             }
         }));
 
@@ -81,6 +82,7 @@ public class Login_Home_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Login_Actitivty.class);
                 startActivityForResult(intent,sub);
+                finish();
             }
         }));
     }
@@ -126,6 +128,7 @@ public class Login_Home_Activity extends AppCompatActivity {
                                         intent.putExtra("email", email);
                                         intent.putExtra("password", "goog");
                                         startActivityForResult(intent, sub);
+                                        finish();
                                     }
                                 }
 

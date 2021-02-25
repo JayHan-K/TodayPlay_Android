@@ -57,6 +57,16 @@ public class StartPlayActivity extends AppCompatActivity {
                 keyword.replaceFirst(".&","");
 
                 String newpassword = SHA256Util.getEncrypt(password,"todayplay");
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                intent.putExtra("name",name);
+                intent.putExtra("birth",birth);
+                intent.putExtra("phone",phone);
+                intent.putExtra("job",job);
+                intent.putExtra("nickname",nickname);
+                intent.putExtra("keyword",keyword);
+                startActivity(intent);
+
+
 
                 String result = postData(email, newpassword, name, birth, phone, job, nickname, keyword, new VolleyCallback() {
                     @Override
