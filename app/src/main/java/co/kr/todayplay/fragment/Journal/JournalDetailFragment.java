@@ -369,8 +369,6 @@ public class JournalDetailFragment extends Fragment {
 
                     String data = response;
                     Log.d("postGetCommentIds", data);
-                    resposeData[0] = data;
-
                     callback.onSuccess(data);
 
 
