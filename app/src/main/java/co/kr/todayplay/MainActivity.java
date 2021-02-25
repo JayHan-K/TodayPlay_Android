@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     JSONArray Ranking_all_jsonArray;
     ArrayList<Ranking> rankings = new ArrayList<Ranking>();
     Ranking data3;
+    String userId=null ;
     int cnt;
 
 
@@ -87,7 +90,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cnt=0;
+
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
+        if(userId !=null){
+            SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
+        }
+
+        SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
         final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings);
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
