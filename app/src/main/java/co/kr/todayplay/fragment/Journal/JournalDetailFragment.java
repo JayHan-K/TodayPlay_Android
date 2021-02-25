@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment.Journal;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -34,8 +35,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -46,6 +51,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
+import co.kr.todayplay.JoinIdentificationActivityVer2;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalRecommendListAdapter;
 import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
@@ -65,6 +71,7 @@ public class JournalDetailFragment extends Fragment {
     //journal_title, journal_editor, journal_num_of_scrap, journal_comments, journal_num_of_view, journal_file
     JournalDBHelper journalDBHelper;
     int journal_id;
+    int user_id = -1;
     String journal_title;
     String[] comments, relation_journal;
 
@@ -92,7 +99,7 @@ public class JournalDetailFragment extends Fragment {
         comment_et = (EditText)viewGroup.findViewById(R.id.write_comment_et);
         journal_banner_iv = (ImageView)viewGroup.findViewById(R.id.journal_poster_iv);
         relation_journal_container = (ConstraintLayout)viewGroup.findViewById(R.id.bottom_part);
-
+        comment_save_btn = (Button)viewGroup.findViewById(R.id.comment_save_btn);
         Bundle bundle = getArguments();
         if(bundle != null){
             journal_id = bundle.getInt("journal_id");
@@ -179,6 +186,43 @@ public class JournalDetailFragment extends Fragment {
         comment_rv.setAdapter(performReviewCommentAdapter);
         comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
+        int[] journal_comment_ids;
+        String journal_data = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
+                    @Override
+                    public void onSuccess(String data) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                        if (data.equals("")) {
+                            Log.d("postGetCommentIds", "onSuccess: " + data);
+
+                        } else {
+                            Log.d("postGetCommentIds", "POST ResultFailed.");
+                        }
+                    }
+        });
+
+        Log.d("postGetCommentIds", journal_data);
+
+        /*
+        for(int i=0; i<journal_comment_ids.length; i++){
+            String result = postGetCommentData(Integer.toString(journal_comment_ids[i]), new VolleyCommentCallback() {
+                @Override
+                public void onSuccess(String data) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                    if (data.equals("1")) {
+                        Log.d("postGetCommentData", "onSuccess: " + journal_comment_ids[i] + " = " + data);
+
+                    } else {
+                        Log.d("postGetCommentData", "POST ResultFailed.");
+                    }
+                }
+
+            });
+
+            Log.d("postSendCommentData", result);
+        }
+*/
+
+
         //Relation_jouranl part
         recommend_journal_rv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         ArrayList<JournalRecommendListAdapter.Item> recommend_journal_data = new ArrayList<>();
@@ -190,6 +234,41 @@ public class JournalDetailFragment extends Fragment {
         recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
         recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
 
+        comment_save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(comment_et.getText().equals("")){
+                    Toast.makeText(getActivity().getApplicationContext(),"댓글을 작성해 주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    SimpleDateFormat formatter = new SimpleDateFormat( "yyyy.MM.dd", Locale.KOREA );
+                    Date date = Calendar.getInstance().getTime();
+                    String now_date = formatter.format (date);
+                    String result = postSendCommentData(Integer.toString(user_id), comment_et.getText().toString(), now_date, Integer.toString(journal_id), new VolleyCommentCallback() {
+                        @Override
+                        public void onSuccess(String data) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                            if (data.equals("1")) {
+                                comment_et.setText("");
+
+                            } else {
+                                Log.d("postSendCommentData", "POST ResultFailed.");
+                            }
+                        }
+
+                    });
+
+                    Log.d("postSendCommentData", result);
+
+                    // 여기서 email 주소를 가지고 서버에서 url 요청을 합니다.
+                    // http://183.111.253.75/request_user_email_duplicate/
+                    // request POST에 email 이란 항목으로 email 주소를 보내셔야 중복 확인이 가능합니다.
+                    // 이메일 회원가입에서도 위 방식으로 중복확인해주세요
+                    // 위 요청으로 중복이 있으면 홈으로 이동
+                    // 없으면 회원가입창 이동해주시고 email 정보를 같이 보내주세요.
+                }
+            }
+        });
         return viewGroup;
     }
 
@@ -221,4 +300,142 @@ public class JournalDetailFragment extends Fragment {
         else Toast.makeText(getActivity(), "html이 없습니다", Toast.LENGTH_LONG).show();
     }
 
+    //Comment Save
+    public String postSendCommentData(String user_id, String comment, String comment_date, String comment_source_id, VolleyCommentCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://183.111.253.75/request_save_comment/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postSendCommentData", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postSendCommentData", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("user_id", user_id);
+                    params.put("comment_date", comment_date);
+                    params.put("comment", comment);
+                    params.put("comment_source", "journal");
+                    params.put("comment_source_id", comment_source_id);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postSendCommentData", e.toString());
+
+        }
+        return "0";
+    }
+
+    //Get Comment_ids
+    public String postGetCommentIds(String journal_id, VolleyCommentCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://183.111.253.75/request_journal_info_by_id/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postGetCommentIds", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postGetCommentIds", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("journal_id", journal_id);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postGetCommentIds", e.toString());
+
+        }
+        return "0";
+    }
+
+    //Get Comment
+    public String postGetCommentData(String comment_id, VolleyCommentCallback callback){
+
+        try{
+            final String[] response_var = {""};
+            RequestQueue queue = Volley.newRequestQueue(getContext());
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, comment_id, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+                    callback.onSuccess(response);
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postGetCommentData", error.toString());
+                }
+            })
+            {
+
+            };
+            queue.add(stringRequest);
+            return response_var[0];
+
+
+        }catch(Exception e){
+            Log.d("postGetCommentData", e.toString());
+
+        }
+        return "";
+    }
+
+}
+interface VolleyCommentCallback{
+    void onSuccess(String data);
 }

@@ -92,6 +92,7 @@
                     app:layout_constraintTop_toTopOf="@id/write_comment_part"
                     app:layout_constraintBottom_toBottomOf="@id/write_comment_part" />
                 <Button
+                    android:id="@+id/comment_save_btn"
                     android:text="등록"
                     android:textColor="#252525"
                     android:textSize="12sp"

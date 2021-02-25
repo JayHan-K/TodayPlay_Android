@@ -65,19 +65,24 @@ public class PerformDetailFragment extends Fragment {
             play_id = bundle.getInt("play_id");
             Log.d("Bundle result", "play_id: " + play_id);
         }
-
-        String thumbnail1_path = getActivity().getApplicationContext().getFileStreamPath(playDBHelper.getPlayThumbnail1(play_id)).toString();
+        String thumbnail1_img = playDBHelper.getPlayThumbnail1(play_id);
+        String thumbnail1_path = getActivity().getApplicationContext().getFileStreamPath(thumbnail1_img).toString();
         Bitmap bm = BitmapFactory.decodeFile(thumbnail1_path);
         perform_iv = (ImageView)viewGroup.findViewById(R.id.perform_iv);
         perform_detail_sub_tv = (TextView)viewGroup.findViewById(R.id.perform_detail_sub_tv);
         perform_detail_title_tv = (TextView)viewGroup.findViewById(R.id.perform_detail_title_tv);
-        perform_iv.setImageBitmap(bm);
-        perform_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment(journalViewFragment);
-            }
-        });
+        if(thumbnail1_img.equals("")){
+            perform_iv.setImageResource(R.drawable.journal_comming_soon);
+        }
+        else{
+            perform_iv.setImageBitmap(bm);
+            perform_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)getActivity()).replaceFragment(journalViewFragment);
+                }
+            });
+        }
         Log.d("thumbnail1_path", thumbnail1_path + "/");
         perform_detail_title_tv.setText("");
         perform_detail_sub_tv.setText("");
