@@ -223,6 +223,7 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(sub==0){
+                    Log.d("emailsecond","email="+email);
                     String name = user_name_et.getText().toString();
                     String birth = user_birth_et.getText().toString();
                     String phone = user_phone_et.getText().toString();
@@ -230,12 +231,13 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), JoinSettingProfileActivity.class);
                     intent.putExtra("sub", sub);
                     intent.putExtra("email",email);
-                    intent.putExtra("pasword",password);
+                    intent.putExtra("password",password);
                     intent.putExtra("name", name);
                     intent.putExtra("birth", birth);
                     intent.putExtra("phone", phone);
                     intent.putExtra("job", job);
                     startActivity(intent);
+                    finish();
                 }
                 //id 찾기
                 else if(sub==1002){

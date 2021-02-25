@@ -121,7 +121,10 @@ public class Login_Home_Activity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(String data) {
                                     Toast.makeText(getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                                    String email = user.getEmail();
+                                    Log.d("emailfirst","email="+email);
                                     if (data == "1") {
+                                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
 
                                     } else {
                                         Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
@@ -156,7 +159,7 @@ public class Login_Home_Activity extends AppCompatActivity {
         try{
             String[] resposeData = {""};
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://183.111.253.75/request_user_eamil_duplicate/";
+            String url = "http://183.111.253.75/request_user_email_duplicate/";
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
 

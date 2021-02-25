@@ -49,37 +49,47 @@ public class StartPlayActivity extends AppCompatActivity {
         phone = intent.getStringExtra("phone");
         job = intent.getStringExtra("job");
         nickname = intent.getStringExtra("nickname");
+        keyword = intent.getStringExtra("keyword");
 
 
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                keyword.replaceFirst(".&","");
+                keyword = keyword.replaceFirst(".&","");
+                Log.d("keyword","keyword="+keyword);
 
-                String newpassword = SHA256Util.getEncrypt(password,"todayplay");
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("name",name);
-                intent.putExtra("birth",birth);
-                intent.putExtra("phone",phone);
-                intent.putExtra("job",job);
-                intent.putExtra("nickname",nickname);
-                intent.putExtra("keyword",keyword);
-                startActivity(intent);
+//                String newpassword = SHA256Util.getEncrypt(password,"todayplay");
+//                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                intent.putExtra("name",name);
+//                intent.putExtra("birth",birth);
+//                intent.putExtra("phone",phone);
+//                intent.putExtra("job",job);
+//                intent.putExtra("nickname",nickname);
+//                intent.putExtra("keyword",keyword);
+//                startActivity(intent);
 
 
 
-                String result = postData(email, newpassword, name, birth, phone, job, nickname, keyword, new VolleyCallback() {
+                String result = postData(email, password, birth, phone, job, nickname, keyword, new VolleyCallback() {
                     @Override
                     public void onSuccess(String data) {
-
-//                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        Log.d("final data","data="+data);
+                        if(data == "-1"){
+                            Log.d("something failed","failed"+data);
+                        }else{
+                            SharedPreference.setAttribute(getApplicationContext(),"userId", data);
+                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            intent.putExtra("userId", data);
 //                        intent.putExtra("name",name);
 //                        intent.putExtra("birth",birth);
 //                        intent.putExtra("phone",phone);
 //                        intent.putExtra("job",job);
 //                        intent.putExtra("nickname",nickname);
 //                        intent.putExtra("keyword",keyword);
-//                        startActivity(intent);
+                            startActivity(intent);
+                            finish();
+                        }
+
 
                     }
                 });
@@ -90,7 +100,7 @@ public class StartPlayActivity extends AppCompatActivity {
 
 
 
-    public String postData(String email, String password, String name, String birth, String phone, String job, String nickname,
+    public String postData(String email, String password, String birth, String phone, String job, String nickname,
                            String keyword,VolleyCallback callback){
 
         try{
@@ -123,7 +133,8 @@ public class StartPlayActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/json");
-                    params.put("name", name);
+                    params.put("email", email);
+                    params.put("password", password);
                     params.put("birth", birth);
                     params.put("phone", phone);
                     params.put("job", job);

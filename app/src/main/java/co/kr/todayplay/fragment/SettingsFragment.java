@@ -18,8 +18,10 @@ import java.util.List;
 
 import co.kr.todayplay.Customer_Service_Activity;
 import co.kr.todayplay.JoinSettingProfileActivity;
+import co.kr.todayplay.Login_Home_Activity;
 import co.kr.todayplay.NoticeActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.SharedPreference;
 import co.kr.todayplay.adapter.SettingsListAdapter;
 import co.kr.todayplay.object.Notice;
 
@@ -48,6 +50,12 @@ public class SettingsFragment extends Fragment {
                     case 1:
                         Intent intent = new Intent(getContext(), Customer_Service_Activity.class);
                         startActivity(intent);
+                        break;
+                    case 5:
+                        SharedPreference.removeAttribte(getContext(),"userId");
+                        Intent intent5 = new Intent(getContext(), Login_Home_Activity.class);
+                        startActivity(intent5);
+                        getActivity().finish();
                         break;
                 }
             }

@@ -71,8 +71,8 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                keyword.replaceFirst(".&","");
                 Intent intent = new Intent(getApplicationContext(),StartPlayActivity.class);
+                intent.putExtra("email",email);
                 intent.putExtra("password",password);
                 intent.putExtra("name",name);
                 intent.putExtra("birth",birth);
@@ -81,6 +81,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
                 intent.putExtra("nickname",nickname);
                 intent.putExtra("keyword",keyword);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -124,6 +125,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "연극"+ "," + keyword;
                 play_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         musical_btn.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +133,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "뮤지컬"+ "," + keyword;
                 musical_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         chang_btn.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +141,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "창극"+ "," + keyword;
                 chang_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         kids_btn.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +149,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "어린이"+ "," + keyword;
                 kids_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         history_btn.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +157,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "역사/고전극"+ "," + keyword;
                 history_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         large_btn.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +165,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "대극장"+ "," + keyword;
                 large_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         mid_btn.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +173,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "중극장"+ "," + keyword;
                 mid_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         small_btn.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +181,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "소극장"+ "," + keyword;
                 small_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         cry_btn.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +189,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "눈물 콧물 쏙 빼는"+ "," + keyword;
                 cry_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         warm_btn.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +197,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "마음이 따뜻해지는"+ "," + keyword;
                 warm_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         intense_btn.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +205,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "긴장감이 있는"+ "," + keyword;
                 intense_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
 
@@ -202,6 +214,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "웃음 폭탄"+ "," + keyword;
                 funny_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
         feelings_btn.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +222,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = "여운이 남는"+ "," + keyword;
                 feelings_btn.setEnabled(false);
+                Log.d("darama_btn","darama_btn"+keyword);
             }
         });
 

@@ -62,22 +62,6 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
 
         nickname_et.addTextChangedListener(watcher);
 
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), JoinPreferenceAnalysisGuideActivity.class);
-                intent.putExtra("sub",sub);
-                intent.putExtra("email",email);
-                intent.putExtra("pasword",password);
-                intent.putExtra("name", name);
-                intent.putExtra("birth", birth);
-                intent.putExtra("phone", phone);
-                intent.putExtra("job", job);
-                intent.putExtra("nickname",nickname);
-                startActivity(intent);
-
-            }
-        });
 
         Log.d("btn enabel","enabled"+nickname_check_btn.isEnabled());
 
@@ -85,6 +69,7 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 nickname = nickname_et.getText().toString();
+                Log.d("nickname","nickname="+nickname);
                 String result = postData(nickname,new VolleyCallback(){
                     @Override
                     public void onSuccess(String data){
@@ -96,6 +81,28 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+            }
+        });
+
+
+        next_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nickname = nickname_et.getText().toString();
+                Log.d("emailthird","email="+email);
+                Log.d("nickname","nickname="+nickname);
+                Intent intent = new Intent(getApplicationContext(), JoinPreferenceAnalysisGuideActivity.class);
+                intent.putExtra("sub",sub);
+                intent.putExtra("email",email);
+                intent.putExtra("password",password);
+                intent.putExtra("name", name);
+                intent.putExtra("birth", birth);
+                intent.putExtra("phone", phone);
+                intent.putExtra("job", job);
+                intent.putExtra("nickname",nickname);
+                startActivity(intent);
+                finish();
 
             }
         });

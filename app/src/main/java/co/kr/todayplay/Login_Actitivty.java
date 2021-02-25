@@ -147,20 +147,27 @@ public class Login_Actitivty extends AppCompatActivity {
                 String salt ="todayplay";
                 String newPassword =SHA256Util.getEncrypt(password_st,salt);
                 Log.d("newpassword","newpassword="+newPassword+" "+email_st);
-                if(email_st.equals("todayplay") && password_st.equals("0000")){
-                    String userId = SharedPreference.getAttribute(getApplicationContext(),"userId");
-                    if(userId == null){
-                        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }else{
-                        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
-                        intent.putExtra("userId",userId);
-                        startActivity(intent);
-                        finish();
-                    }
 
-                }
+                String result = postData(email_st, password_st, new VolleyCallback() {
+                    @Override
+                    public void onSuccess(String data) {
+                        Log.d("data","data="+data);
+
+                        if(data.equals("-1")){
+                            Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+                            startActivity(intent);
+                            finish();
+                        }else {
+                            SharedPreference.setAttribute(getApplicationContext(),"userId", data);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("userId", data);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+
+//                if(email_st.equals("todayplay") && password_st.equals("0000")){
 //                String result = postData(email_st, newPassword, new VolleyCallback() {
 //                    @Override
 //                    public void onSuccess(String data) {
@@ -217,6 +224,7 @@ public class Login_Actitivty extends AppCompatActivity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/json");
                     params.put("email", email);
+                    params.put("password",password);
                     return params;
                 }
             };

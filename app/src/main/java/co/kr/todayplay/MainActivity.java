@@ -93,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
+        Log.d("userId","userId="+userId);
         if(userId !=null){
             SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
         }
 
-        SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
         final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings);
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();

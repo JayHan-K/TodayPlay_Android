@@ -67,18 +67,30 @@ public class Register_default extends AppCompatActivity {
         register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("clicked","Clicked");
                 String get_email_st = get_email.getText().toString();
-                String result = postData(get_email_st);
-                if(result=="0"){
-                    //중복없음
-                    String get_password_st = get_password.getText().toString();
-                    Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
-                    intent.putExtra("email", get_email_st);
-                    intent.putExtra("password", get_password_st);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getApplicationContext(), "이미 사용중인 이메일입니다. 다른 이메일을 사용해주세요.", Toast.LENGTH_SHORT).show();
-                }
+                Log.d("clicked","Clicked"+get_email_st);
+                String result = postData(get_email_st, new VolleyCallback() {
+                    @Override
+                    public void onSuccess(String data) {
+                        Log.d("data","data="+data);
+                        if(data.equals("0")){
+                            //중복없음
+                            String get_password_st = get_password.getText().toString();
+                            String get_email_st = get_email.getText().toString();
+                            Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
+                            intent.putExtra("email", get_email_st);
+                            intent.putExtra("password", get_password_st);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "이미 사용중인 이메일입니다. 다른 이메일을 사용해주세요.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                Log.d("clicked","Clicked"+result);
+
+
 
             }
         });
@@ -161,7 +173,7 @@ public class Register_default extends AppCompatActivity {
         });
 
     }
-    public String postData(String email){
+    public String postData(String email,VolleyCallback callback){
 
         try{
             String[] resposeData = {""};
@@ -176,6 +188,7 @@ public class Register_default extends AppCompatActivity {
                     String data = response;
                     Log.d("Login_Home", data);
                     resposeData[0] = data;
+                    callback.onSuccess(data);
 
 
                 }

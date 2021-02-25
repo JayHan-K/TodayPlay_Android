@@ -2,6 +2,7 @@ package co.kr.todayplay;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,21 +32,24 @@ public class JoinPreferenceAnalysisGuideActivity extends AppCompatActivity {
         birth = intent.getStringExtra("birth");
         phone = intent.getStringExtra("phone");
         job = intent.getStringExtra("job");
+        nickname = intent.getStringExtra("nickname");
 
         button = (Button)findViewById(R.id.next_bt);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), JoinPreferenceAnalysisActivity.class);
+                Log.d("emailforth","emailforth="+email);
                 intent.putExtra("sub",sub);
                 intent.putExtra("email",email);
-                intent.putExtra("pasword",password);
+                intent.putExtra("password",password);
                 intent.putExtra("name", name);
                 intent.putExtra("birth", birth);
                 intent.putExtra("phone", phone);
                 intent.putExtra("job", job);
                 intent.putExtra("nickname",nickname);
                 startActivity(intent);
+                finish();
             }
         });
     }
