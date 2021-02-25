@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout37"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/fun_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="5.신나는/역동적인"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/history_btn" />
+
+            <Button
+                android:id="@+id/horror_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="2.스릴러/공포"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/romance_btn" />
+
+            <Button
+                android:id="@+id/romance_btn"
+                android:layout_width="75dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="1.로맨스"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView78" />
+
+            <TextView
+                android:id="@+id/prefer_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="오늘의 공연 공연능력시험 문제지"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/prefer_sub_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="취향분석 영역"
+                android:textColor="#252525"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/prefer_title_tv" />
+
+            <TextView
+                android:id="@+id/textView72"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="6dp"
+                android:text="제 1교시"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/prefer_sub_title_tv" />
+
+            <TextView
+                android:id="@+id/textView76"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="10dp"
+                android:text="문제지의 마지막에 제출하기를 눌러야 합니다."
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView75" />
+
+            <TextView
+                android:id="@+id/textView75"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="10dp"
+                android:text="모든 문제는 중복 답변이 가능합니다."
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView73" />
+
+            <TextView
+                android:id="@+id/textView73"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="20dp"
+                android:text="문제지의 모든 문제에 답을 해주세요."
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+            <Button
+                android:id="@+id/darama_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="3.감동/드라마"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horror_btn" />
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="22dp"
+                android:background="#979797"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView76"
+                app:layout_constraintWidth_percent="0.95" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout38"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="7dp"
+                android:background="#979797"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll1"
+                app:layout_constraintWidth_percent="0.95" />
+
+            <TextView
+                android:id="@+id/textView77"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="21dp"
+                android:text="1.당신이 선호하는 공연 장르를 골라주세요."
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout38" />
+
+            <Button
+                android:id="@+id/play_btn"
+                android:layout_width="64dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:text="1.연극"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <Button
+                android:id="@+id/musical_btn"
+                android:layout_width="75dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="12dp"
+                android:text="2.뮤지컬"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toEndOf="@+id/play_btn"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <Button
+                android:id="@+id/chang_btn"
+                android:layout_width="64dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="12dp"
+                android:text="3.창극"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toEndOf="@+id/musical_btn"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <Button
+                android:id="@+id/kids_btn"
+                android:layout_width="75dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="12dp"
+                android:text="4.어린이"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toEndOf="@+id/chang_btn"
+                app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
+            <TextView
+                android:id="@+id/textView78"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="35dp"
+                android:text="2.당신의 공연 취향을 골라주세요."
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/play_btn" />
+
+            <Button
+                android:id="@+id/history_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:text="4.역사/고전극"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/darama_btn" />
+
+            <TextView
+                android:id="@+id/textView79"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="35dp"
+                android:text="3.선호하는 공연 규모를 골라주세요."
+                android:textColor="#252525"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fun_btn" />
+
+            <Button
+                android:id="@+id/large_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:text="1.대극장"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView79" />
+
+            <Button
+                android:id="@+id/mid_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:text="2.중극장"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toEndOf="@+id/large_btn"
+                app:layout_constraintTop_toBottomOf="@+id/textView79" />
+
+            <Button
+                android:id="@+id/small_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:text="3.소극장"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toEndOf="@+id/mid_btn"
+                app:layout_constraintTop_toBottomOf="@+id/textView79" />
+
+            <TextView
+                android:id="@+id/textView80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="40dp"
+                android:textColor="#252525"
+                android:textSize="14dp"
+                android:text="4. 좋아하는 스토리를 골라주세요."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/large_btn" />
+
+            <Button
+                android:id="@+id/cry_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:text="1.눈물 콧물 쏙 빼는"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView80" />
+
+            <Button
+                android:id="@+id/warm_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:text="2.마음이 따뜻해지는"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cry_btn" />
+
+            <Button
+                android:id="@+id/intense_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:text="4.긴장감이 있는"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/funny_btn" />
+
+            <Button
+                android:id="@+id/submit_btn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="답안 제출하기"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/feelings_btn"
+                app:layout_constraintWidth_percent="0.89" />
+
+            <Button
+                android:id="@+id/funny_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:text="3.웃음 폭탄"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/warm_btn" />
+
+            <Button
+                android:id="@+id/feelings_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="37dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:text="5.여운이 남는"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:background="@drawable/btn_custom_rounded_gray_login"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/intense_btn" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>
