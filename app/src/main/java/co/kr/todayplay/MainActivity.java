@@ -49,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private final JournalFragment journalFragment = new JournalFragment();
 
 
-
-
-
-
     //상단 배너부분 정보
     String HomeBanner_all_jsonString;
     String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
@@ -93,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
+
         Log.d("userId","userId="+userId);
+
         if(userId !=null){
             SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
         }
@@ -130,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottom_category:
                         transaction.replace(R.id.main_frameLayout, new CategoryFragment()).commitAllowingStateLoss();
                         break;
-
                     case R.id.bottom_search:
                         transaction.replace(R.id.main_frameLayout, new SearchFragment()).commitAllowingStateLoss();
                         break;

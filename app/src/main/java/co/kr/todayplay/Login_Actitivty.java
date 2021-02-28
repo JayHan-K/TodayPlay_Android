@@ -181,13 +181,8 @@ public class Login_Actitivty extends AppCompatActivity {
 //                        }
 //                    }
 //                });
-
-
             }
         });
-
-
-
 
     }
 

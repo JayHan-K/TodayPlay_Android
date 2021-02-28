@@ -14,6 +14,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView72"
+                app:layout_constraintWidth_percent="0.855"
+                app:srcCompat="@drawable/box_shape" />
+
             <Button
                 android:id="@+id/fun_btn"
                 android:layout_width="wrap_content"
@@ -23,8 +34,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="5.신나는/역동적인"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/history_btn" />
 
@@ -37,8 +48,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="2.스릴러/공포"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/romance_btn" />
 
@@ -51,8 +62,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="1.로맨스"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView78" />
 
@@ -138,8 +149,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="3.감동/드라마"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/horror_btn" />
 
@@ -187,8 +198,8 @@
                 android:layout_marginTop="12dp"
                 android:text="1.연극"
                 android:textColor="#252525"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:textSize="14dp"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView77" />
 
@@ -200,8 +211,8 @@
                 android:layout_marginTop="12dp"
                 android:text="2.뮤지컬"
                 android:textColor="#252525"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:textSize="14dp"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toEndOf="@+id/play_btn"
                 app:layout_constraintTop_toBottomOf="@+id/textView77" />
 
@@ -212,9 +223,9 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="12dp"
                 android:text="3.창극"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:textColor="#252525"
                 android:textSize="14dp"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toEndOf="@+id/musical_btn"
                 app:layout_constraintTop_toBottomOf="@+id/textView77" />
 
@@ -225,9 +236,9 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="12dp"
                 android:text="4.어린이"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:textColor="#252525"
                 android:textSize="14dp"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toEndOf="@+id/chang_btn"
                 app:layout_constraintTop_toBottomOf="@+id/textView77" />
 
@@ -252,8 +263,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="4.역사/고전극"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/darama_btn" />
 
@@ -275,8 +286,8 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="1.대극장"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView79" />
 
@@ -286,8 +297,8 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="2.중극장"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toEndOf="@+id/large_btn"
                 app:layout_constraintTop_toBottomOf="@+id/textView79" />
 
@@ -297,8 +308,8 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="3.소극장"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toEndOf="@+id/mid_btn"
                 app:layout_constraintTop_toBottomOf="@+id/textView79" />
 
@@ -320,11 +331,11 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="1.눈물 콧물 쏙 빼는"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView80" />
 
@@ -334,11 +345,11 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="2.마음이 따뜻해지는"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cry_btn" />
 
@@ -348,11 +359,11 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="4.긴장감이 있는"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/funny_btn" />
 
@@ -365,7 +376,7 @@
                 android:text="답안 제출하기"
                 android:gravity="center"
                 android:textSize="16dp"
-                android:background="@drawable/btn_custom_rounded_gray_login"
+                android:background="@drawable/rounded_border_8dp_fed700"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.05"
@@ -379,8 +390,8 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="3.웃음 폭탄"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/warm_btn" />
 
@@ -390,11 +401,11 @@
                 android:layout_height="37dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_border_8dp_d3d3d3"
                 android:text="5.여운이 남는"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:gravity="center"
-                android:background="@drawable/btn_custom_rounded_gray_login"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/intense_btn" />
 

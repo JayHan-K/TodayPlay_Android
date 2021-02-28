@@ -115,6 +115,8 @@ public class Intro_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceStare){
         super.onCreate(savedInstanceStare);
         setContentView(R.layout.activity_intro);
+
+        //userId를 받아옴
         userId = SharedPreference.getAttribute(getApplicationContext(),"userId");
 
 //        if (!hasPermissions(PERMISSIONS)) { //퍼미션 허가를 했었는지 여부를 확인
