@@ -76,13 +76,25 @@ public class Register_default extends AppCompatActivity {
                         Log.d("data","data="+data);
                         if(data.equals("0")){
                             //중복없음
-                            String get_password_st = get_password.getText().toString();
+                            String get_password_st1 = get_password.getText().toString();
                             String get_email_st = get_email.getText().toString();
-                            Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
-                            intent.putExtra("email", get_email_st);
-                            intent.putExtra("password", get_password_st);
-                            startActivity(intent);
-                            finish();
+                            String get_password_st2 = get_password2.getText().toString();
+
+                            if(!get_password_st1.equals(get_password_st2)) {
+                                Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                            }else if(get_password_st1.length()<8 || get_password_st1.length()>20){
+                                Toast.makeText(getApplicationContext(), "비밀번호를 8-20자로 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                String sha256_password = SHA256Util.sha256(get_password_st1);
+                                Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
+                                intent.putExtra("email", get_email_st);
+                                intent.putExtra("password", sha256_password);
+                                startActivity(intent);
+                                finish();
+                            }
+
+
                         }else{
                             Toast.makeText(getApplicationContext(), "이미 사용중인 이메일입니다. 다른 이메일을 사용해주세요.", Toast.LENGTH_SHORT).show();
                         }
@@ -109,7 +121,7 @@ public class Register_default extends AppCompatActivity {
                 email_input = get_email_st;
                 password_input = get_password_st;
                 password_input2 = get_password_st2;
-                if(email_input != null && password_input != null && password_input2 != null){
+                if(!email_input.equals("") && !password_input.equals("") && !password_input2.equals("")){
                     register_btn.setEnabled(true);
                 }
 
@@ -135,7 +147,7 @@ public class Register_default extends AppCompatActivity {
                 email_input = get_email_st;
                 password_input = get_password_st;
                 password_input2 = get_password_st2;
-                if(email_input != null && password_input != null && password_input2 != null){
+                if(!email_input.equals("") && !password_input.equals("") && !password_input2.equals("")){
                     register_btn.setEnabled(true);
                 }
 
@@ -161,7 +173,7 @@ public class Register_default extends AppCompatActivity {
                 email_input = get_email_st;
                 password_input = get_password_st;
                 password_input2 = get_password_st2;
-                if(email_input != null && password_input != null && password_input2 != null){
+                if(!email_input.equals("") && !password_input.equals("") && !password_input2.equals("")){
                     register_btn.setEnabled(true);
                 }
             }
