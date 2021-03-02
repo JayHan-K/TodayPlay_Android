@@ -33,7 +33,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
     String keyword;
 
     int fun_btn_cnt, horror_btn_cnt, romance_btn_cnt, darama_btn_cnt, play_btn_cnt, musical_btn_cnt, chang_btn_cnt, kids_btn_cnt, history_btn_cnt;
-    int large_btn_cnt, mid_btn_cnt, small_btn_cnt, cry_btn_cnt, warm_btn_cnt, intense_btn_cnt, funny_btn_cnt, feelings_btn_cnt, submit_btn_cnt;
+    int large_btn_cnt, mid_btn_cnt, small_btn_cnt, cry_btn_cnt, warm_btn_cnt, intense_btn_cnt, funny_btn_cnt, feelings_btn_cnt;
 
     Button fun_btn, horror_btn, romance_btn, darama_btn, play_btn, musical_btn, chang_btn, kids_btn, history_btn;
     Button large_btn, mid_btn, small_btn,cry_btn,warm_btn,intense_btn,submit_btn,funny_btn,feelings_btn;
@@ -77,6 +77,7 @@ public class JoinPreferenceAnalysisActivity extends AppCompatActivity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("birth","birth="+birth);
                 Intent intent = new Intent(getApplicationContext(),StartPlayActivity.class);
                 intent.putExtra("email",email);
                 intent.putExtra("password",password);

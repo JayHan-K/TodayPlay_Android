@@ -228,6 +228,7 @@ public class JoinIdentificationActivityVer2 extends AppCompatActivity {
                     String birth = user_birth_et.getText().toString();
                     String phone = user_phone_et.getText().toString();
                     String job = job_et.getText().toString();
+                    Log.d("birth","birth="+birth);
                     Intent intent = new Intent(getApplicationContext(), JoinSettingProfileActivity.class);
                     intent.putExtra("sub", sub);
                     intent.putExtra("email",email);

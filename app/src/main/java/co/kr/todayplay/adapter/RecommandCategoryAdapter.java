@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.fragment.CategoryClickedFragment;
 import co.kr.todayplay.object.Journal;
 import co.kr.todayplay.object.RecommandItem;
 
 public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<RecommandItem> data = new ArrayList<>();
     private ArrayList<RecommandHolder> itemController = new ArrayList<>();
+    String category;
 
 
     public class RecommandHolder extends RecyclerView.ViewHolder{
@@ -33,8 +37,9 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    public RecommandCategoryAdapter(ArrayList<RecommandItem> data){
+    public RecommandCategoryAdapter(ArrayList<RecommandItem> data,String category){
         super();
+        this.category =category;
         this.data = data;
     }
 
@@ -58,12 +63,12 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(position != RecyclerView.NO_POSITION){
-                    if(mListener!=null){
-                        mListener.onItemClick(view,position);
-                    }
-                }
-
+                Bundle bundle = new Bundle();
+                bundle.putString("category_name",recommandItem.getTitle());
+                bundle.putString("category",category);
+                CategoryClickedFragment categoryClickedFragment = new CategoryClickedFragment();
+                categoryClickedFragment.setArguments(bundle);
+                ((MainActivity)view.getContext()).replaceFragment(categoryClickedFragment);
             }
         });
 
@@ -71,12 +76,5 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount(){return data.size();}
-    public interface OnItemClickListener{
-        void onItemClick(View v,int pos);
-    }
-    private OnItemClickListener mListener;
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.mListener = listener;
-    }
 
 }

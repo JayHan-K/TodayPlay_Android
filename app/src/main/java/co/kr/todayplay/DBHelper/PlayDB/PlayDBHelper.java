@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.object.CategoryRe;
+
 public class PlayDBHelper extends SQLiteOpenHelper {
     public PlayDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -71,16 +73,36 @@ public class PlayDBHelper extends SQLiteOpenHelper {
         Log.i("getPlayTitle", "play_title"+play_title );
         return play_title;
     }
+    public ArrayList<CategoryRe> getkeywordplay_id(String keyword){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<CategoryRe> keywords = new ArrayList<>() ;
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT * FROM Play WHERE play_keywords LIKE ? ");
+        keyword= keyword.replace("/"," ");
+        Log.d("keywordin","keyword="+keyword);
+        String[] params = {"%"+keyword+"%"};
+        Cursor cursor;
+//        cursor = db.rawQuery("SELECT keyword FROM play WHERE keyword LIKE '%keyowrds +  = "+ keyword.toString()+"",null);
+        cursor = db.rawQuery(sb.toString(),params);
+        while (cursor.moveToNext()){
+            CategoryRe categoryRe = new CategoryRe(cursor.getInt(0),cursor.getString(2),cursor.getString(3),cursor.getInt(10));
+            keywords.add(categoryRe);
+        }
+        Log.i("category_keywords",keywords.get(0).getCategory()+" ");
+        cursor.close();
+        return keywords;
+    }
+
 
     public String getPlayCategory(int play_id) {
         SQLiteDatabase db = getReadableDatabase();
         String play_category = "";
         Cursor cursor;
-        cursor = db.rawQuery("SELECT play_category FROM Play WHERE play_id = " + play_id + "", null);
+        cursor = db.rawQuery("SELECT * FROM Play WHERE play_id = " + play_id + "", null);
         while (cursor.moveToNext()) {
             play_category = cursor.getString(0);
         }
-        Log.i("getPlayCategory", play_category + " ");
+        Log.i("getPlayCategory", play_category.length() + " ");
         return play_category;
     }
 
@@ -97,6 +119,8 @@ public class PlayDBHelper extends SQLiteOpenHelper {
         Log.i("getPlayKeywords", keywords + " ");
         return keywords;
     }
+
+
 
     public String getPlayMain_Journal(int play_id) {
         SQLiteDatabase db = getReadableDatabase();

@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.AdapterSpinner2;
 import co.kr.todayplay.adapter.CategoryDetailRecyAdapter;
 import co.kr.todayplay.adapter.PlayCoverflowAdapter;
+import co.kr.todayplay.object.CategoryRe;
 import co.kr.todayplay.object.Data;
 import co.kr.todayplay.object.PlayModel;
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
@@ -37,6 +42,7 @@ public class CategoryClickedFragment extends Fragment {
     private Spinner spinner2;
     ArrayList<String> arrayList;
     AdapterSpinner2 adapterSpinner2;
+    PlayDBHelper playDBHelper;
 
     public CategoryClickedFragment(){}
 
@@ -44,12 +50,46 @@ public class CategoryClickedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activity_category_detailed, container, false);
-
+        playDBHelper =new PlayDBHelper(this.getContext(),"Play.db",null,1);
 
         mData.add(new PlayModel(R.drawable.journal_image_sample1));
         mData.add(new PlayModel(R.drawable.journal_image_sample2));
         mData.add(new PlayModel(R.drawable.poster_sample2));
         mData.add(new PlayModel(R.drawable.journal_image_sample1));
+        TextView textView3 = (TextView)rootView.findViewById(R.id.textView3);
+        String keyword = getArguments().getString("category_name");
+        String category = getArguments().getString("category");
+        ArrayList<CategoryRe> play_id_first;
+        ArrayList<CategoryRe> play_id_second=new ArrayList<>();
+        CategoryRe categoryRe;
+
+        String title = category+","+keyword;
+        textView3.setText(title);
+        mAdapter = new PlayCoverflowAdapter(getActivity());
+
+
+
+        keyword = "%"+keyword+"%";
+        play_id_first = playDBHelper.getkeywordplay_id(keyword);
+
+        if(play_id_first!=null){
+            for(int i =0; i<play_id_first.size();++i){
+                Log.i("keywords","keywords"+play_id_first.get(i).getCategory());
+                categoryRe = play_id_first.get(i);
+
+                if(categoryRe.getCategory().equals(category) || category.equals("전체")||category.equals("공연중")){
+                   play_id_second.add(categoryRe);
+                }
+
+            }
+
+        }
+
+
+
+
+
+
 
         login_go_back6 = (Button)rootView.findViewById(R.id.login_go_back6);
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
@@ -82,15 +122,14 @@ public class CategoryClickedFragment extends Fragment {
 
 
 
-        mAdapter = new PlayCoverflowAdapter(getActivity());
-        mAdapter.setData(mData);
+        mAdapter.setData(play_id_second);
         mCoverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverflow);
         mCoverFlow.setAdapter(mAdapter);
 
         mCoverFlow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Log.d("clicked item","item="+play_id_second.get(position).getCategory());
             }
         });
         mCoverFlow.setOnScrollPositionListener(new FeatureCoverFlow.OnScrollPositionListener() {
@@ -107,8 +146,8 @@ public class CategoryClickedFragment extends Fragment {
         login_go_back6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CategoryFragment parentFrag = (CategoryFragment) CategoryClickedFragment.this.getParentFragment();
-                parentFrag.BackToHome();
+                CategoryFragment categoryFragment = new CategoryFragment();
+                ((MainActivity)getActivity()).replaceFragment(categoryFragment);
             }
         });
         getData();

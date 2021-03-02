@@ -57,6 +57,7 @@ public class StartPlayActivity extends AppCompatActivity {
             public void onClick(View view) {
                 keyword = keyword.replaceFirst(".&","");
                 Log.d("keyword","keyword="+keyword);
+                Log.d("birth","birth="+birth);
 
 //                String newpassword = SHA256Util.getEncrypt(password,"todayplay");
 //                Intent intent = new Intent(getApplicationContext(),MainActivity.class);

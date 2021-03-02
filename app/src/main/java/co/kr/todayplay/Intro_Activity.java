@@ -106,7 +106,6 @@ public class Intro_Activity extends AppCompatActivity {
     UpdateJournalDB updateJournalDB = new UpdateJournalDB();
     UpdatePlayDB updatePlayDB = new UpdatePlayDB();
     UpdateCrewDB updateCrewDB = new UpdateCrewDB();
-    GetFileName lastFileName;
     DownloadFilesTask lastDownload;
     String userId;
 

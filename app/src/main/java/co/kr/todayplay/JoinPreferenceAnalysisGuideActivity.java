@@ -40,6 +40,7 @@ public class JoinPreferenceAnalysisGuideActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), JoinPreferenceAnalysisActivity.class);
                 Log.d("emailforth","emailforth="+email);
+                Log.d("birth","birth="+birth);
                 intent.putExtra("sub",sub);
                 intent.putExtra("email",email);
                 intent.putExtra("password",password);

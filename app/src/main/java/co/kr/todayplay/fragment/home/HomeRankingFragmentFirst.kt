@@ -24,6 +24,7 @@ class HomeRankingFragmentFirst(rankings: java.util.ArrayList<Ranking>,postion: I
     var rankingList : ArrayList<Journal>? = null;
     var ranking :ArrayList<Ranking> = rankings
     val spaceDecoration:RecyclerDecoration = RecyclerDecoration(30,1)
+    val position1:Int = postion;
 
 
 
@@ -34,7 +35,8 @@ class HomeRankingFragmentFirst(rankings: java.util.ArrayList<Ranking>,postion: I
     ): View? {
         val viewGroup: ViewGroup =
             inflater.inflate(R.layout.activity_home_ranking_fragment_1p, null) as ViewGroup
-        var ranking2:Ranking = ranking.get(0)
+        var ranking2:Ranking = ranking.get(position1*3);
+        var rankpos:Int = position1*3;
 
         var text =viewGroup.findViewById<TextView>(R.id.textView6)
         text.setText(ranking2.category)
@@ -57,7 +59,7 @@ class HomeRankingFragmentFirst(rankings: java.util.ArrayList<Ranking>,postion: I
 
         var homeRankingRecyclerView : RecyclerView = viewGroup.findViewById(R.id.home_ranking_rv) as RecyclerView
         homeRankingRecyclerView.layoutManager = LinearLayoutManager(context)
-        homeRankingRecyclerView.adapter = HomeRankingAdapter(ranking,requireContext(),mListener)
+        homeRankingRecyclerView.adapter = HomeRankingAdapter(ranking,rankpos,requireContext(),mListener)
         homeRankingRecyclerView.addItemDecoration(spaceDecoration)
 
 

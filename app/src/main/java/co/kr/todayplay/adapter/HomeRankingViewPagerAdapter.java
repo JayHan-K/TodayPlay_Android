@@ -24,15 +24,13 @@ public class HomeRankingViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         int index = getRealPosition(position);
 
-        if(index==0) return new HomeRankingFragmentFirst(rankings,position);
-        else if(index==1) return new HomeRankingFragmentFirst(rankings,position);
-        else if(index==2) return new HomeRankingFragmentFirst(rankings,position);
-        else return new HomeRankingFragmentFirst(rankings,position);
+        if(index==0) return new HomeRankingFragmentFirst(rankings,index);
+        else return new HomeRankingFragmentFirst(rankings,index);
     }
 
     @Override
     public int getItemCount() {
-        return 2000;
+        return 100;
     }
 
     public int getRealPosition(int position) { return position % mCount; }

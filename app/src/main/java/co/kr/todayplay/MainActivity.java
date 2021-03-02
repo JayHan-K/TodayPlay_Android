@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.service.notification.NotificationListenerService;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,6 +37,7 @@ import co.kr.todayplay.fragment.JournalFragment;
 import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.fragment.SearchFragment;
 import co.kr.todayplay.object.Banner;
+import co.kr.todayplay.object.Line;
 import co.kr.todayplay.object.Ranking;
 import co.kr.todayplay.object.Recommend;
 
@@ -76,8 +79,16 @@ public class MainActivity extends AppCompatActivity {
     JSONArray Ranking_all_jsonArray;
     ArrayList<Ranking> rankings = new ArrayList<Ranking>();
     Ranking data3;
+
+    //상단 배너부분 정보
+    String Line_all_jsonString;
+    String all_Line_result_url = "http://183.111.253.75/request_todays_line/";
+    JSONArray Line_all_jsonArray;
+    ArrayList<Line> line = new ArrayList();
+    Line data4;
     String userId=null ;
     int cnt;
+    Bundle bundle = new Bundle();
 
 
 
@@ -96,7 +107,13 @@ public class MainActivity extends AppCompatActivity {
             SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
         }
 
-        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings);
+
+
+        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings,line);
+
+        //한줄정보
+        UpdateLineInfo updateLineInfo = new UpdateLineInfo();
+        updateLineInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
         updateBannerInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -123,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
                 switch (menuItem.getItemId()){
                     case R.id.bottom_home:
-                        transaction.replace(R.id.main_frameLayout, new HomeFragment(banners,recommands,recommandj,rankings)).commitAllowingStateLoss();
+                        HomeFragment homeFragment1 = new HomeFragment(banners,recommands,recommandj,rankings,line);
+                        transaction.replace(R.id.main_frameLayout, homeFragment1).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_category:
                         transaction.replace(R.id.main_frameLayout, new CategoryFragment()).commitAllowingStateLoss();
@@ -326,6 +344,36 @@ public class MainActivity extends AppCompatActivity {
                 cnt++;
 
 
+
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    //한줄추천
+    public class UpdateLineInfo extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Line_all_jsonString = getJsonFromServer(all_Line_result_url);
+                Log.d("Line_all_jsonString", Line_all_jsonString);
+                JSONObject jsonObject = new JSONObject(Line_all_jsonString);
+                Log.d("Line jsonObject", jsonObject.toString());
+                JSONObject line_id_object = (JSONObject) jsonObject.get("todays_line");
+                int line_id = (int) line_id_object.get("play_id");
+                Log.d("lineObject", "Object "  + ": " + line_id_object.toString());
+                Log.d("line_id", "line_id = " + line_id);
+                data4 = new Line( line_id, (String)line_id_object.get("image"));
+                line.add(data4);
+                Log.d("line_done?","line_done");
 
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block

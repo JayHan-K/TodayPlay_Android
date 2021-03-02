@@ -63,7 +63,12 @@
         <activity android:name=".FindIdPwActivity" />
         <activity android:name=".JoinPreferenceAnalysisGuideActivity" />
         <activity android:name=".JoinIdentificationActivity" />
-        <activity android:name=".JoinIdentificationActivityVer2" />
+        <activity android:name=".JoinIdentificationActivityVer2" >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
         <!-- <activity android:name=".Login_Home_Activity"> -->
         <!-- <intent-filter> -->
         <!-- <action android:name="android.intent.action.MAIN" /> -->

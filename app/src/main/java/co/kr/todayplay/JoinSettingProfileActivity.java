@@ -92,6 +92,7 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
                 nickname = nickname_et.getText().toString();
                 Log.d("emailthird","email="+email);
                 Log.d("nickname","nickname="+nickname);
+                Log.d("birth","birth="+birth);
                 Intent intent = new Intent(getApplicationContext(), JoinPreferenceAnalysisGuideActivity.class);
                 intent.putExtra("sub",sub);
                 intent.putExtra("email",email);

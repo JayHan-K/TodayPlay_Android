@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +12,16 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import co.kr.todayplay.R;
+import co.kr.todayplay.object.CategoryRe;
 import co.kr.todayplay.object.PlayModel;
 
 public class PlayCoverflowAdapter extends BaseAdapter {
 
-    private ArrayList<PlayModel> mData = new ArrayList<>(0);
+    private ArrayList<CategoryRe> mData = new ArrayList<>(0);
     private Context mContext;
 
     public PlayCoverflowAdapter(Context context){mContext = context;}
-    public void setData(ArrayList<PlayModel> data){mData = data;}
+    public void setData(ArrayList<CategoryRe> data){mData = data;}
 
 
     @Override
@@ -50,7 +53,9 @@ public class PlayCoverflowAdapter extends BaseAdapter {
             rowView.setTag(viewHolder);
         }
         ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.image.setImageResource(mData.get(position).imageResId);
+        String imagepath = rowView.getContext().getFilesDir()+"/"+mData.get(position).getposter();
+        Bitmap bm = BitmapFactory.decodeFile(imagepath);
+        holder.image.setImageBitmap(bm);
         return rowView;
     }
     static class ViewHolder{

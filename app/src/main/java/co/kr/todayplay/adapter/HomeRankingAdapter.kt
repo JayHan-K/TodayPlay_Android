@@ -21,12 +21,13 @@ import co.kr.todayplay.fragment.PerformInfoFragment
 import org.w3c.dom.Text
 
 
-class HomeRankingAdapter(ranking: ArrayList<Ranking>, context: Context,itemClickListener: ItemClickListener) :
+class HomeRankingAdapter(ranking: ArrayList<Ranking>,rankpos:Int, context: Context,itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<HomeRankingAdapter.RankingHolder>() {
     var rankings : ArrayList<Ranking> = ranking
     var context : Context = context
     var itemClickListener = itemClickListener
     var playDBHelper = PlayDBHelper(context,"Play.db",null,1)
+    var rankpos =rankpos
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankingHolder {
@@ -35,7 +36,7 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>, context: Context,itemClick
     }
 
     override fun onBindViewHolder(holder: RankingHolder, position: Int) {
-        val get_ranking: Ranking = rankings.get(position)
+        val get_ranking: Ranking = rankings.get(rankpos+position)
         val layoutParams = holder.itemView.layoutParams
 //        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(get_ranking.play_id);
         val imgpath =context.filesDir.toString()+"/"+playDBHelper.getPlayPoster(get_ranking.play_id)
@@ -55,7 +56,7 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>, context: Context,itemClick
     }
 
     override fun getItemCount(): Int {
-        return rankings.size-1
+        return 3
     }
 
 

@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
 import co.kr.todayplay.adapter.RecommandCategoryAdapter;
 import co.kr.todayplay.adapter.TotalCategoryAdapter;
+import co.kr.todayplay.fragment.CategoryClickedFragment;
 import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.object.RecommandItem;
 import co.kr.todayplay.object.totalItem;
@@ -51,30 +53,25 @@ public class CategoryTotal extends Fragment {
        ArrayList data_total;
        data_recommand = getRecommands();
        data_total = getTotals();
-       RecommandCategoryAdapter recommandCategoryAdapter = new RecommandCategoryAdapter(data_recommand);
-       TotalCategoryAdapter totalCategoryAdapter = new TotalCategoryAdapter(data_total);
-       recommandCategoryAdapter.setOnItemClickListener(new RecommandCategoryAdapter.OnItemClickListener(){
-           @Override
-           public void onItemClick(View v, int pos) {
-               CategoryFragment parentFrag = (CategoryFragment) CategoryTotal.this.getParentFragment();
-               parentFrag.categoryChangeToclicked();
-           }
-       });
+
+       String category ="전체";
+       RecommandCategoryAdapter recommandCategoryAdapter = new RecommandCategoryAdapter(data_recommand,category);
+       TotalCategoryAdapter totalCategoryAdapter = new TotalCategoryAdapter(data_total,category);
 
        recommand_rv.setAdapter(recommandCategoryAdapter);
        recommand_rv.addItemDecoration(spaceDecoration);
 
        total_rv.setAdapter(totalCategoryAdapter);
        total_rv.addItemDecoration(spaceDecoration2);
-        totalCategoryAdapter.setOnItemClickListener(new TotalCategoryAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-                CategoryFragment parentFrag = (CategoryFragment) CategoryTotal.this.getParentFragment();
-                parentFrag.categoryChangeToclicked();
-
-
-            }
-        });
+//        totalCategoryAdapter.setOnItemClickListener(new TotalCategoryAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View v, int pos) {
+//                CategoryClickedFragment categoryClickedFragment = new CategoryClickedFragment();
+//                ((MainActivity)getActivity()).replaceFragment(categoryClickedFragment);
+//
+//
+//            }
+//        });
 
        return viewGroup;
     }

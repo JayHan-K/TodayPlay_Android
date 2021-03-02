@@ -1,6 +1,8 @@
 package co.kr.todayplay.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +36,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 import co.kr.todayplay.Intro_Activity;
@@ -47,34 +52,38 @@ import co.kr.todayplay.adapter.JournalAdapter2;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.object.Banner;
+import co.kr.todayplay.object.History;
 import co.kr.todayplay.object.Journal;
+import co.kr.todayplay.object.Line;
 import co.kr.todayplay.object.Ranking;
 import co.kr.todayplay.object.Recommend;
 import co.kr.todayplay.object.Show;
 import me.relex.circleindicator.CircleIndicator;
 
 public class HomeFragment extends Fragment {
-    private ArrayList<Journal> journalList = new ArrayList<Journal>();
-    private ArrayList<Show> PersonalizedShow = new ArrayList<Show>();
     ScrollView homeFragmentMainScrollView;
     FrameLayout homeFragmentChildFragment;
     PlayDBHelper playDBHelper;
-    //homebanner정보 가져오기
-    String HomeBanner_all_jsonString;
-    String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
-    JSONArray HomeBanner_all_jsonArray;
+    ImageView imageView12;
+    ImageView imageView3;
+
+
+
     ArrayList<Banner> banner_chosen;
     ArrayList<Recommend> recommend_chosen;
     ArrayList<Recommend> journal_chosen;
     ArrayList<Ranking> ranking_chosen;
+    ArrayList<Line> line_chosen;
+    ArrayList<History> history_get;
 
 
 
-    public HomeFragment(ArrayList<Banner> banners, ArrayList<Recommend>recommend, ArrayList<Recommend>recommendj, ArrayList<Ranking>rankings){
+    public HomeFragment(ArrayList<Banner> banners, ArrayList<Recommend>recommend, ArrayList<Recommend>recommendj, ArrayList<Ranking>rankings, ArrayList<Line>lines){
         this.banner_chosen = banners;
         this.recommend_chosen = recommend;
         this.journal_chosen = recommendj;
         this.ranking_chosen = rankings;
+        this.line_chosen = lines;
     }
 
     @Nullable
@@ -82,9 +91,60 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.activity_home_fragment,container,false);
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db", null, 1);
+        history_get = new ArrayList<History>();
         String poster= playDBHelper.getPlayPoster(506);
         homeFragmentChildFragment = viewGroup.findViewById(R.id.home_fragment_child_fragment);
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
+        imageView12 = viewGroup.findViewById(R.id.imageView12);
+        Line line = line_chosen.get(0);
+        String data = line.getLine();
+        int play_id = line.getPlay_id();
+
+        //한줄관련부분
+        History history_chosen;
+
+        Log.d("line_id,line_string","line"+data+" ,"+play_id);
+        String history = playDBHelper.getPlayHistory(play_id);
+        Log.d("history","history"+history);
+        try {
+            JSONArray history_jsonArray = new JSONArray(history);
+            JSONObject line_id_object = (JSONObject) history_jsonArray.get(0);
+            Log.d("historyObject", "Object "  + ": " + line_id_object.toString());
+            history_chosen = new History((String)line_id_object.get("poster_img"),(String)line_id_object.get("play_date"),(String)line_id_object.get("play_product_company"),(String)line_id_object.get("play_director"),(String)line_id_object.get("play_crew"));
+            Log.d("historyimg", "Object "  + ": " + history_chosen.getPoster_img());
+            Log.d("historyObject", "Object "  + ": " + history_chosen.getPlay_crew());
+            history_get.add(history_chosen);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        history_chosen = history_get.get(0);
+
+        String imgpath =  getContext().getFilesDir().toString() + "/" + data;
+        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+        if(bm!=null){
+            imageView12.setImageBitmap(bm);
+        }
+
+
+        imgpath = getContext().getFilesDir().toString()+"/"+history_chosen.getPoster_img();
+        bm = BitmapFactory.decodeFile(imgpath);
+        imageView3 = viewGroup.findViewById(R.id.imageView3);
+        imageView3.setImageBitmap(bm);
+
+        TextView textView7 = viewGroup.findViewById(R.id.textView7);
+        String categoryname = playDBHelper.getPlayCategory(play_id);
+        textView7.setText(categoryname);
+
+        TextView textview8 = viewGroup.findViewById(R.id.textView8);
+
+        textview8.setText(playDBHelper.getPlayTitle(play_id));
+
+        TextView textview11 = viewGroup.findViewById(R.id.textView11);
+        String nameinfo =history_chosen.getPlay_directer()+"("+history_chosen.getPlay_product_company()+")";
+        textview11.setText(nameinfo);
+
+        TextView textview14 = viewGroup.findViewById(R.id.textView14);
+        textview14.setText(history_chosen.getPlay_crew());
 
 
 
@@ -113,8 +173,8 @@ public class HomeFragment extends Fragment {
         final CircleIndicator homeViewPagerIndicator = (CircleIndicator) viewGroup.findViewById(R.id.home_main_ad_ci);
 
         final ViewPager2 mpager = (ViewPager2)viewGroup.findViewById(R.id.rankingview);
-        mpager.setAdapter(new HomeRankingViewPagerAdapter(this,4,ranking_chosen));
-        mpager.setCurrentItem(1000);
+        mpager.setAdapter(new HomeRankingViewPagerAdapter(this,2,ranking_chosen));
+        mpager.setCurrentItem(0);
         mpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         mpager.setOffscreenPageLimit(3);
 
@@ -139,22 +199,6 @@ public class HomeFragment extends Fragment {
 
         homeViewPagerIndicator.setViewPager(homeViewPager);
 
-//        homeViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
         LinearLayoutManager journalLayoutManager =new LinearLayoutManager(this.getContext());
         journalLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
@@ -164,8 +208,6 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager homemidjournalLayoutManager = new LinearLayoutManager(this.getContext());
         homemidjournalLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        journalList=getJournals();
-        PersonalizedShow = getPersonals();
         RecyclerView homeJournalRV = viewGroup.findViewById(R.id.home_journal_rv);
 
         ItemClickListener listener = (ItemClickListener)(new ItemClickListener(){
@@ -184,7 +226,7 @@ public class HomeFragment extends Fragment {
 
         });
 
-        JournalAdapter2 journalAdapter = new JournalAdapter2(journal_chosen,getContext(),listener);
+        JournalAdapter2 journalAdapter = new JournalAdapter2(journal_chosen, requireContext(),listener);
 
         homeJournalRV.setLayoutManager(journalLayoutManager);
         homeJournalRV.setAdapter(journalAdapter);
@@ -221,136 +263,11 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public ArrayList getJournals(){
-        ArrayList journals = new ArrayList();
-        journals.add(new Journal("식상한 무대는 그만!국내 이색 공연장 5선", R.drawable.journal_new));
-        journals.add(
-                new Journal(
-                        "디큐브아트센터, 미로같은 그곳",
-                        R.drawable.family
-                )
-        );
-        journals.add(
-                new Journal(
-                        "이야기의 시작, 오이디푸스",
-                        R.drawable.editors_sample2
-                )
-        );
-
-        journals.add(
-                new Journal(
-                        "4대 뮤지컬 캣츠",
-                        R.drawable.alone
-                )
-        );
-
-        journals.add(
-                new Journal(
-                        "공연 좀 많이봤니?",
-                        R.drawable.family
-                )
-        );
-
-        journals.add(
-                new Journal(
-                        "집순이도 볼 수 있어",
-                        R.drawable.editors_sample3
-                )
-        );
-
-        journals.add(
-                new Journal(
-                        "해외가면 꼭 봐!",
-                        R.drawable.editors_sample4
-                )
-        );
-
-        journals.add(
-                new Journal(
-                        "공연 후기 & 꿀팁",
-                        R.drawable.tip
-                )
-        );
-
-        return journals;
-    }
-
-    public ArrayList getPersonals(){
-        ArrayList shows = new ArrayList();
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample6,
-                        "마리퀴리"
-                )
-        );
-
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample5,
-                        "렌트"
-                )
-        );
-
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample4,
-                        "레미제라블"
-                )
-        );
-
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample2,
-                        "라스트 세션"
-                )
-        );
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample9,
-                        "쉬어매드니스"
-                )
-        );
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample15,
-                        "파우스트"
-                )
-        );
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample10,
-                        "썸씽로튼"
-                )
-        );
-        shows.add(
-                new Show(
-                        R.drawable.poster_sample12,
-                        "제이미"
-                )
-        );
-
-        return shows;
-    }
-
     public void BackToHome(){
         homeFragmentMainScrollView.setVisibility(View.VISIBLE);
         homeFragmentChildFragment.setVisibility(View.INVISIBLE);
     }
 
-
-
-
-//    public void homeChangeToJournalDetail(){
-//        homeFragmentMainScrollView.setVisibility(View.INVISIBLE);
-//        homeFragmentChildFragment.setVisibility(View.VISIBLE);
-//
-//        getChildFragmentManager().beginTransaction().replace(
-//                R.id.home_fragment_child_fragment,
-//                Journa
-//        )
-//
-//
-//    }
 
 
 }
