@@ -80,7 +80,7 @@ public class JournalDetailFragment extends Fragment {
     String[] comments, relation_journal;
 
     String journalCommentIdResult;
-    JSONArray journal_commentIds_array;
+    String[] journalCommentIds;
 
     public JournalDetailFragment(){}
 
@@ -111,8 +111,8 @@ public class JournalDetailFragment extends Fragment {
         if(bundle != null){
             journal_id = bundle.getInt("journal_id");
             Log.d("Bundle result", "journal_id: " + journal_id);
-            //user_id = bundle.getInt("user_id");
-            //Log.d("Bundle result", "user_id: " + user_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "user_id: " + user_id);
         }
         journal_title = journalDBHelper.getJournalTitle(journal_id);
         editor_tv.setText("by. " + journalDBHelper.getJournalEditor(journal_id));
@@ -207,10 +207,26 @@ public class JournalDetailFragment extends Fragment {
                             try {
                                 journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments").toString();
                                 Log.d("journalIdResultObj", journalCommentIdResult);
-                                //journal_commentIds_array = new JSONArray(journalIdResult_object.getJSONArray("journal_comments"));
-                                //for(int i = 0; i< journal_commentIds_array.length(); i++){
-                                  //  Log.d("journal_commentIds", journal_commentIds_array.get(i).toString());
-                                //}
+                                journalCommentIds = journalCommentIdResult.split(", ");
+                                for(int i=0; i<journalCommentIds.length; i++){
+                                    Log.d("journalCommentIds", journalCommentIds[i]);
+                                    String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
+                                        @Override
+                                        public void onSuccess(String comment_data) {
+                                            Toast.makeText(getActivity().getApplicationContext(), "Result: " + comment_data, Toast.LENGTH_SHORT).show();
+                                            if (comment_data.equals("")) {
+                                                Log.d("postGetCommentData", "POST ResultFailed.");
+
+                                            } else {
+                                                Log.d("postGetCommentData", "onSuccess: " +  comment_data);
+
+                                            }
+                                        }
+
+                                    });
+
+                                    Log.d("postSendCommentData", result);
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -218,28 +234,6 @@ public class JournalDetailFragment extends Fragment {
                     }
         });
 
-        Log.d("journal_data", journal_data);
-
-
-        /*
-        for(int i=0; i<journal_comment_ids.length; i++){
-            String result = postGetCommentData(Integer.toString(journal_comment_ids[i]), new VolleyCommentCallback() {
-                @Override
-                public void onSuccess(String data) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                    if (data.equals("1")) {
-                        Log.d("postGetCommentData", "onSuccess: " + journal_comment_ids[i] + " = " + data);
-
-                    } else {
-                        Log.d("postGetCommentData", "POST ResultFailed.");
-                    }
-                }
-
-            });
-
-            Log.d("postSendCommentData", result);
-        }
-*/
 
 
         //Relation_jouranl part
@@ -418,14 +412,17 @@ public class JournalDetailFragment extends Fragment {
 
     //Get Comment
     public String postGetCommentData(String comment_id, VolleyCommentCallback callback){
-
         try{
             final String[] response_var = {""};
-            RequestQueue queue = Volley.newRequestQueue(getContext());
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, comment_id, new Response.Listener<String>(){
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://183.111.253.75/request_comment_info_by_id/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
 
                 @Override
                 public void onResponse(String response) {
+                    String comment_data = response;
+                    Log.d("postGetCommentData", comment_data);
                     callback.onSuccess(response);
                 }
             }, new Response.ErrorListener(){
@@ -436,7 +433,13 @@ public class JournalDetailFragment extends Fragment {
                 }
             })
             {
-
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("comment_id", comment_id);
+                    return params;
+                }
             };
             queue.add(stringRequest);
             return response_var[0];
@@ -446,7 +449,7 @@ public class JournalDetailFragment extends Fragment {
             Log.d("postGetCommentData", e.toString());
 
         }
-        return "";
+        return "0";
     }
 
 }
