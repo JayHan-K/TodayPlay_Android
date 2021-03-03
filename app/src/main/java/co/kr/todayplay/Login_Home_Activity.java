@@ -123,8 +123,18 @@ public class Login_Home_Activity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
                                     String email = user.getEmail();
                                     Log.d("emailfirst","email="+email);
-                                    if (data == "1") {
-                                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                    if (data.equals("1")) {
+                                        String result = get_user_id_from_google(email, new VolleyCallback() {
+                                            @Override
+                                            public void onSuccess(String data) {
+                                                Log.d("Login_Home_Activity", "user_id : " + data);
+                                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                                intent.putExtra("userId", data);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        });
+
 
                                     } else {
                                         Intent intent = new Intent(getApplicationContext(), JoinIdentificationActivityVer2.class);
@@ -160,6 +170,54 @@ public class Login_Home_Activity extends AppCompatActivity {
             String[] resposeData = {""};
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "http://183.111.253.75/request_user_email_duplicate/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("Login_Home", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("Login_Home", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("email", email);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("Login_Home", e.toString());
+
+        }
+        return "0";
+    }
+
+    public String get_user_id_from_google(String email, VolleyCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://183.111.253.75/request_user_id_by_google/";
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
 
