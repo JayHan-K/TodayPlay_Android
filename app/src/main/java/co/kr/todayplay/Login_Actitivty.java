@@ -145,7 +145,7 @@ public class Login_Actitivty extends AppCompatActivity {
                 String email_st = email.getText().toString();
                 String password_st = password.getText().toString();
                 String salt ="todayplay";
-                String newPassword =SHA256Util.getEncrypt(password_st,salt);
+                String newPassword =SHA256Util.sha256(password_st);
                 Log.d("newpassword","newpassword="+newPassword+" "+email_st);
 
                 String result = postData(email_st, password_st, new VolleyCallback() {
