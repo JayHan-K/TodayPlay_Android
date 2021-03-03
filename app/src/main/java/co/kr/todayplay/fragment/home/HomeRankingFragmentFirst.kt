@@ -35,11 +35,11 @@ class HomeRankingFragmentFirst(rankings: java.util.ArrayList<Ranking>,postion: I
     ): View? {
         val viewGroup: ViewGroup =
             inflater.inflate(R.layout.activity_home_ranking_fragment_1p, null) as ViewGroup
-//        var ranking2:Ranking = ranking.get(position1*3);
-//        var rankpos:Int = position1*3;
-//
-//        var text =viewGroup.findViewById<TextView>(R.id.textView6)
-//        text.setText(ranking2.category)
+        var ranking2:Ranking = ranking.get(position1*3);
+        var rankpos:Int = position1*3;
+
+        var text =viewGroup.findViewById<TextView>(R.id.textView6)
+        text.setText(ranking2.category)
 
         val mListener : ItemClickListener = object : ItemClickListener{
             override fun onItemClicked(vh: RecyclerView.ViewHolder, item: Any, pos: Int) {
@@ -57,10 +57,10 @@ class HomeRankingFragmentFirst(rankings: java.util.ArrayList<Ranking>,postion: I
             }
         }
 
-//        var homeRankingRecyclerView : RecyclerView = viewGroup.findViewById(R.id.home_ranking_rv) as RecyclerView
-//        homeRankingRecyclerView.layoutManager = LinearLayoutManager(context)
-//        homeRankingRecyclerView.adapter = HomeRankingAdapter(ranking,rankpos,requireContext(),mListener)
-//        homeRankingRecyclerView.addItemDecoration(spaceDecoration)
+        var homeRankingRecyclerView : RecyclerView = viewGroup.findViewById(R.id.home_ranking_rv) as RecyclerView
+        homeRankingRecyclerView.layoutManager = LinearLayoutManager(context)
+        homeRankingRecyclerView.adapter = HomeRankingAdapter(ranking,rankpos,requireContext(),mListener)
+        homeRankingRecyclerView.addItemDecoration(spaceDecoration)
 
 
 

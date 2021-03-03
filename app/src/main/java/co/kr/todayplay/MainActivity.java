@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.service.notification.NotificationListenerService;
 import android.util.Log;
 import android.view.MenuItem;
@@ -43,7 +44,6 @@ import co.kr.todayplay.object.Ranking;
 import co.kr.todayplay.object.Recommend;
 
 public class MainActivity extends AppCompatActivity {
-
     private Long mBackwait = 0L;
     // 선언해서 밑에서 작업할시 이동이 안돼는 현상이 나타나서 밑에 따로 선언해주었습니다.
     private final CategoryFragment categoryFragment = new CategoryFragment();
@@ -52,46 +52,43 @@ public class MainActivity extends AppCompatActivity {
     private final CommunityFragment communityFragment = new CommunityFragment();
     private final JournalFragment journalFragment = new JournalFragment();
 
-
     //상단 배너부분 정보
-    String HomeBanner_all_jsonString;
-    String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
-    JSONArray HomeBanner_all_jsonArray;
-    ArrayList<Banner> banners = new ArrayList();
-    Banner data;
+    static String HomeBanner_all_jsonString;
+    static String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
+    static JSONArray HomeBanner_all_jsonArray;
+    static ArrayList<Banner> banners = new ArrayList<Banner>();
+    static Banner data;
 
     //오늘의 추천 정보
-    String Recommend_all_jsonString;
-    String all_Recommend_result_url ="http://183.111.253.75/request_todays_recommend/";
-    JSONArray Recommend_all_jsonArray;
-    ArrayList<Recommend> recommands =new ArrayList();
-    Recommend data1;
+    static String Recommend_all_jsonString;
+    static String all_Recommend_result_url ="http://183.111.253.75/request_todays_recommend/";
+    static JSONArray Recommend_all_jsonArray;
+    static ArrayList<Recommend> recommands =new ArrayList<Recommend>();
+    static Recommend data1;
 
     //오늘의 저널 정보
-    String Journal_all_jsonString;
-    String all_Journal_result_url ="http://183.111.253.75/request_todays_journal/";
-    JSONArray Journal_all_jsonArray;
-    ArrayList<Recommend> recommandj =new ArrayList();
-    Recommend data2;
+    static String Journal_all_jsonString;
+    static String all_Journal_result_url ="http://183.111.253.75/request_todays_journal/";
+    static JSONArray Journal_all_jsonArray;
+    static ArrayList<Recommend> recommandj =new ArrayList<Recommend>();
+    static Recommend data2;
 
     //핫랭크 인기 순위
-    String Ranking_all_jsonString;
-    String all_Ranking_result_url="http://183.111.253.75/request_hot_rank/";
-    JSONArray Ranking_all_jsonArray;
-    ArrayList<Ranking> rankings = new ArrayList<Ranking>();
-    Ranking data3;
+    static String Ranking_all_jsonString;
+    static String all_Ranking_result_url="http://183.111.253.75/request_hot_rank/";
+    static JSONArray Ranking_all_jsonArray;
+    static ArrayList<Ranking> rankings = new ArrayList<Ranking>();
+    static Ranking data3;
 
     //상단 배너부분 정보
-    String Line_all_jsonString;
-    String all_Line_result_url = "http://183.111.253.75/request_todays_line/";
-    JSONArray Line_all_jsonArray;
-    ArrayList<Line> line = new ArrayList();
-    Line data4;
+    static String Line_all_jsonString;
+    static String all_Line_result_url = "http://183.111.253.75/request_todays_line/";
+    static JSONArray Line_all_jsonArray;
+    static ArrayList<Line> line = new ArrayList<Line>();
+    static Line data4;
+
     String userId=null ;
-    int cnt;
-    Bundle bundle = new Bundle();
-
-
+    static int cnt;
 
 
     @Override
@@ -110,29 +107,37 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final HomeFragment homeFragment = new HomeFragment(banners,recommands,recommandj,rankings,line);
+        final HomeFragment homeFragment = new HomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("banners",banners);
+        bundle.putSerializable("recommands",recommands);
+        bundle.putSerializable("recommandj",recommandj);
+        bundle.putSerializable("rankings",rankings);
+        bundle.putSerializable("line",line);
+        homeFragment.setArguments(bundle);
 
-        //한줄정보
-        UpdateLineInfo updateLineInfo = new UpdateLineInfo();
-        updateLineInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        //인기작정보
+        UpdateRankingInfo updateRankingInfo = new UpdateRankingInfo();
+        updateRankingInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
         updateBannerInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //추천정보
         UpdateRecommendInfo updateRecommendInfo =new UpdateRecommendInfo();
-        updateRecommendInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        updateRecommendInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //저널정보
         UpdateJournalInfo updateJournalInfo = new UpdateJournalInfo();
-        updateJournalInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
-        //인기작정보
-        UpdateRankingInfo updateRankingInfo = new UpdateRankingInfo();
-        updateRankingInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+        updateJournalInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //한줄정보
+        UpdateLineInfo updateLineInfo = new UpdateLineInfo();
+        updateLineInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
+
 
         BottomNavigationView main_bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         main_bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
-
 
 
         main_bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -141,7 +146,14 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
                 switch (menuItem.getItemId()){
                     case R.id.bottom_home:
-                        HomeFragment homeFragment1 = new HomeFragment(banners,recommands,recommandj,rankings,line);
+                        HomeFragment homeFragment1 = new HomeFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("banners",banners);
+                        bundle.putSerializable("recommands",recommands);
+                        bundle.putSerializable("recommandj",recommandj);
+                        bundle.putSerializable("rankings",rankings);
+                        bundle.putSerializable("line",line);
+                        homeFragment1.setArguments(bundle);
                         transaction.replace(R.id.main_frameLayout, homeFragment1).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_category:
@@ -160,6 +172,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public void replaceFragment2(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_frameLayout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -183,20 +203,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        finish();
-//        if(System.currentTimeMillis() - mBackwait >= 2000){
-//
+        super.onBackPressed();
+//        if (System.currentTimeMillis() > mBackwait + 2500) {
 //            mBackwait = System.currentTimeMillis();
-//            Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_LONG).show();
+//            return;
 //        }
-        if (System.currentTimeMillis() > mBackwait + 2500) {
-            mBackwait = System.currentTimeMillis();
-            Toast.makeText(this, "뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (System.currentTimeMillis() <= mBackwait+ 2500) {
-            finish();
-        }
+//        if (System.currentTimeMillis() <= mBackwait+ 2500) {
+//            finish();
+//        }
 
     }
 
@@ -214,11 +229,10 @@ public class MainActivity extends AppCompatActivity {
                 dc.getInputStream()));
 
         // read the JSON results into a string
-        String jsonResult = inputStream.readLine();
-        return jsonResult;
+        return inputStream.readLine();
     }
 //상단배너
-    public class UpdateBannerInfo extends AsyncTask<Void, Void, Void> {
+    public static class UpdateBannerInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -246,11 +260,6 @@ public class MainActivity extends AppCompatActivity {
                 cnt++;
 
 
-
-//                final HomeFragment homeFragment = new HomeFragment(banners,recommands);
-//                getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
-
-
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -259,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 //오늘의 추천
-    public class UpdateRecommendInfo extends AsyncTask<Void, Void, Void> {
+    public static class UpdateRecommendInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -285,8 +294,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("recommend_done?","recommend_done");
                 cnt++;
 
-
-
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -295,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 // 오늘의 저널
-    public class UpdateJournalInfo extends AsyncTask<Void, Void, Void> {
+    public static class UpdateJournalInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -321,8 +328,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("journal_done?","journal_done");
                 cnt++;
 
-
-
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -331,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 //인기작
-    public class UpdateRankingInfo extends AsyncTask<Void, Void, Void> {
+    public static class UpdateRankingInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -357,8 +362,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("ranking_done?","ranking_done");
                 cnt++;
 
-
-
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -368,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //한줄추천
-    public class UpdateLineInfo extends AsyncTask<Void, Void, Void> {
+    public static class UpdateLineInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

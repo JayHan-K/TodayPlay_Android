@@ -2,6 +2,7 @@ package co.kr.todayplay.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,10 +66,11 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putString("category_name",recommandItem.getTitle());
+                Log.d("keywordinclicked2","keywordinclicked"+recommandItem.getTitle());
                 bundle.putString("category",category);
                 CategoryClickedFragment categoryClickedFragment = new CategoryClickedFragment();
                 categoryClickedFragment.setArguments(bundle);
-                ((MainActivity)view.getContext()).replaceFragment(categoryClickedFragment);
+                ((MainActivity)view.getContext()).replaceFragment2(categoryClickedFragment);
             }
         });
 

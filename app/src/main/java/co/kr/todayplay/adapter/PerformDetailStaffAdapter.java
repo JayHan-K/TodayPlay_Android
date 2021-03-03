@@ -78,7 +78,7 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
         StaffItem item = data.get(position);
         StaffHolder itemController = (StaffHolder)holder;
         itemController.name_tv.setText(item.getName());
-        if(!item.getImg_path().equals("")){
+        if(!("").equals(item.getImg_path())){
             Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
             itemController.imageView.setImageBitmap(bm);
         }else itemController.imageView.setImageResource(item.getDrawable());

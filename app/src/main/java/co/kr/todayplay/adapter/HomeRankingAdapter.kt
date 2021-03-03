@@ -3,6 +3,7 @@ package co.kr.todayplay.adapter
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,6 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>,rankpos:Int, context: Conte
     override fun onBindViewHolder(holder: RankingHolder, position: Int) {
         val get_ranking: Ranking = rankings.get(rankpos+position)
         val layoutParams = holder.itemView.layoutParams
-//        val imgpath = Environment.getExternalStorageDirectory().absolutePath + "/" + "play" + "/" +playDBHelper.getPlayPoster(get_ranking.play_id);
         val imgpath =context.filesDir.toString()+"/"+playDBHelper.getPlayPoster(get_ranking.play_id)
         val bm = BitmapFactory.decodeFile(imgpath)
         holder.ranking_tv.text = playDBHelper.getPlayTitle(get_ranking.play_id)
@@ -50,8 +50,13 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>,rankpos:Int, context: Conte
         holder.ranking_num.text = (position+1).toString()
         holder.itemView.setOnClickListener{
             itemClickListener.onItemClicked(holder,get_ranking,position)
-            val performInfoFragment = PerformInfoFragment(get_ranking.play_id)
-            (context as MainActivity).replaceFragment(performInfoFragment)
+
+            val performInfoFragment = PerformInfoFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("play_id",get_ranking.play_id)
+                }
+            }
+            (context as MainActivity).replaceFragment2(performInfoFragment)
         }
     }
 
@@ -61,9 +66,9 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>,rankpos:Int, context: Conte
 
 
     class RankingHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var ranking_tv = itemView?.findViewById<TextView>(R.id.ranking_tv_title);
-        var ranking_iv = itemView?.findViewById<ImageView>(R.id.ranking_iv);
-        var ranking_num = itemView?.findViewById<TextView>(R.id.ranking_num_tv);
+        var ranking_tv = itemView.findViewById<TextView>(R.id.ranking_tv_title);
+        var ranking_iv = itemView.findViewById<ImageView>(R.id.ranking_iv);
+        var ranking_num = itemView.findViewById<TextView>(R.id.ranking_num_tv);
 
     }
 

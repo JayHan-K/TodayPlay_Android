@@ -1,5 +1,7 @@
 package co.kr.todayplay.fragment;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,32 +37,39 @@ import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.AdapterSpinner2;
 import co.kr.todayplay.adapter.CategoryDetailRecyAdapter;
+import co.kr.todayplay.adapter.JournalHotListAdapter;
 import co.kr.todayplay.adapter.PlayCoverflowAdapter;
 import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.CategoryRe;
 import co.kr.todayplay.object.Data;
 import co.kr.todayplay.object.PlayModel;
+import co.kr.todayplay.object.Recommend;
 import co.kr.todayplay.object.category_recommend;
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 
 public class CategoryClickedFragment extends Fragment {
 
     //상단 배너부분 정보
-    String category_recommend_all_jsonString;
-    String all_category_recommend_result_url = "ttp://183.111.253.75/request_category_recommend/";
-    JSONArray category_recommend_all_jsonArray;
-    ArrayList<category_recommend> category_recommends = new ArrayList();
-    category_recommend data;
+     String category_recommend_all_jsonString;
+     String all_category_recommend_result_url = "http://183.111.253.75/request_category_recommend/";
+     JSONArray category_recommend_all_jsonArray;
+     ArrayList<category_recommend> category_recommends = new ArrayList<category_recommend>();
+     category_recommend data;
 
     private FeatureCoverFlow mCoverFlow;
     private PlayCoverflowAdapter mAdapter;
     private ArrayList<PlayModel> mData = new ArrayList<PlayModel>(0);
     Button login_go_back6;
-    private CategoryDetailRecyAdapter categoryDetailRecyAdapter;
     private Spinner spinner2;
     ArrayList<String> arrayList;
     AdapterSpinner2 adapterSpinner2;
     PlayDBHelper playDBHelper;
+     ArrayList<category_recommend> category_re = new ArrayList<category_recommend>();
+     CategoryRe categoryRe;
+     String category;
+     String keyword;
+     RecyclerView recyclerView;
+     private CategoryDetailRecyAdapter categoryDetailRecyAdapter = new CategoryDetailRecyAdapter();
 
     public CategoryClickedFragment(){}
 
@@ -68,24 +84,26 @@ public class CategoryClickedFragment extends Fragment {
         mData.add(new PlayModel(R.drawable.poster_sample2));
         mData.add(new PlayModel(R.drawable.journal_image_sample1));
         TextView textView3 = (TextView)rootView.findViewById(R.id.textView3);
-        String keyword = getArguments().getString("category_name");
-        String category = getArguments().getString("category");
+        keyword = getArguments().getString("category_name");
+        category = getArguments().getString("category");
         ArrayList<CategoryRe> play_id_first;
         ArrayList<CategoryRe> play_id_second=new ArrayList<>();
-        CategoryRe categoryRe;
+
 
         String title = category+","+keyword;
         textView3.setText(title);
         mAdapter = new PlayCoverflowAdapter(getActivity());
 
+        UpdateCategoryInfo updateCategoryInfo = new UpdateCategoryInfo();
+        updateCategoryInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 
-        keyword = "%"+keyword+"%";
-        play_id_first = playDBHelper.getkeywordplay_id(keyword);
+        String singlekeyword = "%"+keyword+"%";
+        Log.d("keywordinclicked","keywordinclicked"+singlekeyword);
+        play_id_first = playDBHelper.getkeywordplay_id(singlekeyword);
 
         if(play_id_first!=null){
             for(int i =0; i<play_id_first.size();++i){
-                Log.i("keywords","keywords"+play_id_first.get(i).getCategory());
                 categoryRe = play_id_first.get(i);
 
                 if(categoryRe.getCategory().equals(category) || category.equals("전체")||category.equals("공연중")){
@@ -99,17 +117,8 @@ public class CategoryClickedFragment extends Fragment {
 
 
 
-
-
-
         login_go_back6 = (Button)rootView.findViewById(R.id.login_go_back6);
-        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        categoryDetailRecyAdapter = new CategoryDetailRecyAdapter();
-        recyclerView.setAdapter(categoryDetailRecyAdapter);
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
 
         arrayList = new ArrayList<>();
         arrayList.add("찜하기 높은 순");
@@ -137,12 +146,12 @@ public class CategoryClickedFragment extends Fragment {
         mCoverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverflow);
         mCoverFlow.setAdapter(mAdapter);
 
-        mCoverFlow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("clicked item","item="+play_id_second.get(position).getCategory());
-            }
-        });
+//        mCoverFlow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("clicked item","item="+play_id_second.get(position).getCategory());
+//            }
+//        });
         mCoverFlow.setOnScrollPositionListener(new FeatureCoverFlow.OnScrollPositionListener() {
             @Override
             public void onScrolledToPosition(int position) {
@@ -157,11 +166,10 @@ public class CategoryClickedFragment extends Fragment {
         login_go_back6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CategoryFragment categoryFragment = new CategoryFragment();
-                ((MainActivity)getActivity()).replaceFragment(categoryFragment);
+                ((MainActivity)getActivity()).onBackPressed();
             }
         });
-        getData();
+//        getData();
 
 
         return rootView;
@@ -182,10 +190,115 @@ public class CategoryClickedFragment extends Fragment {
             data.setResId(listResId.get(i));
 
             // 각 값이 들어간 data를 adapter에 추가합니다.
-            categoryDetailRecyAdapter.addItem(data);
+//            categoryDetailRecyAdapter.addItem(data);
         }
         // adapter의 값이 변경되었다는 것을 알려줍니다.
         categoryDetailRecyAdapter.notifyDataSetChanged();
+
+    }
+
+    public static String getJsonFromServer(String url) throws IOException {
+
+        BufferedReader inputStream = null;
+
+        URL jsonUrl = new URL(url);
+        URLConnection dc = jsonUrl.openConnection();
+
+        dc.setConnectTimeout(10000);
+        dc.setReadTimeout(10000);
+
+        inputStream = new BufferedReader(new InputStreamReader(
+                dc.getInputStream()));
+
+        // read the JSON results into a string
+        return inputStream.readLine();
+    }
+
+    public  class UpdateCategoryInfo extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                category_recommend_all_jsonString = getJsonFromServer(all_category_recommend_result_url);
+                Log.d("Recommend_all_json", category_recommend_all_jsonString);
+                JSONObject jsonObject = new JSONObject(category_recommend_all_jsonString);
+                Log.d("Recommend jsonObject", jsonObject.toString());
+                category_recommend_all_jsonArray = jsonObject.getJSONArray("category_recommend");
+                for(int i=0; i<category_recommend_all_jsonArray.length(); i++){
+                    JSONObject category_recommend_object = (JSONObject) category_recommend_all_jsonArray.get(i);
+                    Log.d("RecommendObject", "Object " + i + ": " + category_recommend_all_jsonArray.get(i).toString());
+                    JSONArray category_recommend_all_jsonArray2 = (JSONArray)category_recommend_object.get("play_id");
+                    int[] play_id = new int[4];
+                    for(int j =0 ; j<category_recommend_all_jsonArray2.length(); ++j){
+                        play_id[j]=category_recommend_all_jsonArray2.getInt(j);
+                    }
+                    data = new category_recommend((String)category_recommend_object.get("category"),(String)category_recommend_object.get("keyword"),play_id);
+                    Log.d("category","category = "+category_recommend_object.get("category"));
+                    Log.d("category","category = "+category_recommend_object.get("keyword"));
+                    Log.d("category","category = "+play_id[0]);
+                    category_recommends.add(data);
+                    Log.d("category","category = "+category_recommends.get(0).getKeyword());
+                }
+                Log.d("category_done?","category_done");
+
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            switch (category) {
+                case "전체":
+                case "공연중":
+                    Log.i("category_re", "category_re_keyword = " + category_recommends.get(0).getKeyword());
+                    for (int i = 0; i < category_recommends.size(); ++i) {
+                        if (category_recommends.get(i).getKeyword().equals(keyword)) {
+                            category_re.add(category_recommends.get(i));
+                            Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                        }
+                    }
+                    break;
+                case "뮤지컬":
+                    for (int i = 0; i < category_recommends.size(); ++i) {
+                        if (category_recommends.get(i).getKeyword().contains(keyword)) {
+                            category_re.add(category_recommends.get(i));
+                            Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                            break;
+                        }
+                    }
+                    break;
+                case "연극":
+                    for (int i = 0; i < category_recommends.size(); ++i) {
+                        if (category_recommends.get(i).getKeyword().equals(keyword)) {
+                            category_re.add(category_recommends.get(i));
+                            Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                            break;
+                        }
+                    }
+                    break;
+            }
+            ArrayList<String> imagepath = new ArrayList<>();
+            ArrayList<Integer> imageint = new ArrayList<>();
+            for (int i =0; i<category_re.size();++i){
+                for(int j =0; j< category_re.get(i).getPlay_id().length;++j){
+                    String path = getActivity().getFilesDir() + "/"+ playDBHelper.getPlayPoster(category_re.get(i).getPlay_id()[j]);
+                    imagepath.add(path);
+                    imageint.add(category_re.get(i).getPlay_id()[j]);
+                }
+            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+            categoryDetailRecyAdapter.addItem(imagepath,imageint);
+            recyclerView.setAdapter(categoryDetailRecyAdapter);
+            categoryDetailRecyAdapter.notifyDataSetChanged();
+
+        }
     }
 
 }

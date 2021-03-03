@@ -78,7 +78,10 @@ public class PlayDBHelper extends SQLiteOpenHelper {
         ArrayList<CategoryRe> keywords = new ArrayList<>() ;
         StringBuffer sb = new StringBuffer();
         sb.append("SELECT * FROM Play WHERE play_keywords LIKE ? ");
-        keyword= keyword.replace("/"," ");
+        if(keyword.contains("/")){
+            String sp[] = keyword.split("/");
+            keyword=sp[0];
+        }
         Log.d("keywordin","keyword="+keyword);
         String[] params = {"%"+keyword+"%"};
         Cursor cursor;

@@ -2,6 +2,7 @@ package co.kr.todayplay.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,8 +48,12 @@ class HomeShowAdapter(homeShows: ArrayList<Recommend>, context: Context, itemCli
         holder.homeShowIV.setOnClickListener(View.OnClickListener {
             itemClickListener.onItemClicked(holder, homeShow, position)
             //                homeChangeToShowDetail(show);
-            val performInfoFragment = PerformInfoFragment(homeShow.play_id)
-            (context as MainActivity).replaceFragment(performInfoFragment)
+            val performInfoFragment = PerformInfoFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("play_id",homeShow.play_id)
+                }
+            }
+            (context as MainActivity).replaceFragment2(performInfoFragment)
         })
 
     }

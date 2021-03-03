@@ -143,7 +143,7 @@ public class PerformDetailFragment extends Fragment {
         if(!director.getName().equals("")){
             crew_data.add(director);
         }
-        if(!writer.getName().equals("")){
+        if(!("").equals(writer.getName())){
             crew_data.add(writer);
         }
         if(composer.getName() != null){

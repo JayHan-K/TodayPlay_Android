@@ -25,20 +25,16 @@ public class CategoryPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                CategoryTotal tab1 = new CategoryTotal();
-                return tab1;
+                return new CategoryTotal();
 
             case 1:
-                CategoryMusical tab2 = new CategoryMusical();
-                return tab2;
+                return new CategoryMusical();
 
             case 2:
-                CategoryPlay tab3 = new CategoryPlay();
-                return tab3;
+                return new CategoryPlay();
 
             case 3:
-                CategoryCurrent tab4 = new CategoryCurrent();
-                return tab4;
+                return new CategoryCurrent();
             default:
                 return null;
 

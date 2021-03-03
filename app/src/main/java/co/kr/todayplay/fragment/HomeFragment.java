@@ -67,8 +67,6 @@ public class HomeFragment extends Fragment {
     ImageView imageView12;
     ImageView imageView3;
 
-
-
     ArrayList<Banner> banner_chosen;
     ArrayList<Recommend> recommend_chosen;
     ArrayList<Recommend> journal_chosen;
@@ -77,28 +75,26 @@ public class HomeFragment extends Fragment {
     ArrayList<History> history_get;
 
 
-
-    public HomeFragment(ArrayList<Banner> banners, ArrayList<Recommend>recommend, ArrayList<Recommend>recommendj, ArrayList<Ranking>rankings, ArrayList<Line>lines){
-        this.banner_chosen = banners;
-        this.recommend_chosen = recommend;
-        this.journal_chosen = recommendj;
-        this.ranking_chosen = rankings;
-        this.line_chosen = lines;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.activity_home_fragment,container,false);
+        banner_chosen = (ArrayList<Banner>)getArguments().get("banners");
+        recommend_chosen = (ArrayList<Recommend>)getArguments().get("recommands");
+        journal_chosen = (ArrayList<Recommend>)getArguments().get("recommandj");
+        ranking_chosen = (ArrayList<Ranking>)getArguments().get("rankings");
+        line_chosen = (ArrayList<Line>)getArguments().get("line");
+
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db", null, 1);
         history_get = new ArrayList<History>();
-        String poster= playDBHelper.getPlayPoster(506);
         homeFragmentChildFragment = viewGroup.findViewById(R.id.home_fragment_child_fragment);
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
         imageView12 = viewGroup.findViewById(R.id.imageView12);
+
         Line line = line_chosen.get(0);
         String data = line.getLine();
         int play_id = line.getPlay_id();
+
 
         //한줄관련부분
         History history_chosen;
@@ -159,7 +155,6 @@ public class HomeFragment extends Fragment {
         button.setOnClickListener((new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.d("postername",poster);
                        if(hidden.getVisibility() == View.VISIBLE){
                            hidden.setVisibility(View.GONE);
                        }else if (hidden.getVisibility() == View.GONE){
@@ -213,7 +208,7 @@ public class HomeFragment extends Fragment {
         ItemClickListener listener = (ItemClickListener)(new ItemClickListener(){
             @Override
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
-//                homeChangeToJournalDetail();
+//
             }
 
             @Override
@@ -240,9 +235,6 @@ public class HomeFragment extends Fragment {
         ItemClickListener mListener = (ItemClickListener)(new ItemClickListener(){
             @Override
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
-                Recommend show =(Recommend)item;
-//                homeChangeToShowDetail(show);
-
             }
 
             @Override
@@ -262,11 +254,6 @@ public class HomeFragment extends Fragment {
         return viewGroup;
     }
 
-
-    public void BackToHome(){
-        homeFragmentMainScrollView.setVisibility(View.VISIBLE);
-        homeFragmentChildFragment.setVisibility(View.INVISIBLE);
-    }
 
 
 

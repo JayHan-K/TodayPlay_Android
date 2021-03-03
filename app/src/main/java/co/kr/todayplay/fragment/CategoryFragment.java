@@ -62,18 +62,5 @@ public class CategoryFragment extends Fragment {
 
         return rootView;
     }
-    public void categoryChangeToclicked(){
-        getChildFragmentManager().beginTransaction().replace(
-                R.id.pf_fragment_child_fragment3,
-                new CategoryClickedFragment()
-        ).commitAllowingStateLoss();
-        linearlayout5.setVisibility(View.GONE);
-        ProfileFragmentChildFragment3.setVisibility(View.VISIBLE);
-
-    }
-    public void BackToHome(){
-        ProfileFragmentChildFragment3.setVisibility(View.GONE);
-        linearlayout5.setVisibility(View.VISIBLE);
-    }
 
 }

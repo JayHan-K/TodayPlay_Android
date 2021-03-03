@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,14 +50,14 @@ public class PerformInfoFragment extends Fragment {
     ArrayList<Banner>banners;
     ArrayList<Ranking>rankings;
     Banner banneritem;
-    ImageButton back_btn;
+    Button back_btn;
     int play_id;
     TextView perform_title_tv;
     PlayDBHelper playDBHelper;
 
-    public PerformInfoFragment(int play_id){
-        this.play_id = play_id;
-    }
+//    public PerformInfoFragment(int play_id){
+//        this.play_id = play_id;
+//    }
 
 
     @Nullable
@@ -64,8 +65,10 @@ public class PerformInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
         realposter = (ImageView)viewGroup.findViewById(R.id.perfrom_img);
-        back_btn = (ImageButton)viewGroup.findViewById(R.id.back_btn);
+        back_btn = (Button)viewGroup.findViewById(R.id.button5);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
+        play_id = getArguments().getInt("play_id");
+
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         perform_title_tv = viewGroup.findViewById(R.id.perfrom_title_tv);
 
@@ -82,6 +85,13 @@ public class PerformInfoFragment extends Fragment {
         String main_poster_path = getActivity().getApplicationContext().getFileStreamPath(playDBHelper.getPlayPoster(play_id)).toString();
         Bitmap bm = BitmapFactory.decodeFile(main_poster_path);
         realposter.setImageBitmap(bm);
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)viewGroup.getContext()).onBackPressed();
+            }
+        });
         /*
         if(!poster2.equals("")){
             Bitmap image = BitmapFactory.decodeFile(imgpath);
@@ -125,13 +135,6 @@ public class PerformInfoFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) { }
 
-        });
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
         });
 
         return viewGroup;

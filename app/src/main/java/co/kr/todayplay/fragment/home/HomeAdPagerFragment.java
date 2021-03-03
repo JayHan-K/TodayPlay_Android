@@ -56,13 +56,16 @@ public class HomeAdPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_home_ad_fragment, container, false);
         ImageView homeMainAdIV = (ImageView) viewGroup.findViewById(R.id.home_main_ad_iv);
-        PerformInfoFragment performInfoFragment = new PerformInfoFragment(banneritem.getPlay_id());
+        Bundle bundle = new Bundle();
+        bundle.putInt("play_id",banneritem.getPlay_id());
+        PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+        performInfoFragment.setArguments(bundle);
 //        banneritem = banners.get(position);
         homeMainAdIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("clicked", "onClick: image");
-                ((MainActivity)getActivity()).replaceFragment(performInfoFragment);
+                ((MainActivity)getActivity()).replaceFragment2(performInfoFragment);
             }
         });
 //        String imgpath = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/" + file + "/" +banneritem.getBanner();
