@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,12 +29,21 @@ import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.AdapterSpinner2;
 import co.kr.todayplay.adapter.CategoryDetailRecyAdapter;
 import co.kr.todayplay.adapter.PlayCoverflowAdapter;
+import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.CategoryRe;
 import co.kr.todayplay.object.Data;
 import co.kr.todayplay.object.PlayModel;
+import co.kr.todayplay.object.category_recommend;
 import it.moondroid.coverflow.components.ui.containers.FeatureCoverFlow;
 
 public class CategoryClickedFragment extends Fragment {
+
+    //상단 배너부분 정보
+    String category_recommend_all_jsonString;
+    String all_category_recommend_result_url = "ttp://183.111.253.75/request_category_recommend/";
+    JSONArray category_recommend_all_jsonArray;
+    ArrayList<category_recommend> category_recommends = new ArrayList();
+    category_recommend data;
 
     private FeatureCoverFlow mCoverFlow;
     private PlayCoverflowAdapter mAdapter;
