@@ -31,6 +31,10 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,6 +79,9 @@ public class JournalDetailFragment extends Fragment {
     String journal_title;
     String[] comments, relation_journal;
 
+    String journalCommentIdResult;
+    JSONArray journal_commentIds_array;
+
     public JournalDetailFragment(){}
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -104,8 +111,9 @@ public class JournalDetailFragment extends Fragment {
         if(bundle != null){
             journal_id = bundle.getInt("journal_id");
             Log.d("Bundle result", "journal_id: " + journal_id);
+            //user_id = bundle.getInt("user_id");
+            //Log.d("Bundle result", "user_id: " + user_id);
         }
-        //journal_comments, relation_journal
         journal_title = journalDBHelper.getJournalTitle(journal_id);
         editor_tv.setText("by. " + journalDBHelper.getJournalEditor(journal_id));
         Log.d("JournalDetail", "journal_id " + journal_id + ": journal_title = " + journal_title + " , journal_num_of_scrap = " + journalDBHelper.getJournalNum_of_scrap(journal_id) + ", journal_num_of_view = " + journalDBHelper.getJournalNum_of_view(journal_id) + ", journal_comments = " + journalDBHelper.getJournalComments(journal_id) + ", journal_banner_img = " + journalDBHelper.getJournalBanner_img(journal_id) + ", relation_journal = " + journalDBHelper.getJournalRelation_journal(journal_id));
@@ -158,6 +166,7 @@ public class JournalDetailFragment extends Fragment {
             }
         });
 
+        //--WebView Part--
         webView = (WebView)viewGroup.findViewById(R.id.journal_wv);
         if(webView == null){
             Log.d("webView", "onCreateView: webView is null");
@@ -176,7 +185,7 @@ public class JournalDetailFragment extends Fragment {
         String[] file_name = file.split("[.]");
         webView.loadUrl("http://183.111.253.75/media/journal/" + file_name[0] + "/index.html");
 
-        //Comments part
+        //--Comments 로드 Part--
         final ArrayList<PerformReviewCommentAdapter.CommentItem> comment_data = new ArrayList<>();
         ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
         //recomment_data.add(new PerformReviewCommentAdapter.CommentItem(R.drawable.icon_mypage, "제인", "2020.10.23", "꿀팁 공유 감사합니다!\n2층에서는 샹들리에 떨어지는게 잘 안보이나요?", true));
@@ -186,21 +195,31 @@ public class JournalDetailFragment extends Fragment {
         comment_rv.setAdapter(performReviewCommentAdapter);
         comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
-        int[] journal_comment_ids;
+
         String journal_data = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
                     @Override
                     public void onSuccess(String data) {
                         Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
                         if (data.equals("")) {
-                            Log.d("postGetCommentIds", "onSuccess: " + data);
-
-                        } else {
                             Log.d("postGetCommentIds", "POST ResultFailed.");
+                        } else {
+                            Log.d("postGetCommentIds", "onSuccess: " + data);
+                            try {
+                                journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments").toString();
+                                Log.d("journalIdResultObj", journalCommentIdResult);
+                                //journal_commentIds_array = new JSONArray(journalIdResult_object.getJSONArray("journal_comments"));
+                                //for(int i = 0; i< journal_commentIds_array.length(); i++){
+                                  //  Log.d("journal_commentIds", journal_commentIds_array.get(i).toString());
+                                //}
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
         });
 
-        Log.d("postGetCommentIds", journal_data);
+        Log.d("journal_data", journal_data);
+
 
         /*
         for(int i=0; i<journal_comment_ids.length; i++){
@@ -234,6 +253,7 @@ public class JournalDetailFragment extends Fragment {
         recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
         recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
 
+        //--댓글 저장 Part--
         comment_save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -272,7 +292,7 @@ public class JournalDetailFragment extends Fragment {
         return viewGroup;
     }
 
-    /** * Gets html content from the assets folder. */
+    /*
     private String getHtmlFromAsset() {
         InputStream is; StringBuilder builder = new StringBuilder();
         String htmlString = null;
@@ -291,7 +311,7 @@ public class JournalDetailFragment extends Fragment {
             e.printStackTrace();
         }
         return htmlString;
-    } /** * Loads html page with the content. */
+    }
 
     private void loadHtmlPage()
     {
@@ -299,6 +319,7 @@ public class JournalDetailFragment extends Fragment {
         if (htmlString != null) webView.loadDataWithBaseURL("file:///android_asset/journal4/", htmlString, "text/html", "UTF-8", null);
         else Toast.makeText(getActivity(), "html이 없습니다", Toast.LENGTH_LONG).show();
     }
+    */
 
     //Comment Save
     public String postSendCommentData(String user_id, String comment, String comment_date, String comment_source_id, VolleyCommentCallback callback){
@@ -365,13 +386,9 @@ public class JournalDetailFragment extends Fragment {
 
                 @Override
                 public void onResponse(String response) {
-
-
                     String data = response;
                     Log.d("postGetCommentIds", data);
                     callback.onSuccess(data);
-
-
                 }
             }, new Response.ErrorListener() {
 
@@ -391,7 +408,6 @@ public class JournalDetailFragment extends Fragment {
             };
             queue.add(stringRequest);
             return resposeData[0];
-
 
         } catch (Exception e) {
             Log.d("postGetCommentIds", e.toString());

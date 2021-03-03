@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.fragment.CommunityFragment;
 import co.kr.todayplay.fragment.HomeFragment;
+import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.fragment.JournalFragment;
 import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.fragment.SearchFragment;
@@ -162,6 +163,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void replaceFragment(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", Integer.parseInt(userId));
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
+    }
+
+    public void replaceFragment(Fragment fragment, int journal_id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", Integer.parseInt(userId));
+        bundle.putInt("journal_id", journal_id);
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();

@@ -94,11 +94,8 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("journal_id", item.getJournal_id());
                 JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
-                journalDetailFragment.setArguments(bundle);
-                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment, item.getJournal_id());
             }
         });
     }
