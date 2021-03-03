@@ -111,8 +111,8 @@ public class JournalDetailFragment extends Fragment {
         if(bundle != null){
             journal_id = bundle.getInt("journal_id");
             Log.d("Bundle result", "journal_id: " + journal_id);
-            //user_id = bundle.getInt("user_id");
-            //Log.d("Bundle result", "user_id: " + user_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "user_id: " + user_id);
         }
         journal_title = journalDBHelper.getJournalTitle(journal_id);
         editor_tv.setText("by. " + journalDBHelper.getJournalEditor(journal_id));
@@ -212,13 +212,14 @@ public class JournalDetailFragment extends Fragment {
                                     Log.d("journalCommentIds", journalCommentIds[i]);
                                     String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
                                         @Override
-                                        public void onSuccess(String data) {
-                                            Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                                            if (data.equals("")) {
-                                                Log.d("postGetCommentData", "onSuccess: " +  data);
+                                        public void onSuccess(String comment_data) {
+                                            Toast.makeText(getActivity().getApplicationContext(), "Result: " + comment_data, Toast.LENGTH_SHORT).show();
+                                            if (comment_data.equals("")) {
+                                                Log.d("postGetCommentData", "POST ResultFailed.");
 
                                             } else {
-                                                Log.d("postGetCommentData", "POST ResultFailed.");
+                                                Log.d("postGetCommentData", "onSuccess: " +  comment_data);
+
                                             }
                                         }
 
@@ -420,8 +421,8 @@ public class JournalDetailFragment extends Fragment {
 
                 @Override
                 public void onResponse(String response) {
-                    String data = response;
-                    Log.d("postGetCommentData", data);
+                    String comment_data = response;
+                    Log.d("postGetCommentData", comment_data);
                     callback.onSuccess(response);
                 }
             }, new Response.ErrorListener(){
