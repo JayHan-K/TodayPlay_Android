@@ -97,6 +97,12 @@ public class PerformDetailFragment extends Fragment {
             String[] s = crews[i].split("[.]");
             Log.d("crews", "id = " + s[0] + " name = " + s[1]);
             crew_ids.add(Integer.parseInt(s[0]));
+            Log.d("strLength", s[1].length() + " ");
+            if(s[1].length() > 7){
+                s[1] = s[1].substring(0, 7) + "···";
+                Log.d("substring", s[1]);
+            }
+            Log.d("substring", s[1]);
             crew_names.add(s[1]);
             Log.d("crews", "crew_id = " + crew_ids.get(i) + ", crew_name = " + crew_names.get(i));
         }
@@ -111,9 +117,9 @@ public class PerformDetailFragment extends Fragment {
         //crew_name, crew_pic
         for(int i=0; i<crew_ids.size(); i++){
             String img_path = crewDBHelper.getCrewPic(crew_ids.get(i));
-            String name =  crewDBHelper.getCrewName(crew_ids.get(i));
+            String name =  crew_names.get(i);
             String position = crewDBHelper.getCrewPosition(crew_ids.get(i));
-            Log.d("crews", "crew_id: " + crew_ids.get(i) + ", crew_name: " + name + ", crwe_img_path: " + img_path + ", crew_position:" + position + "//");
+            Log.d("crews", "crew_id: " + crew_ids.get(i) + ", crew_name: " + crew_names.get(i) + ", crwe_img_path: " + img_path + ", crew_position:" + position + "//");
             if(position.equals("연출")){
                 Log.d("crews", "crew_id = " + crew_ids.get(i) + "is director");
                 director = new PerformDetailStaffAdapter.StaffItem(R.drawable.crew_director, img_path, position, name);

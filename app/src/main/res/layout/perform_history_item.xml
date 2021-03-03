@@ -23,30 +23,28 @@
         android:layout_marginLeft="11dp"
         android:layout_marginBottom="4dp">
         <TextView
-            android:id="@+id/perform_history_title_tv"
+            android:id="@+id/perform_history_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/content_part"
             app:layout_constraintStart_toStartOf="@id/content_part"
-            android:text="연극 라이어"
-            android:textStyle="bold"
-            android:textColor="#ffffff"
-            android:textSize="16sp"/>
+            android:text="2011, 90분"
+            android:textSize="12sp"
+            android:textColor="#ffffff" />
         <TextView
-            android:id="@+id/perform_history_time_tv"
+            android:id="@+id/play_crews_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/perform_history_title_tv"
+            app:layout_constraintTop_toBottomOf="@id/perform_history_time_tv"
             app:layout_constraintStart_toStartOf="@id/content_part"
             android:text="2011, 90분"
             android:textSize="12sp"
-            android:textColor="#ffffff"
-            android:layout_marginTop="9dp"/>
+            android:textColor="#ffffff" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/direct_part"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/perform_history_time_tv"
+            app:layout_constraintTop_toBottomOf="@id/play_crews_tv"
             app:layout_constraintStart_toStartOf="@id/content_part"
             android:layout_marginTop="8dp">
             <TextView
@@ -72,7 +70,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/actor_part"
+            android:id="@+id/maker_part"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/direct_part"
@@ -81,7 +79,7 @@
                 android:id="@+id/actor_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="출연진"
+                android:text="제작사"
                 android:textColor="#ffffff"
                 android:textSize="12sp"
                 android:textStyle="bold"

@@ -209,6 +209,8 @@ public class JournalDetailFragment extends Fragment {
                                 journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments");
                                 Log.d("journalIdResultObj", journalCommentIdResult);
                                 journalCommentIds = journalCommentIdResult.split(", ");
+                                num_comment_tv.setText(journalCommentIds.length + "");
+                                num_comment_tv2.setText(journalCommentIds.length + "");
                                 for(int i=0; i<journalCommentIds.length; i++){
                                     Log.d("journalCommentIds", journalCommentIds[i]);
                                     String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
@@ -220,39 +222,88 @@ public class JournalDetailFragment extends Fragment {
 
                                             } else {
                                                 Log.d("postGetCommentData", "onSuccess: " +  comment_data);
-                                                /*
+
                                                 try {
-                                                    String comment = new JSONObject(comment_data).getString("comment");
-                                                    String user_id = new JSONObject(comment_data).getString("user_id");
-                                                    String user_pic;
-                                                    String user_name;
+                                                    JSONObject comment_object = new JSONObject(comment_data).getJSONObject("comment");
+                                                    String comment = comment_object.getString("comment");
+                                                    String user_id = comment_object.getString("user_id");
+                                                    String comment_date = comment_object.getString("comment_date");
+                                                    String comment_reply = comment_object.getString("comment_reply");
+                                                    Log.d("comment_data", comment + " | " + comment_date + " | " + comment_reply + " | " + user_id);
                                                     //user data POST
-                                                    String comment_date = new JSONObject(comment_data).getString("comment_date");
-                                                    String comment_reply = new JSONObject(comment_data).getString("comment_reply");
-                                                    if(comment_reply.equals("")){
-                                                        comment_arraylist.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date,comment, false));
+                                                    String user_data = postGetUserData(user_id, new VolleyCommentCallback() {
+                                                        @Override
+                                                        public void onSuccess(String data) {
+                                                            if(data.equals("-1")) Log.d("postGetUserData", "POST ResultFailed.");
+                                                            else{
+                                                                try {
+                                                                    JSONObject user_object = new JSONObject(data).getJSONObject("user");
+                                                                    String user_pic = user_object.getString("user_pic");
+                                                                    String user_name = user_object.getString("nickname");
+                                                                    Log.d("postGetUserData", "onSuccess: " +  data);
+                                                                    String user_img_path = getActivity().getApplicationContext().getFileStreamPath(user_pic).toString();
+                                                                    Log.d("comment_reply", comment_reply);
 
-                                                    }
-                                                    else{
-                                                        //recomment data post
-                                                        String recomment_date;
-                                                        String recomment;
-                                                        String recomment_user_id;
-                                                        //recomment user data post
-                                                        String recomment_user_pic;
-                                                        String recomment_user_name;
 
-                                                        ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
-                                                        recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
-                                                        comment_arraylist.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date,comment, recomment_data, false));
+                                                                    //여기부터~~~~
 
-                                                    }
+
+                                                                    if(comment_reply.equals("")){
+                                                                        comment_arraylist.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                                        Log.d("add comment", "Success " + comment);
+                                                                    }
+                                                                    else{
+                                                                        //recomment data post
+                                                                        String recomment_result = postGetCommentData(comment_reply, new VolleyCommentCallback() {
+                                                                            @Override
+                                                                            public void onSuccess(String data) {
+                                                                                if(data.equals("")) Log.d("postGetRecommentData", "POST ResultFailed.");
+                                                                                else{
+                                                                                    try {
+                                                                                        JSONObject rcm_object = new JSONObject(data).getJSONObject("comment");
+                                                                                        String recomment_date = rcm_object.getString("comment_date");
+                                                                                        String recomment = rcm_object.getString("comment");
+                                                                                        String recomment_user_id = rcm_object.getString("user_id");
+
+                                                                                        //recomment user data post
+                                                                                        String rcm_user_data = postGetUserData(recomment_user_id, new VolleyCommentCallback() {
+                                                                                            @Override
+                                                                                            public void onSuccess(String data) {
+                                                                                                if(data.equals("")) Log.d("postGetRCMUserData", "POST ResultFailed.");
+                                                                                                else {
+                                                                                                    String recomment_user_pic = "";
+                                                                                                    String recomment_user_name = "";
+                                                                                                    Log.d("postGetRCMUserData", "onSuccess: " +  data);
+                                                                                                    String rcm_user_img_path = getActivity().getApplicationContext().getFileStreamPath(recomment_user_pic).toString();
+
+                                                                                                    ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
+                                                                                                    recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
+                                                                                                    comment_arraylist.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date,comment, recomment_data, false));
+
+                                                                                                }
+                                                                                            }
+                                                                                        });
+                                                                                    } catch (JSONException e) {
+                                                                                        e.printStackTrace();
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+
+                                                            }
+                                                        }
+                                                    });
+
 
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
 
-                                                 */
+
 
                                             }
                                         }
@@ -489,7 +540,53 @@ public class JournalDetailFragment extends Fragment {
         return "0";
     }
 
+    //Get User Data
+    public String postGetUserData(String user_id, VolleyCommentCallback callback){
+        try{
+            final String[] response_var = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://183.111.253.75/request_user_pic_nickname_by_id/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+                    String user_id = response;
+                    Log.d("postGetUserData", user_id);
+                    callback.onSuccess(response);
+                }
+            }, new Response.ErrorListener(){
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postGetUserData", error.toString());
+                }
+            })
+            {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("user_id", user_id);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return response_var[0];
+
+
+        }catch(Exception e){
+            Log.d("postGetUserData", e.toString());
+
+        }
+        return "0";
+    }
+
 }
+
+
+
+
 interface VolleyCommentCallback{
     void onSuccess(String data);
 }

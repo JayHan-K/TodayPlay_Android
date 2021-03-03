@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,57 +20,71 @@ public class PerformHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public ArrayList<HistoryListViewHolder> itemController = new ArrayList<>();
 
     public static class Item{
+        private String img_path;
         private int drawable;
-        private String perform_title;
         private String time;
         private String directors;
-        private String actors;
+        private String crews;
+        private String company;
 
         public Item(){}
 
-        public Item(int drawable, String perform_title, String time, String directors, String actors){
+        public Item(int drawable, String time, String crews, String directors, String company){
             this.drawable = drawable;
-            this.perform_title = perform_title;
+            this.crews = crews;
             this.time = time;
             this.directors = directors;
-            this.actors = actors;
+            this.company = company;
+        }
+
+        public Item(String img_path, String time, String crews, String directors, String company){
+            this.img_path = img_path;
+            this.crews = crews;
+            this.time = time;
+            this.directors = directors;
+            this.company = company;
         }
 
         public int getDrawable() {
             return drawable;
         }
 
-        public String getActors() {
-            return actors;
-        }
 
         public String getDirectors() {
             return directors;
         }
 
-        public String getPerform_title() {
-            return perform_title;
+        public String getCompany() {
+            return company;
+        }
+
+        public String getCrews() {
+            return crews;
         }
 
         public String getTime() {
             return time;
         }
+
+        public String getImg_path() {
+            return img_path;
+        }
     }
 
     public static class HistoryListViewHolder extends RecyclerView.ViewHolder{
         public ImageView imageView;
-        public TextView perform_title_tv;
+        public TextView crews_tv;
         public TextView time_tv;
-        public TextView actors_tv;
+        public TextView makers_tv;
         public TextView directors_tv;
 
         public HistoryListViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = (ImageView)itemView.findViewById(R.id.perform_history_iv);
-            perform_title_tv = (TextView)itemView.findViewById(R.id.perform_history_title_tv);
+            crews_tv = (TextView)itemView.findViewById(R.id.play_crews_tv);
             time_tv = (TextView)itemView.findViewById(R.id.perform_history_time_tv);
             directors_tv = (TextView)itemView.findViewById(R.id.perform_history_directors_tv);
-            actors_tv = (TextView)itemView.findViewById(R.id.perform_history_actors_tv);
+            makers_tv = (TextView)itemView.findViewById(R.id.perform_history_actors_tv);
         }
     }
 
@@ -91,11 +107,12 @@ public class PerformHistoryAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Item item = data.get(position);
         final HistoryListViewHolder itemController = (HistoryListViewHolder) holder;
-        itemController.imageView.setImageResource(item.getDrawable());
-        itemController.perform_title_tv.setText(item.getPerform_title());
+        Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+        itemController.imageView.setImageBitmap(bm);
+        itemController.crews_tv.setText(item.getCrews());
         itemController.time_tv.setText(item.getTime());
         itemController.directors_tv.setText(item.getDirectors());
-        itemController.actors_tv.setText(item.getActors());
+        itemController.makers_tv.setText(item.getCompany());
     }
 
     @Override

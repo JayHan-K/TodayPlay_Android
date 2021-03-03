@@ -1,12 +1,15 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +31,7 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
     public static class CommentItem{
         private boolean isRecomment = false;
         private int profile_drawable;
+        private String img_path;
         private String user_name;
         private String date;
         private String comment;
@@ -41,6 +45,15 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
             this.comment = comment;
             this.isRecomment = isRecomment;
         }
+
+        public CommentItem(String img_path, String user_name, String date, String comment, boolean isRecomment){
+            this.img_path = img_path;
+            this.user_name = user_name;
+            this.date = date;
+            this.comment = comment;
+            this.isRecomment = isRecomment;
+        }
+
         public CommentItem(int profile_drawable, String user_name, String date, String comment, ArrayList<CommentItem> recomment_data, boolean isRecomment){
             this.profile_drawable = profile_drawable;
             this.user_name = user_name;
@@ -50,8 +63,21 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
             this.isRecomment = isRecomment;
         }
 
+        public CommentItem(String img_path, String user_name, String date, String comment, ArrayList<CommentItem> recomment_data, boolean isRecomment){
+            this.img_path = img_path;
+            this.user_name = user_name;
+            this.date = date;
+            this.comment = comment;
+            this.recomment_data = recomment_data;
+            this.isRecomment = isRecomment;
+        }
+
         public int getProfile_drawable() {
             return profile_drawable;
+        }
+
+        public String getImg_path() {
+            return img_path;
         }
 
         public String getDate() {
@@ -82,6 +108,7 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
         private TextView comment_tv;
         private RecyclerView recomment_rv;
         private ConstraintLayout parent_layout;
+        private Button rcm_btn;
 
         public CommentHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,6 +118,7 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
             this.comment_tv = itemView.findViewById(R.id.comment_tv);
             this.recomment_rv = itemView.findViewById(R.id.recomment_rv);
             this.parent_layout = itemView.findViewById(R.id.parent_layout);
+            this.rcm_btn = itemView.findViewById(R.id.rcm_btn);
         }
     }
     public PerformReviewCommentAdapter(Context context, ArrayList<PerformReviewCommentAdapter.CommentItem> data){
@@ -118,12 +146,14 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         CommentItem item = data.get(position);
         PerformReviewCommentAdapter.CommentHolder itemController = (PerformReviewCommentAdapter.CommentHolder) holder;
-        itemController.profile_iv.setImageResource(item.getProfile_drawable());
+        Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+        itemController.profile_iv.setImageBitmap(bm);
         itemController.user_name_tv.setText(item.user_name);
         itemController.date_tv.setText(item.getDate());
         itemController.comment_tv.setText(item.getComment());
         if(item.isRecomment){
             itemController.parent_layout.setBackgroundColor(Color.TRANSPARENT);
+            itemController.rcm_btn.setVisibility(View.GONE);
         }
 
         //recycler
