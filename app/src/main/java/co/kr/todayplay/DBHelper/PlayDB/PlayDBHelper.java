@@ -98,7 +98,7 @@ public class PlayDBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String play_category = "";
         Cursor cursor;
-        cursor = db.rawQuery("SELECT * FROM Play WHERE play_id = " + play_id + "", null);
+        cursor = db.rawQuery("SELECT play_category FROM Play WHERE play_id = " + play_id + "", null);
         while (cursor.moveToNext()) {
             play_category = cursor.getString(0);
         }
