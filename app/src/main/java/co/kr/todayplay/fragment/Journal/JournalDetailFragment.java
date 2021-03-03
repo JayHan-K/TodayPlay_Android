@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -186,14 +187,14 @@ public class JournalDetailFragment extends Fragment {
         webView.loadUrl("http://183.111.253.75/media/journal/" + file_name[0] + "/index.html");
 
         //--Comments 로드 Part--
-        final ArrayList<PerformReviewCommentAdapter.CommentItem> comment_data = new ArrayList<>();
-        ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
+        final ArrayList<PerformReviewCommentAdapter.CommentItem> comment_arraylist = new ArrayList<>();
+        //ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
         //recomment_data.add(new PerformReviewCommentAdapter.CommentItem(R.drawable.icon_mypage, "제인", "2020.10.23", "꿀팁 공유 감사합니다!\n2층에서는 샹들리에 떨어지는게 잘 안보이나요?", true));
         //comment_data.add(new PerformReviewCommentAdapter.CommentItem(R.drawable.icon_mypage, "제인", "2020.10.23","꿀팁 공유 감사합니다!\n2층에서는 샹들리에 떨어지는게 잘 안보이나요?", recomment_data, false));
         //comment_data.add(new PerformReviewCommentAdapter.CommentItem(R.drawable.icon_mypage, "제인", "2020.10.23","꿀팁 공유 감사합니다!\n2층에서는 샹들리에 떨어지는게 잘 안보이나요?", false));
-        final PerformReviewCommentAdapter performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity(), comment_data);
-        comment_rv.setAdapter(performReviewCommentAdapter);
-        comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        //final PerformReviewCommentAdapter performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity(), comment_arraylist);
+        //comment_rv.setAdapter(performReviewCommentAdapter);
+        //comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
 
         String journal_data = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
@@ -205,7 +206,7 @@ public class JournalDetailFragment extends Fragment {
                         } else {
                             Log.d("postGetCommentIds", "onSuccess: " + data);
                             try {
-                                journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments").toString();
+                                journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments");
                                 Log.d("journalIdResultObj", journalCommentIdResult);
                                 journalCommentIds = journalCommentIdResult.split(", ");
                                 for(int i=0; i<journalCommentIds.length; i++){
@@ -219,6 +220,39 @@ public class JournalDetailFragment extends Fragment {
 
                                             } else {
                                                 Log.d("postGetCommentData", "onSuccess: " +  comment_data);
+                                                /*
+                                                try {
+                                                    String comment = new JSONObject(comment_data).getString("comment");
+                                                    String user_id = new JSONObject(comment_data).getString("user_id");
+                                                    String user_pic;
+                                                    String user_name;
+                                                    //user data POST
+                                                    String comment_date = new JSONObject(comment_data).getString("comment_date");
+                                                    String comment_reply = new JSONObject(comment_data).getString("comment_reply");
+                                                    if(comment_reply.equals("")){
+                                                        comment_arraylist.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date,comment, false));
+
+                                                    }
+                                                    else{
+                                                        //recomment data post
+                                                        String recomment_date;
+                                                        String recomment;
+                                                        String recomment_user_id;
+                                                        //recomment user data post
+                                                        String recomment_user_pic;
+                                                        String recomment_user_name;
+
+                                                        ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
+                                                        recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
+                                                        comment_arraylist.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date,comment, recomment_data, false));
+
+                                                    }
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                 */
 
                                             }
                                         }
@@ -227,6 +261,10 @@ public class JournalDetailFragment extends Fragment {
 
                                     Log.d("postSendCommentData", result);
                                 }
+                                final PerformReviewCommentAdapter performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity(), comment_arraylist);
+                                comment_rv.setAdapter(performReviewCommentAdapter);
+                                comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -263,10 +301,9 @@ public class JournalDetailFragment extends Fragment {
                         public void onSuccess(String data) {
                             Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
                             if (data.equals("1")) {
-                                comment_et.setText("");
-
-                            } else {
                                 Log.d("postSendCommentData", "POST ResultFailed.");
+                            } else {
+                                comment_et.setText("");
                             }
                         }
 
