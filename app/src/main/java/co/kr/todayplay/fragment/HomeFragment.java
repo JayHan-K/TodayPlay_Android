@@ -91,61 +91,78 @@ public class HomeFragment extends Fragment {
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
         imageView12 = viewGroup.findViewById(R.id.imageView12);
 
-        Line line = line_chosen.get(0);
-        String data = line.getLine();
-        int play_id = line.getPlay_id();
-
 
         //한줄관련부분
-        History history_chosen;
+        if(line_chosen.size()>0){
+            Line line = line_chosen.get(0);
+            String data = line.getLine();
+            int play_id = line.getPlay_id();
+            History history_chosen;
 
-        Log.d("line_id,line_string","line"+data+" ,"+play_id);
-        String history = playDBHelper.getPlayHistory(play_id);
-        Log.d("history","history"+history);
-        try {
-            JSONArray history_jsonArray = new JSONArray(history);
-            JSONObject line_id_object = (JSONObject) history_jsonArray.get(0);
-            Log.d("historyObject", "Object "  + ": " + line_id_object.toString());
-            history_chosen = new History((String)line_id_object.get("poster_img"),(String)line_id_object.get("play_date"),(String)line_id_object.get("play_product_company"),(String)line_id_object.get("play_director"),(String)line_id_object.get("play_crew"));
-            Log.d("historyimg", "Object "  + ": " + history_chosen.getPoster_img());
-            Log.d("historyObject", "Object "  + ": " + history_chosen.getPlay_crew());
-            history_get.add(history_chosen);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            Log.d("line_id,line_string","line"+data+" ,"+play_id);
+            String history = playDBHelper.getPlayHistory(play_id);
+            Log.d("history","history"+history);
+            try {
+                JSONArray history_jsonArray = new JSONArray(history);
+                JSONObject line_id_object = (JSONObject) history_jsonArray.get(0);
+                Log.d("historyObject", "Object "  + ": " + line_id_object.toString());
+                history_chosen = new History((String)line_id_object.get("poster_img"),(String)line_id_object.get("play_date"),(String)line_id_object.get("play_product_company"),(String)line_id_object.get("play_director"),(String)line_id_object.get("play_crew"));
+                Log.d("historyimg", "Object "  + ": " + history_chosen.getPoster_img());
+                Log.d("historyObject", "Object "  + ": " + history_chosen.getPlay_crew());
+                history_get.add(history_chosen);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            history_chosen = history_get.get(0);
+
+            String imgpath =  getContext().getFilesDir().toString() + "/" + data;
+            Bitmap bm = BitmapFactory.decodeFile(imgpath);
+            if(bm!=null){
+                imageView12.setImageBitmap(bm);
+            }
+
+
+            imgpath = getContext().getFilesDir().toString()+"/"+history_chosen.getPoster_img();
+            bm = BitmapFactory.decodeFile(imgpath);
+            imageView3 = viewGroup.findViewById(R.id.imageView3);
+            imageView3.setImageBitmap(bm);
+
+            TextView textView7 = viewGroup.findViewById(R.id.textView7);
+            String categoryname = playDBHelper.getPlayCategory(play_id);
+            textView7.setText(categoryname);
+
+            TextView textview8 = viewGroup.findViewById(R.id.textView8);
+
+            textview8.setText(playDBHelper.getPlayTitle(play_id));
+
+            TextView textview11 = viewGroup.findViewById(R.id.textView11);
+            String nameinfo =history_chosen.getPlay_directer()+"("+history_chosen.getPlay_product_company()+")";
+            textview11.setText(nameinfo);
+
+            TextView textview14 = viewGroup.findViewById(R.id.textView14);
+            textview14.setText(history_chosen.getPlay_crew());
+
+            TextView textView15 = viewGroup.findViewById(R.id.textView15);
+            textView15.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("play_id",play_id);
+                    performInfoFragment.setArguments(bundle);
+                    ((MainActivity)getActivity()).replaceFragment2(performInfoFragment);
+                }
+            });
         }
-        history_chosen = history_get.get(0);
 
-        String imgpath =  getContext().getFilesDir().toString() + "/" + data;
-        Bitmap bm = BitmapFactory.decodeFile(imgpath);
-        if(bm!=null){
-            imageView12.setImageBitmap(bm);
+
+        if(banner_chosen.size()>0){
+            ViewPager homeViewPager = (ViewPager) viewGroup.findViewById(R.id.home_main_ad_vp);
+            homeViewPager.setAdapter(new HomeAdPagerAdapter(getChildFragmentManager(),banner_chosen));
+            final CircleIndicator homeViewPagerIndicator = (CircleIndicator) viewGroup.findViewById(R.id.home_main_ad_ci);
+            homeViewPagerIndicator.setViewPager(homeViewPager);
         }
 
-
-        imgpath = getContext().getFilesDir().toString()+"/"+history_chosen.getPoster_img();
-        bm = BitmapFactory.decodeFile(imgpath);
-        imageView3 = viewGroup.findViewById(R.id.imageView3);
-        imageView3.setImageBitmap(bm);
-
-        TextView textView7 = viewGroup.findViewById(R.id.textView7);
-        String categoryname = playDBHelper.getPlayCategory(play_id);
-        textView7.setText(categoryname);
-
-        TextView textview8 = viewGroup.findViewById(R.id.textView8);
-
-        textview8.setText(playDBHelper.getPlayTitle(play_id));
-
-        TextView textview11 = viewGroup.findViewById(R.id.textView11);
-        String nameinfo =history_chosen.getPlay_directer()+"("+history_chosen.getPlay_product_company()+")";
-        textview11.setText(nameinfo);
-
-        TextView textview14 = viewGroup.findViewById(R.id.textView14);
-        textview14.setText(history_chosen.getPlay_crew());
-
-
-
-        ViewPager homeViewPager = (ViewPager) viewGroup.findViewById(R.id.home_main_ad_vp);
-        homeViewPager.setAdapter(new HomeAdPagerAdapter(getChildFragmentManager(),banner_chosen));
 
         final ViewPager homeViewmidPager = (ViewPager) viewGroup.findViewById(R.id.ad_mid);
         homeViewmidPager.setAdapter(new HomeAdMidPagerAdapter(getChildFragmentManager()));
@@ -165,7 +182,7 @@ public class HomeFragment extends Fragment {
 
 
 
-        final CircleIndicator homeViewPagerIndicator = (CircleIndicator) viewGroup.findViewById(R.id.home_main_ad_ci);
+
 
         final ViewPager2 mpager = (ViewPager2)viewGroup.findViewById(R.id.rankingview);
         mpager.setAdapter(new HomeRankingViewPagerAdapter(this,2,ranking_chosen));
@@ -192,7 +209,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeViewPagerIndicator.setViewPager(homeViewPager);
+
 
         LinearLayoutManager journalLayoutManager =new LinearLayoutManager(this.getContext());
         journalLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -221,14 +238,17 @@ public class HomeFragment extends Fragment {
 
         });
 
-        JournalAdapter2 journalAdapter = new JournalAdapter2(journal_chosen, requireContext(),listener);
+        if(journal_chosen.size()>0){
+            JournalAdapter2 journalAdapter = new JournalAdapter2(journal_chosen, requireContext(),listener);
 
-        homeJournalRV.setLayoutManager(journalLayoutManager);
-        homeJournalRV.setAdapter(journalAdapter);
+            homeJournalRV.setLayoutManager(journalLayoutManager);
+            homeJournalRV.setAdapter(journalAdapter);
 
-        RecyclerView homemidJournalRV = viewGroup.findViewById(R.id.homejournal_2);
-        homemidJournalRV.setLayoutManager(homemidjournalLayoutManager);
-        homemidJournalRV.setAdapter(journalAdapter);
+            RecyclerView homemidJournalRV = viewGroup.findViewById(R.id.homejournal_2);
+            homemidJournalRV.setLayoutManager(homemidjournalLayoutManager);
+            homemidJournalRV.setAdapter(journalAdapter);
+        }
+
 
         RecyclerView homePersonalRV = viewGroup.findViewById(R.id.personalizedShowRV);
 
@@ -247,9 +267,12 @@ public class HomeFragment extends Fragment {
 
         });
 
-        HomeShowAdapter personalAdapter = new HomeShowAdapter(recommend_chosen,getContext(),mListener);
-        homePersonalRV.setLayoutManager(personalLayoutManger);
-        homePersonalRV.setAdapter(personalAdapter);
+        if(recommend_chosen.size()>0){
+            HomeShowAdapter personalAdapter = new HomeShowAdapter(recommend_chosen,getContext(),mListener);
+            homePersonalRV.setLayoutManager(personalLayoutManger);
+            homePersonalRV.setAdapter(personalAdapter);
+        }
+
 
         return viewGroup;
     }

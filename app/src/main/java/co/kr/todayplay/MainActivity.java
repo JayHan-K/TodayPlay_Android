@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import co.kr.todayplay.adapter.JournalHotListAdapter;
 import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.fragment.CommunityFragment;
 import co.kr.todayplay.fragment.HomeFragment;
@@ -51,38 +53,39 @@ public class MainActivity extends AppCompatActivity {
     private final ProfileFragment profileFragment = new ProfileFragment();
     private final CommunityFragment communityFragment = new CommunityFragment();
     private final JournalFragment journalFragment = new JournalFragment();
+    private final HomeFragment homeFragment = new HomeFragment();
 
     //상단 배너부분 정보
     static String HomeBanner_all_jsonString;
-    static String all_HomeBanner_result_url = "http://183.111.253.75/request_home_banner_info/";
+    static String all_HomeBanner_result_url = "http://211.174.237.197/request_home_banner_info/";
     static JSONArray HomeBanner_all_jsonArray;
     static ArrayList<Banner> banners = new ArrayList<Banner>();
     static Banner data;
 
     //오늘의 추천 정보
     static String Recommend_all_jsonString;
-    static String all_Recommend_result_url ="http://183.111.253.75/request_todays_recommend/";
+    static String all_Recommend_result_url ="http://211.174.237.197/request_todays_recommend/";
     static JSONArray Recommend_all_jsonArray;
     static ArrayList<Recommend> recommands =new ArrayList<Recommend>();
     static Recommend data1;
 
     //오늘의 저널 정보
     static String Journal_all_jsonString;
-    static String all_Journal_result_url ="http://183.111.253.75/request_todays_journal/";
+    static String all_Journal_result_url ="http://211.174.237.197/request_todays_journal/";
     static JSONArray Journal_all_jsonArray;
     static ArrayList<Recommend> recommandj =new ArrayList<Recommend>();
     static Recommend data2;
 
     //핫랭크 인기 순위
     static String Ranking_all_jsonString;
-    static String all_Ranking_result_url="http://183.111.253.75/request_hot_rank/";
+    static String all_Ranking_result_url="http://211.174.237.197/request_hot_rank/";
     static JSONArray Ranking_all_jsonArray;
     static ArrayList<Ranking> rankings = new ArrayList<Ranking>();
     static Ranking data3;
 
     //상단 배너부분 정보
     static String Line_all_jsonString;
-    static String all_Line_result_url = "http://183.111.253.75/request_todays_line/";
+    static String all_Line_result_url = "http://211.174.237.197/request_todays_line/";
     static JSONArray Line_all_jsonArray;
     static ArrayList<Line> line = new ArrayList<Line>();
     static Line data4;
@@ -95,27 +98,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
-
-        Log.d("userId","userId="+userId);
-
-        if(userId !=null){
-            SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
-        }
-
-
-
-        final HomeFragment homeFragment = new HomeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("banners",banners);
-        bundle.putSerializable("recommands",recommands);
-        bundle.putSerializable("recommandj",recommandj);
-        bundle.putSerializable("rankings",rankings);
-        bundle.putSerializable("line",line);
-        homeFragment.setArguments(bundle);
-
 
         //인기작정보
         UpdateRankingInfo updateRankingInfo = new UpdateRankingInfo();
@@ -133,11 +115,27 @@ public class MainActivity extends AppCompatActivity {
         UpdateLineInfo updateLineInfo = new UpdateLineInfo();
         updateLineInfo.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
 
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
+
+        Log.d("userId","userId="+userId);
+
+        if(userId !=null){
+            SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
+        }
 
         BottomNavigationView main_bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         main_bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("banners",banners);
+        bundle.putSerializable("recommands",recommands);
+        bundle.putSerializable("recommandj",recommandj);
+        bundle.putSerializable("rankings",rankings);
+        bundle.putSerializable("line",line);
+        homeFragment.setArguments(bundle);
+
+//        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 
 
         main_bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -232,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         return inputStream.readLine();
     }
 //상단배너
-    public static class UpdateBannerInfo extends AsyncTask<Void, Void, Void> {
+    public class UpdateBannerInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -266,9 +264,14 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+    }
     }
 //오늘의 추천
-    public static class UpdateRecommendInfo extends AsyncTask<Void, Void, Void> {
+    public class UpdateRecommendInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -300,9 +303,14 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+    }
     }
 // 오늘의 저널
-    public static class UpdateJournalInfo extends AsyncTask<Void, Void, Void> {
+    public  class UpdateJournalInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -334,9 +342,14 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+    }
     }
 //인기작
-    public static class UpdateRankingInfo extends AsyncTask<Void, Void, Void> {
+    public  class UpdateRankingInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -368,10 +381,15 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+    }
     }
 
     //한줄추천
-    public static class UpdateLineInfo extends AsyncTask<Void, Void, Void> {
+    public  class UpdateLineInfo extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -398,5 +416,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        }
     }
+
 }

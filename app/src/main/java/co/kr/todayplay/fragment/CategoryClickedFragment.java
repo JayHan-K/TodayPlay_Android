@@ -51,7 +51,7 @@ public class CategoryClickedFragment extends Fragment {
 
     //상단 배너부분 정보
      String category_recommend_all_jsonString;
-     String all_category_recommend_result_url = "http://183.111.253.75/request_category_recommend/";
+     String all_category_recommend_result_url = "http://211.174.237.197/request_category_recommend/";
      JSONArray category_recommend_all_jsonArray;
      ArrayList<category_recommend> category_recommends = new ArrayList<category_recommend>();
      category_recommend data;

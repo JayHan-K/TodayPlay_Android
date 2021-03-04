@@ -81,19 +81,19 @@ public class Intro_Activity extends AppCompatActivity {
     //journal all DB
     JournalDBHelper journalDBHelper;
     String journal_all_jsonString;
-    String all_journal_result_url = "http://183.111.253.75/request_journal_info/";
+    String all_journal_result_url = "http://211.174.237.197/request_journal_info/";
     JSONArray journal_all_jsonArray;
 
     //play all DB
     PlayDBHelper playDBHelper;
     String play_all_jsonString;
-    String all_play_result_url = "http://183.111.253.75/request_play_info/";
+    String all_play_result_url = "http://211.174.237.197/request_play_info/";
     JSONArray play_all_jsonArray;
 
     //crew all DB
     CrewDBHelper crewDBHelper;
     String crew_all_jsonString;
-    String all_crew_result_url = "http://183.111.253.75/all_crew_list/";
+    String all_crew_result_url = "http://211.174.237.197/all_crew_list/";
     JSONArray crew_all_jsonArray;
 
     public ImageView imgView;
@@ -141,16 +141,16 @@ public class Intro_Activity extends AppCompatActivity {
 
 
         //Play 리소스 다운로드
-        String[] play = {"play", "http://183.111.253.75/db_api/v1/resource_list/play"};
+        String[] play = {"play", "http://211.174.237.197/db_api/v1/resource_list/play"};
 
         getPlayFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, play);
 
         //Journal 리소스 다운로드
-        String[] journal = {"journal","http://183.111.253.75/db_api/v1/resource_list/journal/"};
+        String[] journal = {"journal","http://211.174.237.197/db_api/v1/resource_list/journal/"};
         getJournalFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, journal);
 
         //File 리소스 다운로드
-        String[] file = {"file","http://183.111.253.75/db_api/v1/resource_list/file/"};
+        String[] file = {"file","http://211.174.237.197/db_api/v1/resource_list/file/"};
         getFileFileName.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,file);
 
         //Journal DB Update
@@ -238,7 +238,7 @@ public class Intro_Activity extends AppCompatActivity {
                         Log.d("already", strings[0][0] + "Folder: " + filename + "파일 존재");
                     }
                     else{
-                        String fileURL = "http://183.111.253.75/db_api/download/" + strings[0][0] + "/" + filename;
+                        String fileURL = "http://211.174.237.197/db_api/download/" + strings[0][0] + "/" + filename;
                         download_list.add(new String[]{filename, fileURL, strings[0][0]});
                     }
                 }
