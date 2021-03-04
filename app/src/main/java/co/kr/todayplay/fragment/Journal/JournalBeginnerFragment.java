@@ -40,13 +40,13 @@ public class JournalBeginnerFragment extends Fragment {
     ArrayList<JournalHotListAdapter.Item> journal_beginner_up_data = new ArrayList<>();
     ArrayList<JournalHotListAdapter.Item> journal_beginner_bottom_data = new ArrayList<>();
     String journal_beginner_jsonString;
-    String journal_beginner_result_url = "http://183.111.253.75/request_journal_id_beginner/";
+    String journal_beginner_result_url = "http://211.174.237.197/request_journal_id_beginner/";
     JSONArray journal_beginner_jsonArray;
 
     //Journal Beginner Hot 인기 저널 로드 관련 변수
     ArrayList<PerformDetailJournalAdapter.JournalItem> hot_journal_data = new ArrayList<>();
     String journal_hot_beginner_jsonString;
-    String journal_hot_beginner_result_url = "http://183.111.253.75/request_journal_id_beginner_hot/";
+    String journal_hot_beginner_result_url = "http://211.174.237.197/request_journal_id_beginner_hot/";
     JSONArray journal_hot_beginner_jsonArray;
 
     public static JournalBeginnerFragment newInstance(){ return new JournalBeginnerFragment(); }

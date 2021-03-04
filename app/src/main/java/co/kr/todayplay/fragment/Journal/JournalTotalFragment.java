@@ -36,7 +36,7 @@ public class JournalTotalFragment extends Fragment {
     JournalDBHelper journalDBHelper;
     ArrayList<JournalHotListAdapter.Item> journal_total_data = new ArrayList<>();
     String journal_total_jsonString;
-    String journal_total_result_url = "http://183.111.253.75/request_journal_id_all/";
+    String journal_total_result_url = "http://211.174.237.197/request_journal_id_all/";
     JSONArray journal_total_jsonArray;
 
     public static JournalTotalFragment newInstance(){

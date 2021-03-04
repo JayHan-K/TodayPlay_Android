@@ -38,13 +38,13 @@ public class JournalRunnerFragment extends Fragment {
     ArrayList<JournalHotListAdapter.Item> journal_Runner_up_data = new ArrayList<>();
     ArrayList<JournalHotListAdapter.Item> journal_Runner_bottom_data = new ArrayList<>();
     String journal_Runner_jsonString;
-    String journal_Runner_result_url = "http://183.111.253.75/request_journal_id_runner/";
+    String journal_Runner_result_url = "http://211.174.237.197/request_journal_id_runner/";
     JSONArray journal_Runner_jsonArray;
 
     //Journal Runner Hot 인기 저널 로드 관련 변수
     ArrayList<PerformDetailJournalAdapter.JournalItem> hot_journal_data = new ArrayList<>();
     String journal_hot_Runner_jsonString;
-    String journal_hot_Runner_result_url = "http://183.111.253.75/request_journal_id_runner_hot/";
+    String journal_hot_Runner_result_url = "http://211.174.237.197/request_journal_id_runner_hot/";
     JSONArray journal_hot_Runner_jsonArray;
     
     public static JournalRunnerFragment newInstance(){ return new JournalRunnerFragment(); }

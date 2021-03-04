@@ -18,7 +18,6 @@
             app:layout_constraintTop_toTopOf="@id/container"
             app:layout_constraintStart_toStartOf="@id/container">
             <WebView
-                android:layout_marginTop="25dp"
                 android:id="@+id/journal_wv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +85,8 @@
                 android:layout_marginTop="19.5dp">
                 <EditText
                     android:id="@+id/write_comment_et"
-                    android:layout_width="258dp"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.8"
                     android:layout_height="50dp"
                     android:background="@drawable/round_border_4dp_fefefe"
                     app:layout_constraintStart_toStartOf="@id/write_comment_part"
@@ -100,8 +100,6 @@
                     android:background="@drawable/rounded_border_4dp_ffe34e"
                     android:layout_width="48dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="6dp"
-                    app:layout_constraintStart_toEndOf="@id/write_comment_et"
                     app:layout_constraintEnd_toEndOf="@id/write_comment_part"
                     app:layout_constraintTop_toTopOf="@id/write_comment_part"
                     app:layout_constraintBottom_toBottomOf="@id/write_comment_part"/>
@@ -117,7 +115,7 @@
             </androidx.recyclerview.widget.RecyclerView>
             <Button
                 android:id="@+id/more_comment_btn"
-                android:text="+  20개의 댓글 더 보기"
+                android:text="+  3개의 댓글 더 보기"
                 android:textSize="14sp"
                 android:textColor="#252525"
                 android:background="@null"
