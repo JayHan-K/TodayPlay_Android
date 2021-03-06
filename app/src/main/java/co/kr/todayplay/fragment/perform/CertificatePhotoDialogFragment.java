@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment.perform;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -31,7 +32,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+//import kotlinx.coroutines.channels.Send;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -59,11 +63,11 @@ public class CertificatePhotoDialogFragment extends DialogFragment {
                 intent.setType("image/*");
                 Log.d("DialogFragment", "onClicked");
                 startActivityForResult(intent, GALLERY_CODE);
-                if(bitmap != null){
-                    Log.d("DialogFragment", "result bitmap = " + bitmap.toString() + " img_path = " + imagePath);
-                }
+
+
             }
         });
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view);
@@ -97,7 +101,7 @@ public class CertificatePhotoDialogFragment extends DialogFragment {
         {
             temp += Manifest.permission.WRITE_EXTERNAL_STORAGE + " ";
         }
-        if (TextUtils.isEmpty(temp) == false)
+        if (!TextUtils.isEmpty(temp))
         {
             // 권한 요청
             ActivityCompat.requestPermissions(getActivity(), temp.trim().split(" "),1);
@@ -108,11 +112,10 @@ public class CertificatePhotoDialogFragment extends DialogFragment {
         }
     }
 
-    private void sendResult(int REQUEST_CODE) {
-        Intent intent = new Intent();
-        intent.putExtra("img_path", imagePath);
-        getTargetFragment().onActivityResult(
-                getTargetRequestCode(), REQUEST_CODE, intent);
+    private void sendResult() {
+        Log.d("started","sendResult");
+
+//        ((MainActivity)getActivity()).onBackPressed();
     }
 
     @Override
@@ -122,6 +125,16 @@ public class CertificatePhotoDialogFragment extends DialogFragment {
             if(requestCode == GALLERY_CODE){
                 sendPicture(data.getData());
                 if(bitmap!=null)  Log.d("DialogFragment", "result bitmap = " + bitmap.toString() + " img_path = " + imagePath);
+                Log.d("DialogFragment", "intent result bitmap = " + bitmap.toString() + " img_path = " + imagePath);
+                Intent data2 = new Intent();
+                data2.putExtra("img_path", imagePath);
+                data2.putExtra("bitmap",bitmap);
+                Log.d("img_path","img_path dialog="+imagePath);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), RESULT_OK, data2);
+                dismiss();
+//                    sendResult();
+
+
             }
         }
     }

@@ -1,6 +1,9 @@
 package co.kr.todayplay.fragment.perform;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewImageAdapter;
 
-public class PerformWriteReviewFragment extends Fragment{
+public class PerformWriteReviewFragment extends Fragment {
     EditText good_et, bad_et, tip_et;
     Button photo_btn, save_btn;
     RecyclerView photo_rv;
@@ -33,7 +36,9 @@ public class PerformWriteReviewFragment extends Fragment{
     TextView good_num_text_tv, bad_num_text_tv, tip_num_text_tv;
     RatingBar star_rb;
     float rate;
-    int REQUEST_CODE = 0;
+    private static final int DIALOG_REQUEST_CODE = 1234;
+    String imgpath="";
+    Bitmap bitmap;
 
     public PerformWriteReviewFragment(){}
 
@@ -41,10 +46,8 @@ public class PerformWriteReviewFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_write_review,container,false);
+        show();
 
-        CertificatePhotoDialogFragment certificatePhotoDialogFragment = new CertificatePhotoDialogFragment();
-        certificatePhotoDialogFragment.setTargetFragment(this, REQUEST_CODE);
-        certificatePhotoDialogFragment.show(getActivity().getSupportFragmentManager(),"PerformWriteReviewFragment");
 
         star_rb = (RatingBar)viewGroup.findViewById(R.id.star_rb);
         star_rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -199,4 +202,27 @@ public class PerformWriteReviewFragment extends Fragment{
 
         return viewGroup;
     }
+    void show(){
+        DialogFragment certificatePhotoDialogFragment = new CertificatePhotoDialogFragment();
+        certificatePhotoDialogFragment.setTargetFragment(this,
+                DIALOG_REQUEST_CODE);
+//        certificatePhotoDialogFragment.show(getActivity().getSupportFragmentManager(),"PerformWriteReviewFragment");
+        certificatePhotoDialogFragment.show(getParentFragmentManager(),"dialog");
+    }
+    @Override
+    public void onActivityResult(int requestCode,int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("imgpath", "imgpath in fragment=" );
+        Log.d("requestCode","requestCode="+requestCode+" "+DIALOG_REQUEST_CODE);
+        Log.d("resultcode","resultcode="+resultCode+" "+Activity.RESULT_OK);
+            if (requestCode == DIALOG_REQUEST_CODE) {
+                if (resultCode == Activity.RESULT_OK) {
+                    imgpath = data.getExtras().getString("img_path");
+                    bitmap = (Bitmap)data.getParcelableExtra("bitmap");
+                    Log.d("imgpath", "imgpath in fragment=" + imgpath);
+                    Log.d("bitmap", "bitmap in fragment=" + bitmap.toString());
+                }
+            }
+        }
+
 }

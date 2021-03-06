@@ -42,7 +42,7 @@ class JournalAdapter2(journals: ArrayList<Recommend>, context: Context, itemClic
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClicked(holder, journal, position)
             val journalDetailFragment = JournalDetailFragment()
-            (context as MainActivity).replaceFragment(journalDetailFragment)
+            (context as MainActivity).replaceFragment(journalDetailFragment,journal.play_id)
         }
     }
 
