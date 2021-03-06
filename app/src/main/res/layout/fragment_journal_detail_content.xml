@@ -158,6 +158,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <ImageButton
             android:id="@+id/bookmark_btn"
+            android:clickable="true"
             android:background="@drawable/journal_bookmark_icon_yellow"
             android:layout_width="26dp"
             android:layout_height="42.3dp"

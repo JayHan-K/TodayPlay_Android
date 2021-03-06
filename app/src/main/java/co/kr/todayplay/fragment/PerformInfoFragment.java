@@ -47,10 +47,14 @@ public class PerformInfoFragment extends Fragment {
     PerformPagerAdapter performPagerAdapter;
     ConstraintLayout poster;
     ImageView realposter;
+    ImageButton heart_btn;
+    TextView rangking_tv;
     Button back_btn;
     int play_id;
     TextView perform_title_tv;
     PlayDBHelper playDBHelper;
+
+    Boolean heart_flag = false;
 
 //    public PerformInfoFragment(int play_id){
 //        this.play_id = play_id;
@@ -61,12 +65,40 @@ public class PerformInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
+        play_id = getArguments().getInt("play_id");
+        playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
+
         realposter = (ImageView)viewGroup.findViewById(R.id.perfrom_img);
         back_btn = (Button)viewGroup.findViewById(R.id.button5);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
-        play_id = getArguments().getInt("play_id");
 
-        playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
+        //찜하기 part
+        rangking_tv = (TextView)viewGroup.findViewById(R.id.rangking_tv);
+        rangking_tv.setText("- 위");
+        heart_btn = (ImageButton)viewGroup.findViewById(R.id.heart_icon);
+        if(!heart_flag){
+            heart_btn.setBackgroundResource(R.drawable.icon_heart_line);
+        }
+        else{
+            heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
+        }
+
+        heart_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("heart_btn", "onClicked");
+                if(heart_flag){
+                    heart_btn.setBackgroundResource(R.drawable.icon_heart_line);
+                    heart_flag = false;
+                }
+                else{
+                    heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
+                    heart_flag = true;
+                }
+            }
+        });
+
+
         perform_title_tv = viewGroup.findViewById(R.id.perfrom_title_tv);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
