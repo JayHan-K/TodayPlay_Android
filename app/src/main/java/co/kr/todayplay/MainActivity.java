@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     static Line data4;
 
     String userId=null ;
-    static int cnt;
+    static int cnt=0;
 
 
     @Override
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
     }
 
@@ -196,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
     }
 
@@ -267,7 +269,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        if(cnt==5){
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        }
+
     }
     }
 //오늘의 추천
@@ -306,7 +311,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        if(cnt==5){
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        }
     }
     }
 // 오늘의 저널
@@ -345,7 +352,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        if(cnt==5){
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        }
     }
     }
 //인기작
@@ -384,7 +393,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        if(cnt==5){
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+        }
     }
     }
 
@@ -409,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
                 data4 = new Line( line_id, (String)line_id_object.get("image"));
                 line.add(data4);
                 Log.d("line_done?","line_done");
+                cnt++;
 
             } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
@@ -419,7 +431,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+            if(cnt==5){
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
+            }
         }
     }
 

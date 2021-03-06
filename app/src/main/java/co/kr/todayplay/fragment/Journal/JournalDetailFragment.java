@@ -57,6 +57,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
 import co.kr.todayplay.JoinIdentificationActivityVer2;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalRecommendListAdapter;
 import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
@@ -82,7 +83,7 @@ public class JournalDetailFragment extends Fragment {
 
     String journalCommentIdResult;
     String[] journalCommentIds;
-    
+
     int visible_cmt = 3;
 
     public JournalDetailFragment(){}
@@ -136,6 +137,26 @@ public class JournalDetailFragment extends Fragment {
             relation_journal = relation_jouranl_string.split(", ");
             for(int i=0; i<relation_journal.length; i++){
                 Log.d("Relation_journal", relation_journal[i] + ", ");
+            }
+        }
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("pressed","pressed=");
+                ((MainActivity)viewGroup.getContext()).onBackPressed();
+
+            }
+        });
+
+        String comments_string = journalDBHelper.getJournalComments(journal_id);
+        if(comments_string != null){
+            comments = comments_string.split(", ");
+            for(int i=0; i<relation_journal.length; i++){
+                Log.d("journal_comments", comments[i] + ", ");
+            }
+            if (comments_string.length() <= 2){
+                more_comment_btn.setVisibility(View.GONE);
             }
         }
 
@@ -213,7 +234,7 @@ public class JournalDetailFragment extends Fragment {
 
                                     num_comment_tv.setText(journalCommentIds.length + "");
                                     num_comment_tv2.setText(journalCommentIds.length + "");
-                                    
+
                                     //각각의 Journal Comment 데이터 가져오기
                                     for (int i = 0; i < journalCommentIds.length; i++) {
                                         Log.d("journalCommentIds", journalCommentIds[i]);

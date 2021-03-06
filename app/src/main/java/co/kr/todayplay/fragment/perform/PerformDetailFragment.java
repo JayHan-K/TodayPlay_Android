@@ -66,6 +66,7 @@ public class PerformDetailFragment extends Fragment {
             Log.d("Bundle result", "play_id: " + play_id);
         }
         String thumbnail1_img = playDBHelper.getPlayThumbnail1(play_id);
+        Log.d("thumbnail1_img","thumbnail="+thumbnail1_img);
         String thumbnail1_path = getActivity().getApplicationContext().getFileStreamPath(thumbnail1_img).toString();
         Bitmap bm = BitmapFactory.decodeFile(thumbnail1_path);
         perform_iv = (ImageView)viewGroup.findViewById(R.id.perform_iv);
@@ -94,17 +95,24 @@ public class PerformDetailFragment extends Fragment {
         ArrayList<String> crew_names = new ArrayList<>();
         for(int i=0; i<crews.length; i++){
             Log.d("crews", i + ": " + crews[i]);
-            String[] s = crews[i].split("[.]");
-            Log.d("crews", "id = " + s[0] + " name = " + s[1]);
-            crew_ids.add(Integer.parseInt(s[0]));
-            Log.d("strLength", s[1].length() + " ");
-            if(s[1].length() > 7){
-                s[1] = s[1].substring(0, 7) + "···";
+            if(crews[i].contains(".")){
+                String[] s = crews[i].split("[.]");
+                Log.d("crews", "id = " + s[0] + " name = " + s[1]);
+                crew_ids.add(Integer.parseInt(s[0]));
+                Log.d("strLength", s[1].length() + " ");
+                if(s[1].length() > 7){
+                    s[1] = s[1].substring(0, 7) + "···";
+                    Log.d("substring", s[1]);
+                }
                 Log.d("substring", s[1]);
+                crew_names.add(s[1]);
+                Log.d("crews", "crew_id = " + crew_ids.get(i) + ", crew_name = " + crew_names.get(i));
+            }else{
+                crew_ids.add(0);
+                crew_names.add(crews[i]);
+                Log.d("crews", "crew_id = " + crew_ids.get(i) + ", crew_name = " + crew_names.get(i));
             }
-            Log.d("substring", s[1]);
-            crew_names.add(s[1]);
-            Log.d("crews", "crew_id = " + crew_ids.get(i) + ", crew_name = " + crew_names.get(i));
+
         }
         staff_rv = (RecyclerView)viewGroup.findViewById(R.id.staff_rv);
         staff_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
@@ -140,16 +148,16 @@ public class PerformDetailFragment extends Fragment {
                 //Log.d("crews", "Success to add crew");
             //}
         }
-        if(!director.getName().equals("")){
+        if(!("").equals(director.getName())){
             crew_data.add(director);
         }
         if(!("").equals(writer.getName())){
             crew_data.add(writer);
         }
-        if(composer.getName() != null){
+        if(!("").equals(composer.getName())){
             crew_data.add(composer);
         }
-        if(!maker.getName().equals("")){
+        if(!("").equals(maker.getName())){
             crew_data.add(maker);
         }
 

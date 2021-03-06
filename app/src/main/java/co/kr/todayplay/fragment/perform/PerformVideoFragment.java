@@ -67,35 +67,43 @@ public class PerformVideoFragment extends Fragment {
         performVideoAdapter = new PerformVideoAdapter(data);
 
         String youtube_link_string = playDBHelper.getPlayVideos(play_id);
-        result = youtube_link_string.split(",");
-        for(int i=0; i<result.length; i++){
-            Log.d("youtube", result[i]);
-            String videoID = "";
-            try{
-                videoID = result[i].split("v=")[1];
-            }catch(Exception e){
-                videoID = result[i].split("be/")[1];
-            }
-            String apiUrl = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=" + videoID + "&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM";
-            if(i==result.length-1){
-                getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
-                    @Override
-                    public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
-                        data.add(new PerformVideoAdapter.Item(returnUrl,title,channelTitle, viewCount));
-                        video_rv.setAdapter(performVideoAdapter);
-                    }
-                });
-            }
-            else {
 
-                getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
-                    @Override
-                    public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
-                        data.add(new PerformVideoAdapter.Item(returnUrl, title, channelTitle, viewCount));
+        if(!("").equals(youtube_link_string)){
+            result = youtube_link_string.split(",");
+            Log.d("result","result="+result[0]+"result.length"+result.length+" "+youtube_link_string);
+            for(int i=0; i<result.length; i++){
+                Log.d("youtube", result[i]);
+                if(result[i].contains("https")){
+                    String videoID = "";
+                    try{
+                        videoID = result[i].split("v=")[1];
+                    }catch(Exception e){
+                        videoID = result[i].split("be/")[1];
                     }
-                });
+                    String apiUrl = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=" + videoID + "&key=AIzaSyCDhqKYR8Bh2goJieMGwiTUYxt4uxPxSNM";
+                    if(i==result.length-1){
+                        getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
+                            @Override
+                            public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
+                                data.add(new PerformVideoAdapter.Item(returnUrl,title,channelTitle, viewCount));
+                                video_rv.setAdapter(performVideoAdapter);
+                            }
+                        });
+                    }
+                    else {
+
+                        getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
+                            @Override
+                            public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
+                                data.add(new PerformVideoAdapter.Item(returnUrl, title, channelTitle, viewCount));
+                            }
+                        });
+                    }
+                }
+
             }
         }
+
 
         return viewGroup;
     }
@@ -117,26 +125,31 @@ public class PerformVideoFragment extends Fragment {
                 @Override
                 public void onResponse(String response) {
 
+                    Log.d("response","getresponse="+response.split("items")[0]);
+                    Log.d("response","getresponse="+response.split("items")[1]);
+                    if(response.contains("snippet")){
+                        String snippet = response.split("snippet")[1];
+                        String title = snippet.split("title")[1].split("\",")[0];
+                        String channelTitle = snippet.split("channelTitle")[1].split("\",")[0];
+                        String statistics = response.split("statistics")[1];
+                        String viewCount = statistics.split("viewCount")[1].split("\",")[0];
+                        title = title.replaceAll(":", "");
+                        title = title.replaceAll("\"", "");
+                        title = title.trim();
+                        channelTitle = channelTitle.replaceAll(":", "");
+                        channelTitle = channelTitle.replaceAll("\"", "");
+                        channelTitle = channelTitle.trim();
+                        viewCount = viewCount.replaceAll(":", "");
+                        viewCount = viewCount.replaceAll("\"", "");
+                        viewCount = viewCount.trim();
 
-                    String snippet = response.split("snippet")[1];
-                    String title = snippet.split("title")[1].split("\",")[0];
-                    String channelTitle = snippet.split("channelTitle")[1].split("\",")[0];
-                    String statistics = response.split("statistics")[1];
-                    String viewCount = statistics.split("viewCount")[1].split("\",")[0];
-                    title = title.replaceAll(":", "");
-                    title = title.replaceAll("\"", "");
-                    title = title.trim();
-                    channelTitle = channelTitle.replaceAll(":", "");
-                    channelTitle = channelTitle.replaceAll("\"", "");
-                    channelTitle = channelTitle.trim();
-                    viewCount = viewCount.replaceAll(":", "");
-                    viewCount = viewCount.replaceAll("\"", "");
-                    viewCount = viewCount.trim();
-
-                    String returnUrl = "https://www.youtube.com/watch?v=" + url.split("id=")[1].split("&")[0];
+                        String returnUrl = "https://www.youtube.com/watch?v=" + url.split("id=")[1].split("&")[0];
+                        callback.onSuccess(returnUrl, title, channelTitle, viewCount);
+                    }
 
 
-                    callback.onSuccess(returnUrl, title, channelTitle, viewCount);
+
+
                 }
             }, new Response.ErrorListener(){
 

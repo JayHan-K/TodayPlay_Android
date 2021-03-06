@@ -47,9 +47,6 @@ public class PerformInfoFragment extends Fragment {
     PerformPagerAdapter performPagerAdapter;
     ConstraintLayout poster;
     ImageView realposter;
-    ArrayList<Banner>banners;
-    ArrayList<Ranking>rankings;
-    Banner banneritem;
     Button back_btn;
     int play_id;
     TextView perform_title_tv;
