@@ -59,8 +59,10 @@
             android:layout_height="90dp"
             app:layout_constraintTop_toTopOf="@id/btn_part"
             app:layout_constraintStart_toEndOf="@id/ticket_btn"
+            app:layout_constraintEnd_toStartOf="@id/etc_btn"
             android:background="@drawable/rounded_border_4dp_cccccc"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="10dp">
             <ImageView
@@ -86,7 +88,6 @@
             android:layout_width="86dp"
             android:layout_height="90dp"
             app:layout_constraintTop_toTopOf="@id/btn_part"
-            app:layout_constraintStart_toEndOf="@id/receipt_btn"
             app:layout_constraintEnd_toEndOf="@id/btn_part"
             android:background="@drawable/rounded_border_4dp_cccccc"
             android:layout_marginLeft="8dp"
@@ -139,6 +140,7 @@
             android:layout_marginLeft="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <Button
+        android:id="@+id/upload_btn"
         android:text="사진 등록"
         android:background="@drawable/rounded_border_4dp_ffe34e"
         android:paddingLeft="20dp"

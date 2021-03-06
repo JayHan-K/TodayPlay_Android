@@ -125,6 +125,8 @@ public class PerformDetailFragment extends Fragment {
         //crew_name, crew_pic
         for(int i=0; i<crew_ids.size(); i++){
             String img_path = crewDBHelper.getCrewPic(crew_ids.get(i));
+            if(!img_path.equals("")) img_path =  getActivity().getApplicationContext().getFileStreamPath(crewDBHelper.getCrewPic(crew_ids.get(i))).toString();
+
             String name =  crew_names.get(i);
             String position = crewDBHelper.getCrewPosition(crew_ids.get(i));
             Log.d("crews", "crew_id: " + crew_ids.get(i) + ", crew_name: " + crew_names.get(i) + ", crwe_img_path: " + img_path + ", crew_position:" + position + "//");

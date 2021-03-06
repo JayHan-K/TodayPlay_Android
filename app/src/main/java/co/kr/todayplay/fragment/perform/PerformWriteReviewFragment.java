@@ -1,5 +1,6 @@
 package co.kr.todayplay.fragment.perform;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,6 +33,7 @@ public class PerformWriteReviewFragment extends Fragment{
     TextView good_num_text_tv, bad_num_text_tv, tip_num_text_tv;
     RatingBar star_rb;
     float rate;
+    int REQUEST_CODE = 0;
 
     public PerformWriteReviewFragment(){}
 
@@ -41,6 +43,7 @@ public class PerformWriteReviewFragment extends Fragment{
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_write_review,container,false);
 
         CertificatePhotoDialogFragment certificatePhotoDialogFragment = new CertificatePhotoDialogFragment();
+        certificatePhotoDialogFragment.setTargetFragment(this, REQUEST_CODE);
         certificatePhotoDialogFragment.show(getActivity().getSupportFragmentManager(),"PerformWriteReviewFragment");
 
         star_rb = (RatingBar)viewGroup.findViewById(R.id.star_rb);

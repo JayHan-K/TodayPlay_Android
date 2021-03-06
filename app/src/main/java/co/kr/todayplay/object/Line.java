@@ -1,6 +1,8 @@
 package co.kr.todayplay.object;
 
-public class Line {
+import java.io.Serializable;
+
+public class Line implements Serializable {
     int play_id;
     String Line;
 
