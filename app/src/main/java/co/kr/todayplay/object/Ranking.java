@@ -1,6 +1,8 @@
 package co.kr.todayplay.object;
 
-public class Ranking {
+import java.io.Serializable;
+
+public class Ranking implements Serializable {
     String category;
     int order;
     int play_id;

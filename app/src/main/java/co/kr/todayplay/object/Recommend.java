@@ -1,6 +1,8 @@
 package co.kr.todayplay.object;
 
-public class Recommend {
+import java.io.Serializable;
+
+public class Recommend implements Serializable {
     int play_id;
 
 

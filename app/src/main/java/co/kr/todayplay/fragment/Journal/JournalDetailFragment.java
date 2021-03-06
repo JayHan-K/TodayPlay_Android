@@ -268,7 +268,6 @@ public class JournalDetailFragment extends Fragment {
                                                                         String user_img_path = getActivity().getApplicationContext().getFileStreamPath(user_pic).toString();
                                                                         Log.d("comment_reply", comment_reply);
 
-
                                                                         //recomment 존재 여부 체크
                                                                         if (comment_reply.equals("")) {
                                                                             //recomment가 없는 comment 객체 추가

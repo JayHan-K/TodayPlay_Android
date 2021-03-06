@@ -1,6 +1,8 @@
 package co.kr.todayplay.object;
 
-public class Banner {
+import java.io.Serializable;
+
+public class Banner implements Serializable {
     int order;
     int play_id;
     String banner;
