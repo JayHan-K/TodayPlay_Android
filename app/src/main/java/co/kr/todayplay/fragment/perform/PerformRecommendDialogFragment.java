@@ -113,8 +113,8 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                 String send_review = postSendReviewData(Integer.toString(play_id), Integer.toString(user_id), review_good, review_bad, review_tip, review_pic, Integer.toString(recommend), Integer.toString(num_of_star), new VolleyReviewCallback() {
                     @Override
                     public void onSuccess(String data) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                        if (!data.equals("-1")) {
+                        //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                        if (!data.equals("1")) {
                             Log.d("postSendReviewData", "POST ResultFailed.");
 
                         } else {
