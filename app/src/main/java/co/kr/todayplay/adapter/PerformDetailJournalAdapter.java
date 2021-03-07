@@ -92,7 +92,7 @@ public class PerformDetailJournalAdapter extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onClick(View view) {
                 JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
-                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment, item.getJournal_id());
             }
         });
     }

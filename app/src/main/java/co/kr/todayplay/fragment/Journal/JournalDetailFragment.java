@@ -57,6 +57,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
+import co.kr.todayplay.DBHelper.UserDB.UserDBHelper;
 import co.kr.todayplay.JoinIdentificationActivityVer2;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
@@ -64,6 +65,9 @@ import co.kr.todayplay.adapter.JournalRecommendListAdapter;
 import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
 
 public class JournalDetailFragment extends Fragment {
+    JournalDBHelper journalDBHelper;
+    UserDBHelper userDBHelper;
+
     AppBarLayout appBarLayout;
     Button more_comment_btn, comment_save_btn;
     ImageButton back_btn, scrap_btn;
@@ -76,7 +80,7 @@ public class JournalDetailFragment extends Fragment {
     ConstraintLayout relation_journal_container;
 
     //journal_title, journal_editor, journal_num_of_scrap, journal_comments, journal_num_of_view, journal_file
-    JournalDBHelper journalDBHelper;
+
     int journal_id;
     int user_id = -1;
     String journal_title;
@@ -89,6 +93,10 @@ public class JournalDetailFragment extends Fragment {
 
     Boolean scrap_flag = false;
 
+    ArrayList<PerformReviewCommentAdapter.CommentItem> all_comment_array = new ArrayList<>();
+    ArrayList<PerformReviewCommentAdapter.CommentItem> comment_array = new ArrayList<>();
+    PerformReviewCommentAdapter performReviewCommentAdapter;
+
     public JournalDetailFragment(){}
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -97,6 +105,8 @@ public class JournalDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_journal_detail, container, false);
         journalDBHelper = new JournalDBHelper(getActivity().getApplicationContext(), "Journal.db", null, 1);
+        userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
+
         Bundle bundle = getArguments();
         if(bundle != null){
             journal_id = bundle.getInt("journal_id");
@@ -108,32 +118,11 @@ public class JournalDetailFragment extends Fragment {
         appBarLayout = (AppBarLayout) viewGroup.findViewById(R.id.app_bar);
         back_btn = (ImageButton) viewGroup.findViewById(R.id.back_btn);
 
-        //scrap part
+        // -- scrap part Start --
         num_of_scrap_tv = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv);
         num_of_scrap_tv2 = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv2);
-        String get_scrap_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
-            @Override
-            public void onSuccess(String data){
-                if (data.equals("-1")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                    Log.d("postGetNumOfScrap", "POST ResultFailed.");
-                } else {
-                    Log.d("postGetNumOfScrap", "onSuccess: " + data);
-                    try {
-                        String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
-                        Log.d("journal_num_of_scrap", journal_num_of_scrap);
-
-                        num_of_scrap_tv.setText(journal_num_of_scrap);
-                        num_of_scrap_tv2.setText(journal_num_of_scrap);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
-
+        loadScrap(Integer.toString(journal_id));
+        scrap_flag = userDBHelper.IsScraped(journal_id);
         scrap_btn = (ImageButton) viewGroup.findViewById(R.id.bookmark_btn);
         if(!scrap_flag) scrap_btn.setBackgroundResource(R.drawable.journal_scrap_default);
         else scrap_btn.setBackgroundResource(R.drawable.journal_bookmark_icon_yellow);
@@ -142,70 +131,48 @@ public class JournalDetailFragment extends Fragment {
             public void onClick(View view) {
                 if(!scrap_flag){
                     scrap_btn.setBackgroundResource(R.drawable.journal_bookmark_icon_yellow);
-                    String send_scrap_result = postSendScrapData(Integer.toString(journal_id), new VolleyCommentCallback() {
+                    scrap_flag = true;
+                    // Insert to Server
+                    String delete_heart = postSendScrapChange(Integer.toString(user_id), Integer.toString(journal_id), "insert", new VolleyCommentCallback() {
                         @Override
                         public void onSuccess(String data) {
                             //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                            if (data.equals("-1")) {
-                                Log.d("postSendScrapData", "POST ResultFailed.");
-                                String get_scrap_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
-                                    @Override
-                                    public void onSuccess(String data){
-                                        if (data.equals("-1")) {
-                                            Log.d("postGetNumOfScrap", "POST ResultFailed.");
-                                        } else {
-                                            Log.d("postGetNumOfScrap", "onSuccess: " + data);
-                                            try {
-                                                String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
-                                                Log.d("journal_num_of_scrap", journal_num_of_scrap);
+                            if (!data.equals("1")) {
+                                Log.d("postSendScrapChange", "POST ResultFailed.");
 
-                                                num_of_scrap_tv.setText(journal_num_of_scrap);
-                                                num_of_scrap_tv2.setText(journal_num_of_scrap);
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                        }
-                                    }
-                                });
                             } else {
-                                Log.d("postSendScrapData","Success to send scrap | journal_id = " + journal_id);
-                                String get_scrap_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
-                                    @Override
-                                    public void onSuccess(String data){
-                                        if (data.equals("-1")) {
-                                            Log.d("postGetNumOfScrap", "POST ResultFailed.");
-                                        } else {
-                                            Log.d("postGetNumOfScrap", "onSuccess: " + data);
-                                            try {
-                                                String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
-                                                Log.d("journal_num_of_scrap", journal_num_of_scrap);
-
-                                                num_of_scrap_tv.setText(journal_num_of_scrap);
-                                                num_of_scrap_tv2.setText(journal_num_of_scrap);
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                        }
-                                    }
-                                });
+                                Log.d("postSendScrapChange","Success to delete scrap | journal_id = " + journal_id);
+                                userDBHelper.add_scrap(user_id, journal_id);
+                                loadScrap(Integer.toString(journal_id));
                             }
                         }
 
                     });
-                    scrap_flag = true;
+
                 }
                 else{
                     scrap_btn.setBackgroundResource(R.drawable.journal_scrap_default);
                     scrap_flag = false;
-                    //감소 반영
+                    // Delete to Server
+                    String delete_heart = postSendScrapChange(Integer.toString(user_id), Integer.toString(journal_id), "delete", new VolleyCommentCallback() {
+                        @Override
+                        public void onSuccess(String data) {
+                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                            if (!data.equals("1")) {
+                                Log.d("postSendScrapChange", "POST ResultFailed.");
+
+                            } else {
+                                Log.d("postSendScrapChange","Success to delete scrap | journal_id = " + journal_id);
+                                userDBHelper.delete_scrap(journal_id);
+                                loadScrap(Integer.toString(journal_id));
+                            }
+                        }
+
+                    });
                 }
-                Log.d("scrap_btn", "Clicked");
             }
         });
+        // -- scrap part End --
 
 
         more_comment_btn = (Button)viewGroup.findViewById(R.id.more_comment_btn);
@@ -229,7 +196,7 @@ public class JournalDetailFragment extends Fragment {
         num_of_scrap_tv.setText(journalDBHelper.getJournalNum_of_scrap(journal_id) + "");
         num_of_scrap_tv2.setText(journalDBHelper.getJournalNum_of_scrap(journal_id) + "");
 
-        //num_of_view
+        // -- num_of_view part Start --
         String send_view_result = postSendViewData(Integer.toString(journal_id), new VolleyCommentCallback() {
             @Override
             public void onSuccess(String data) {
@@ -263,7 +230,7 @@ public class JournalDetailFragment extends Fragment {
                 }
             }
         });
-
+        // -- num_of_view part End --
 
         String banner_img_path = getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalBanner_img(journal_id)).toString();
         Bitmap bm = BitmapFactory.decodeFile(banner_img_path);
@@ -341,9 +308,8 @@ public class JournalDetailFragment extends Fragment {
         String[] file_name = file.split("[.]");
         webView.loadUrl("http://211.174.237.197/media/journal/" + file_name[0] + "/index.html");
 
-        //--Comments 로드 Part--
-        final ArrayList<PerformReviewCommentAdapter.CommentItem> all_comment_array = new ArrayList<>();
-        final ArrayList<PerformReviewCommentAdapter.CommentItem> comment_array = new ArrayList<>();
+
+        //--Comments 로드 Part Start--
         //ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
         //recomment_data.add(new PerformReviewCommentAdapter.CommentItem(R.drawable.icon_mypage, "제인", "2020.10.23", "꿀팁 공유 감사합니다!\n2층에서는 샹들리에 떨어지는게 잘 안보이나요?", true));
         //comment_data.add(new PerformReviewCommentAdapter.CommentItem(R.drawable.icon_mypage, "제인", "2020.10.23","꿀팁 공유 감사합니다!\n2층에서는 샹들리에 떨어지는게 잘 안보이나요?", recomment_data, false));
@@ -351,187 +317,16 @@ public class JournalDetailFragment extends Fragment {
         //final PerformReviewCommentAdapter performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity(), all_comment_array);
         //comment_rv.setAdapter(performReviewCommentAdapter);
         //comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        final PerformReviewCommentAdapter performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity(), comment_array);
+        performReviewCommentAdapter = new PerformReviewCommentAdapter(getActivity(), comment_array);
         comment_rv.setAdapter(performReviewCommentAdapter);
         comment_rv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         num_comment_tv2.setText("0");
         num_comment_tv.setText("0");
-        String journal_data = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
-                    @Override
-                    public void onSuccess(String data) {
-                        all_comment_array.clear();
-                        comment_array.clear();
-                        //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                        if (data.equals("-1")) {
-                            Log.d("postGetCommentIds", "POST ResultFailed.");
-                        } else {
-                            Log.d("postGetCommentIds", "onSuccess: " + data);
-                            try {
-                                //Journal Comment Ids 불러오기
-                                journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments");
-                                Log.d("journalIdResultObj", journalCommentIdResult);
-                                journalCommentIds = journalCommentIdResult.split(", ");
-                                if(!journalCommentIds[0].equals("")) {
 
-                                    num_comment_tv.setText(journalCommentIds.length + "");
-                                    num_comment_tv2.setText(journalCommentIds.length + "");
+        // Default
+        updateComment(Integer.toString(journal_id));
 
-                                    //각각의 Journal Comment 데이터 가져오기
-                                    for (int i = 0; i < journalCommentIds.length; i++) {
-                                        Log.d("journalCommentIds", journalCommentIds[i]);
-                                        String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
-                                            @Override
-                                            public void onSuccess(String comment_data) {
-                                                //Toast.makeText(getActivity().getApplicationContext(), "Result: " + comment_data, Toast.LENGTH_SHORT).show();
-                                                if (comment_data.equals("-1")) {
-                                                    Log.d("postGetCommentData", "POST ResultFailed.");
-
-                                                } else {
-                                                    Log.d("postGetCommentData", "onSuccess: " + comment_data);
-
-                                                    try {
-                                                        //Comment 데이터 parsing
-                                                        JSONObject comment_object = new JSONObject(comment_data).getJSONObject("comment");
-                                                        String comment = comment_object.getString("comment");
-                                                        String user_id = comment_object.getString("user_id");
-                                                        String comment_date = comment_object.getString("comment_date");
-                                                        String comment_reply = comment_object.getString("comment_reply");
-                                                        String user_pic = "";
-                                                        String user_name = "";
-                                                        String user_img_path = "";
-                                                        Log.d("comment_data", comment + " | " + comment_date + " | " + comment_reply + " | " + user_id);
-
-                                                        //user data POST
-                                                        String user_data = postGetUserData(user_id, new VolleyCommentCallback() {
-                                                            @Override
-                                                            public void onSuccess(String data) {
-                                                                if (data.equals("-1")) {
-                                                                    Log.d("postGetUserData", "POST ResultFailed.");
-                                                                    all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                    Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
-                                                                    if(comment_array.size() < visible_cmt){
-                                                                        comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                        Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
-                                                                        performReviewCommentAdapter.notifyDataSetChanged();
-                                                                    }
-                                                                    if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                    else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                        more_comment_btn.setVisibility(View.VISIBLE);
-                                                                        more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                    }
-                                                                    else more_comment_btn.setVisibility(View.GONE);
-                                                                } else {
-                                                                    try {
-                                                                        //user 데어터 parsing
-                                                                        JSONObject user_object = new JSONObject(data).getJSONObject("user");
-                                                                        String user_pic = user_object.getString("user_pic");
-                                                                        String user_name = user_object.getString("nickname");
-                                                                        Log.d("postGetUserData", "onSuccess: " + data);
-                                                                        String user_img_path = getActivity().getApplicationContext().getFileStreamPath(user_pic).toString();
-                                                                        Log.d("comment_reply", comment_reply);
-
-                                                                        //recomment 존재 여부 체크
-                                                                        if (comment_reply.equals("")) {
-                                                                            //recomment가 없는 comment 객체 추가
-                                                                            all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                            Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
-                                                                            if(comment_array.size() < visible_cmt){
-                                                                                comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                                Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
-                                                                                performReviewCommentAdapter.notifyDataSetChanged();
-                                                                            }
-                                                                            if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                            else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                                more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                            }
-                                                                            else more_comment_btn.setVisibility(View.GONE);
-                                                                        }
-                                                                        else {
-                                                                            //recomment data post
-                                                                            String recomment_result = postGetCommentData(comment_reply, new VolleyCommentCallback() {
-                                                                                @Override
-                                                                                public void onSuccess(String data) {
-                                                                                    if (data.equals(""))
-                                                                                        Log.d("postGetRecommentData", "POST ResultFailed.");
-                                                                                    else {
-                                                                                        try {
-                                                                                            //recomment data parsing
-                                                                                            JSONObject rcm_object = new JSONObject(data).getJSONObject("comment");
-                                                                                            String recomment_date = rcm_object.getString("comment_date");
-                                                                                            String recomment = rcm_object.getString("comment");
-                                                                                            String recomment_user_id = rcm_object.getString("user_id");
-
-                                                                                            //recomment user data post
-                                                                                            String rcm_user_data = postGetUserData(recomment_user_id, new VolleyCommentCallback() {
-                                                                                                @Override
-                                                                                                public void onSuccess(String data) {
-                                                                                                    if (data.equals(""))
-                                                                                                        Log.d("postGetRCMUserData", "POST ResultFailed.");
-                                                                                                    else {
-                                                                                                        //recomment user data parsing
-                                                                                                        String recomment_user_pic = "";
-                                                                                                        String recomment_user_name = "";
-                                                                                                        Log.d("postGetRCMUserData", "onSuccess: " + data);
-                                                                                                        String rcm_user_img_path = getActivity().getApplicationContext().getFileStreamPath(recomment_user_pic).toString();
-
-                                                                                                        ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
-                                                                                                        recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
-                                                                                                        //recomment를 가진 comment 객체 추가
-                                                                                                        all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
-                                                                                                        if(comment_array.size() < visible_cmt){
-                                                                                                            comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
-                                                                                                            Log.d("add comment", "Success " + comment + " | num of comment_array = " + comment_array.size());
-                                                                                                            performReviewCommentAdapter.notifyDataSetChanged();
-                                                                                                        }
-                                                                                                        if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                                        else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                                                            more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                                            more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                                                        }
-                                                                                                        else more_comment_btn.setVisibility(View.GONE);
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                        } catch (JSONException e) {
-                                                                                            e.printStackTrace();
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    } catch (JSONException e) {
-                                                                        e.printStackTrace();
-                                                                    }
-
-                                                                }
-                                                            }
-                                                        });
-
-
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-
-                                                }
-                                            }
-
-                                        });
-
-                                        Log.d("postSendCommentData", result);
-                                    }
-                                }
-                                Log.d("Comments","Finish adding comments data | num = " + all_comment_array.size());
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-        });
-
+        // 댓글 더보기
         more_comment_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -542,199 +337,12 @@ public class JournalDetailFragment extends Fragment {
                 visible_cmt = visible_cmt + Integer.parseInt(btn_text);
                 Log.d("more_btn", "btn_text = " + btn_text + " | visible_cmt = " + visible_cmt);
 
-                // 중복
-                String journal_data = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
-                    @Override
-                    public void onSuccess(String data) {
-                        all_comment_array.clear();
-                        comment_array.clear();
-                        //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                        if (data.equals("-1")) {
-                            Log.d("postGetCommentIds", "POST ResultFailed.");
-                        } else {
-                            Log.d("postGetCommentIds", "onSuccess: " + data);
-                            try {
-                                //Journal Comment Ids 불러오기
-                                journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments");
-                                Log.d("journalIdResultObj", journalCommentIdResult);
-                                journalCommentIds = journalCommentIdResult.split(", ");
-                                if(!journalCommentIds[0].equals("")) {
-
-                                    num_comment_tv.setText(journalCommentIds.length + "");
-                                    num_comment_tv2.setText(journalCommentIds.length + "");
-
-                                    //각각의 Journal Comment 데이터 가져오기
-                                    for (int i = 0; i < journalCommentIds.length; i++) {
-                                        Log.d("journalCommentIds", journalCommentIds[i]);
-                                        String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
-                                            @Override
-                                            public void onSuccess(String comment_data) {
-                                                //Toast.makeText(getActivity().getApplicationContext(), "Result: " + comment_data, Toast.LENGTH_SHORT).show();
-                                                if (comment_data.equals("-1")) {
-                                                    Log.d("postGetCommentData", "POST ResultFailed.");
-
-                                                } else {
-                                                    Log.d("postGetCommentData", "onSuccess: " + comment_data);
-
-                                                    try {
-                                                        //Comment 데이터 parsing
-                                                        JSONObject comment_object = new JSONObject(comment_data).getJSONObject("comment");
-                                                        String comment = comment_object.getString("comment");
-                                                        String user_id = comment_object.getString("user_id");
-                                                        String comment_date = comment_object.getString("comment_date");
-                                                        String comment_reply = comment_object.getString("comment_reply");
-                                                        String user_pic = "";
-                                                        String user_name = "";
-                                                        String user_img_path = "";
-                                                        Log.d("comment_data", comment + " | " + comment_date + " | " + comment_reply + " | " + user_id);
-
-                                                        //user data POST
-                                                        String user_data = postGetUserData(user_id, new VolleyCommentCallback() {
-                                                            @Override
-                                                            public void onSuccess(String data) {
-                                                                if (data.equals("-1")) {
-                                                                    Log.d("postGetUserData", "POST ResultFailed.");
-                                                                    all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                    Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
-                                                                    if(comment_array.size() < visible_cmt){
-                                                                        comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                        Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
-                                                                        performReviewCommentAdapter.notifyDataSetChanged();
-                                                                    }
-                                                                    if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                    else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                        more_comment_btn.setVisibility(View.VISIBLE);
-                                                                        more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                    }
-                                                                    else more_comment_btn.setVisibility(View.GONE);
-                                                                } else {
-                                                                    try {
-                                                                        //user 데어터 parsing
-                                                                        JSONObject user_object = new JSONObject(data).getJSONObject("user");
-                                                                        String user_pic = user_object.getString("user_pic");
-                                                                        String user_name = user_object.getString("nickname");
-                                                                        Log.d("postGetUserData", "onSuccess: " + data);
-                                                                        String user_img_path = getActivity().getApplicationContext().getFileStreamPath(user_pic).toString();
-                                                                        Log.d("comment_reply", comment_reply);
-
-
-                                                                        //recomment 존재 여부 체크
-                                                                        if (comment_reply.equals("")) {
-                                                                            //recomment가 없는 comment 객체 추가
-                                                                            all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                            Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
-                                                                            if(comment_array.size() < visible_cmt){
-                                                                                comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                                Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
-                                                                                performReviewCommentAdapter.notifyDataSetChanged();
-                                                                            }
-                                                                            if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                            else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                                more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                            }
-                                                                            else more_comment_btn.setVisibility(View.GONE);
-                                                                        }
-                                                                        else {
-                                                                            //recomment data post
-                                                                            String recomment_result = postGetCommentData(comment_reply, new VolleyCommentCallback() {
-                                                                                @Override
-                                                                                public void onSuccess(String data) {
-                                                                                    if (data.equals(""))
-                                                                                        Log.d("postGetRecommentData", "POST ResultFailed.");
-                                                                                    else {
-                                                                                        try {
-                                                                                            //recomment data parsing
-                                                                                            JSONObject rcm_object = new JSONObject(data).getJSONObject("comment");
-                                                                                            String recomment_date = rcm_object.getString("comment_date");
-                                                                                            String recomment = rcm_object.getString("comment");
-                                                                                            String recomment_user_id = rcm_object.getString("user_id");
-
-                                                                                            //recomment user data post
-                                                                                            String rcm_user_data = postGetUserData(recomment_user_id, new VolleyCommentCallback() {
-                                                                                                @Override
-                                                                                                public void onSuccess(String data) {
-                                                                                                    if (data.equals(""))
-                                                                                                        Log.d("postGetRCMUserData", "POST ResultFailed.");
-                                                                                                    else {
-                                                                                                        //recomment user data parsing
-                                                                                                        String recomment_user_pic = "";
-                                                                                                        String recomment_user_name = "";
-                                                                                                        Log.d("postGetRCMUserData", "onSuccess: " + data);
-                                                                                                        String rcm_user_img_path = getActivity().getApplicationContext().getFileStreamPath(recomment_user_pic).toString();
-
-                                                                                                        ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
-                                                                                                        recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
-                                                                                                        //recomment를 가진 comment 객체 추가
-                                                                                                        all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
-                                                                                                        if(comment_array.size() < visible_cmt){
-                                                                                                            comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
-                                                                                                            Log.d("add comment", "Success " + comment + " | num of comment_array = " + comment_array.size());
-                                                                                                            performReviewCommentAdapter.notifyDataSetChanged();
-                                                                                                        }
-                                                                                                        if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                                        else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                                                            more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                                            more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                                                        }
-                                                                                                        else more_comment_btn.setVisibility(View.GONE);
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                        } catch (JSONException e) {
-                                                                                            e.printStackTrace();
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    } catch (JSONException e) {
-                                                                        e.printStackTrace();
-                                                                    }
-
-                                                                }
-                                                            }
-                                                        });
-
-
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-
-                                                }
-                                            }
-
-                                        });
-
-                                        Log.d("postSendCommentData", result);
-                                    }
-                                }
-                                Log.d("Comments","Finish adding comments data | num = " + all_comment_array.size());
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
+                updateComment(Integer.toString(journal_id));
 
             }
         });
 
-        //Relation_jouranl part
-        recommend_journal_rv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        ArrayList<JournalRecommendListAdapter.Item> recommend_journal_data = new ArrayList<>();
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
-
-        //--댓글 저장 Part--
+        // 댓글 저장 Part
         comment_save_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -753,194 +361,34 @@ public class JournalDetailFragment extends Fragment {
                                 Log.d("postSendCommentData", "POST ResultFailed.");
                             } else {
                                 comment_et.setText("");
+                                Toast.makeText(getActivity().getApplicationContext(),"댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                                updateComment(Integer.toString(journal_id));
+
                             }
                         }
 
                     });
 
                     Log.d("postSendCommentData", result);
-                    Toast.makeText(getActivity().getApplicationContext(),"댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
-                    // 중복
-                    String journal_data = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
-                        @Override
-                        public void onSuccess(String data) {
-                            all_comment_array.clear();
-                            comment_array.clear();
-                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                            if (data.equals("-1")) {
-                                Log.d("postGetCommentIds", "POST ResultFailed.");
-                            } else {
-                                Log.d("postGetCommentIds", "onSuccess: " + data);
-                                try {
-                                    //Journal Comment Ids 불러오기
-                                    journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments");
-                                    Log.d("journalIdResultObj", journalCommentIdResult);
-                                    journalCommentIds = journalCommentIdResult.split(", ");
-                                    if(!journalCommentIds[0].equals("")) {
-
-                                        num_comment_tv.setText(journalCommentIds.length + "");
-                                        num_comment_tv2.setText(journalCommentIds.length + "");
-
-                                        //각각의 Journal Comment 데이터 가져오기
-                                        for (int i = 0; i < journalCommentIds.length; i++) {
-                                            Log.d("journalCommentIds", journalCommentIds[i]);
-                                            String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
-                                                @Override
-                                                public void onSuccess(String comment_data) {
-                                                    //Toast.makeText(getActivity().getApplicationContext(), "Result: " + comment_data, Toast.LENGTH_SHORT).show();
-                                                    if (comment_data.equals("-1")) {
-                                                        Log.d("postGetCommentData", "POST ResultFailed.");
-
-                                                    } else {
-                                                        Log.d("postGetCommentData", "onSuccess: " + comment_data);
-
-                                                        try {
-                                                            //Comment 데이터 parsing
-                                                            JSONObject comment_object = new JSONObject(comment_data).getJSONObject("comment");
-                                                            String comment = comment_object.getString("comment");
-                                                            String user_id = comment_object.getString("user_id");
-                                                            String comment_date = comment_object.getString("comment_date");
-                                                            String comment_reply = comment_object.getString("comment_reply");
-                                                            String user_pic = "";
-                                                            String user_name = "";
-                                                            String user_img_path = "";
-                                                            Log.d("comment_data", comment + " | " + comment_date + " | " + comment_reply + " | " + user_id);
-
-                                                            //user data POST
-                                                            String user_data = postGetUserData(user_id, new VolleyCommentCallback() {
-                                                                @Override
-                                                                public void onSuccess(String data) {
-                                                                    if (data.equals("-1")) {
-                                                                        Log.d("postGetUserData", "POST ResultFailed.");
-                                                                        all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                        Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
-                                                                        if(comment_array.size() < visible_cmt){
-                                                                            comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                            Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
-                                                                            performReviewCommentAdapter.notifyDataSetChanged();
-                                                                        }
-                                                                        if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                        else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                            more_comment_btn.setVisibility(View.VISIBLE);
-                                                                            more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                        }
-                                                                        else more_comment_btn.setVisibility(View.GONE);
-                                                                    } else {
-                                                                        try {
-                                                                            //user 데어터 parsing
-                                                                            JSONObject user_object = new JSONObject(data).getJSONObject("user");
-                                                                            String user_pic = user_object.getString("user_pic");
-                                                                            String user_name = user_object.getString("nickname");
-                                                                            Log.d("postGetUserData", "onSuccess: " + data);
-                                                                            String user_img_path = getActivity().getApplicationContext().getFileStreamPath(user_pic).toString();
-                                                                            Log.d("comment_reply", comment_reply);
-
-
-                                                                            //recomment 존재 여부 체크
-                                                                            if (comment_reply.equals("")) {
-                                                                                //recomment가 없는 comment 객체 추가
-                                                                                all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                                Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
-                                                                                if(comment_array.size() < visible_cmt){
-                                                                                    comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
-                                                                                    Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
-                                                                                    performReviewCommentAdapter.notifyDataSetChanged();
-                                                                                }
-                                                                                if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                                    more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                    more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                                }
-                                                                                else more_comment_btn.setVisibility(View.GONE);
-                                                                            }
-                                                                            else {
-                                                                                //recomment data post
-                                                                                String recomment_result = postGetCommentData(comment_reply, new VolleyCommentCallback() {
-                                                                                    @Override
-                                                                                    public void onSuccess(String data) {
-                                                                                        if (data.equals(""))
-                                                                                            Log.d("postGetRecommentData", "POST ResultFailed.");
-                                                                                        else {
-                                                                                            try {
-                                                                                                //recomment data parsing
-                                                                                                JSONObject rcm_object = new JSONObject(data).getJSONObject("comment");
-                                                                                                String recomment_date = rcm_object.getString("comment_date");
-                                                                                                String recomment = rcm_object.getString("comment");
-                                                                                                String recomment_user_id = rcm_object.getString("user_id");
-
-                                                                                                //recomment user data post
-                                                                                                String rcm_user_data = postGetUserData(recomment_user_id, new VolleyCommentCallback() {
-                                                                                                    @Override
-                                                                                                    public void onSuccess(String data) {
-                                                                                                        if (data.equals(""))
-                                                                                                            Log.d("postGetRCMUserData", "POST ResultFailed.");
-                                                                                                        else {
-                                                                                                            //recomment user data parsing
-                                                                                                            String recomment_user_pic = "";
-                                                                                                            String recomment_user_name = "";
-                                                                                                            Log.d("postGetRCMUserData", "onSuccess: " + data);
-                                                                                                            String rcm_user_img_path = getActivity().getApplicationContext().getFileStreamPath(recomment_user_pic).toString();
-
-                                                                                                            ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
-                                                                                                            recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
-                                                                                                            //recomment를 가진 comment 객체 추가
-                                                                                                            all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
-                                                                                                            if(comment_array.size() < visible_cmt){
-                                                                                                                comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
-                                                                                                                Log.d("add comment", "Success " + comment + " | num of comment_array = " + comment_array.size());
-                                                                                                                performReviewCommentAdapter.notifyDataSetChanged();
-                                                                                                            }
-                                                                                                            if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                                            else if(all_comment_array.size() - comment_array.size() > 0){
-                                                                                                                more_comment_btn.setVisibility(View.VISIBLE);
-                                                                                                                more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
-                                                                                                            }
-                                                                                                            else more_comment_btn.setVisibility(View.GONE);
-                                                                                                        }
-                                                                                                    }
-                                                                                                });
-                                                                                            } catch (JSONException e) {
-                                                                                                e.printStackTrace();
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        } catch (JSONException e) {
-                                                                            e.printStackTrace();
-                                                                        }
-
-                                                                    }
-                                                                }
-                                                            });
-
-
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-
-
-                                                    }
-                                                }
-
-                                            });
-
-                                            Log.d("postSendCommentData", result);
-                                        }
-                                    }
-                                    Log.d("Comments","Finish adding comments data | num = " + all_comment_array.size());
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    });
 
                 }
             }
         });
+        //--Comments 로드 Part Start--
+
+
+        //Relation_jouranl part
+        recommend_journal_rv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        ArrayList<JournalRecommendListAdapter.Item> recommend_journal_data = new ArrayList<>();
+        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
+
+
         return viewGroup;
     }
 
@@ -1250,6 +698,264 @@ public class JournalDetailFragment extends Fragment {
         }
         return "0";
     }
+
+    public void updateComment(String journal_id){
+        String journal_data = postGetCommentIds(journal_id, new VolleyCommentCallback() {
+            @Override
+            public void onSuccess(String data) {
+                all_comment_array.clear();
+                comment_array.clear();
+                //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                if (data.equals("-1")) {
+                    Log.d("postGetCommentIds", "POST ResultFailed.");
+                } else {
+                    Log.d("postGetCommentIds", "onSuccess: " + data);
+                    try {
+                        //Journal Comment Ids 불러오기
+                        journalCommentIdResult = new JSONObject(data).getJSONObject("journal").getString("journal_comments");
+                        Log.d("journalIdResultObj", journalCommentIdResult);
+                        journalCommentIds = journalCommentIdResult.split(", ");
+                        if(!journalCommentIds[0].equals("")) {
+
+                            num_comment_tv.setText(journalCommentIds.length + "");
+                            num_comment_tv2.setText(journalCommentIds.length + "");
+
+                            //각각의 Journal Comment 데이터 가져오기
+                            for (int i = 0; i < journalCommentIds.length; i++) {
+                                Log.d("journalCommentIds", journalCommentIds[i]);
+                                String result = postGetCommentData(journalCommentIds[i], new VolleyCommentCallback() {
+                                    @Override
+                                    public void onSuccess(String comment_data) {
+                                        //Toast.makeText(getActivity().getApplicationContext(), "Result: " + comment_data, Toast.LENGTH_SHORT).show();
+                                        if (comment_data.equals("-1")) {
+                                            Log.d("postGetCommentData", "POST ResultFailed.");
+
+                                        } else {
+                                            Log.d("postGetCommentData", "onSuccess: " + comment_data);
+
+                                            try {
+                                                //Comment 데이터 parsing
+                                                JSONObject comment_object = new JSONObject(comment_data).getJSONObject("comment");
+                                                String comment = comment_object.getString("comment");
+                                                String user_id = comment_object.getString("user_id");
+                                                String comment_date = comment_object.getString("comment_date");
+                                                String comment_reply = comment_object.getString("comment_reply");
+                                                String user_pic = "";
+                                                String user_name = "";
+                                                String user_img_path = "";
+                                                Log.d("comment_data", comment + " | " + comment_date + " | " + comment_reply + " | " + user_id);
+
+                                                //user data POST
+                                                String user_data = postGetUserData(user_id, new VolleyCommentCallback() {
+                                                    @Override
+                                                    public void onSuccess(String data) {
+                                                        if (data.equals("-1")) {
+                                                            Log.d("postGetUserData", "POST ResultFailed.");
+                                                            all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                            Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
+                                                            if(comment_array.size() < visible_cmt){
+                                                                comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                                Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
+                                                                performReviewCommentAdapter.notifyDataSetChanged();
+                                                            }
+                                                            if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
+                                                            else if(all_comment_array.size() - comment_array.size() > 0){
+                                                                more_comment_btn.setVisibility(View.VISIBLE);
+                                                                more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
+                                                            }
+                                                            else more_comment_btn.setVisibility(View.GONE);
+                                                        } else {
+                                                            try {
+                                                                //user 데어터 parsing
+                                                                JSONObject user_object = new JSONObject(data).getJSONObject("user");
+                                                                String user_pic = user_object.getString("user_pic");
+                                                                String user_name = user_object.getString("nickname");
+                                                                Log.d("postGetUserData", "onSuccess: " + data);
+                                                                String user_img_path = getActivity().getApplicationContext().getFileStreamPath(user_pic).toString();
+                                                                Log.d("comment_reply", comment_reply);
+
+
+                                                                //recomment 존재 여부 체크
+                                                                if (comment_reply.equals("")) {
+                                                                    //recomment가 없는 comment 객체 추가
+                                                                    all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                                    Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
+                                                                    if(comment_array.size() < visible_cmt){
+                                                                        comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                                        Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
+                                                                        performReviewCommentAdapter.notifyDataSetChanged();
+                                                                    }
+                                                                    if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
+                                                                    else if(all_comment_array.size() - comment_array.size() > 0){
+                                                                        more_comment_btn.setVisibility(View.VISIBLE);
+                                                                        more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
+                                                                    }
+                                                                    else more_comment_btn.setVisibility(View.GONE);
+                                                                }
+                                                                else {
+                                                                    //recomment data post
+                                                                    String recomment_result = postGetCommentData(comment_reply, new VolleyCommentCallback() {
+                                                                        @Override
+                                                                        public void onSuccess(String data) {
+                                                                            if (data.equals(""))
+                                                                                Log.d("postGetRecommentData", "POST ResultFailed.");
+                                                                            else {
+                                                                                try {
+                                                                                    //recomment data parsing
+                                                                                    JSONObject rcm_object = new JSONObject(data).getJSONObject("comment");
+                                                                                    String recomment_date = rcm_object.getString("comment_date");
+                                                                                    String recomment = rcm_object.getString("comment");
+                                                                                    String recomment_user_id = rcm_object.getString("user_id");
+
+                                                                                    //recomment user data post
+                                                                                    String rcm_user_data = postGetUserData(recomment_user_id, new VolleyCommentCallback() {
+                                                                                        @Override
+                                                                                        public void onSuccess(String data) {
+                                                                                            if (data.equals(""))
+                                                                                                Log.d("postGetRCMUserData", "POST ResultFailed.");
+                                                                                            else {
+                                                                                                //recomment user data parsing
+                                                                                                String recomment_user_pic = "";
+                                                                                                String recomment_user_name = "";
+                                                                                                Log.d("postGetRCMUserData", "onSuccess: " + data);
+                                                                                                String rcm_user_img_path = getActivity().getApplicationContext().getFileStreamPath(recomment_user_pic).toString();
+
+                                                                                                ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
+                                                                                                recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
+                                                                                                //recomment를 가진 comment 객체 추가
+                                                                                                all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
+                                                                                                if(comment_array.size() < visible_cmt){
+                                                                                                    comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
+                                                                                                    Log.d("add comment", "Success " + comment + " | num of comment_array = " + comment_array.size());
+                                                                                                    performReviewCommentAdapter.notifyDataSetChanged();
+                                                                                                }
+                                                                                                if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
+                                                                                                else if(all_comment_array.size() - comment_array.size() > 0){
+                                                                                                    more_comment_btn.setVisibility(View.VISIBLE);
+                                                                                                    more_comment_btn.setText("+  " + (all_comment_array.size() - comment_array.size()) + "개의 댓글 더 보기");
+                                                                                                }
+                                                                                                else more_comment_btn.setVisibility(View.GONE);
+                                                                                            }
+                                                                                        }
+                                                                                    });
+                                                                                } catch (JSONException e) {
+                                                                                    e.printStackTrace();
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+
+                                                        }
+                                                    }
+                                                });
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+
+                                        }
+                                    }
+
+                                });
+
+                                Log.d("postSendCommentData", result);
+                            }
+                        }
+                        Log.d("Comments","Finish adding comments data | num = " + all_comment_array.size());
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void loadScrap(String journal_id){
+        String get_scrap_view = postGetCommentIds(journal_id, new VolleyCommentCallback() {
+            @Override
+            public void onSuccess(String data){
+                if (data.equals("-1")) {
+                    //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                    Log.d("postGetNumOfScrap", "POST ResultFailed.");
+                } else {
+                    Log.d("postGetNumOfScrap", "onSuccess: " + data);
+                    try {
+                        String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
+                        Log.d("journal_num_of_scrap", journal_num_of_scrap);
+
+                        num_of_scrap_tv.setText(journal_num_of_scrap);
+                        num_of_scrap_tv2.setText(journal_num_of_scrap);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+    }
+
+    public String postSendScrapChange(String user_id, String journal_id, String action, VolleyCommentCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://211.174.237.197/request_increment_journal_num_of_scrap/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postSendScrapChange", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postSendScrapChange", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("action", action);
+                    params.put("user_id", user_id);
+                    params.put("journal_id", journal_id);
+
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postSendScrapChange", e.toString());
+
+        }
+        return "1";
+    }
+
+
 
 }
 
