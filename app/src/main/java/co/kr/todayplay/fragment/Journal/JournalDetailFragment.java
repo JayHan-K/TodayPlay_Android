@@ -44,6 +44,8 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -699,6 +701,19 @@ public class JournalDetailFragment extends Fragment {
         return "0";
     }
 
+    public ArrayList<PerformReviewCommentAdapter.CommentItem> commentSort(ArrayList<PerformReviewCommentAdapter.CommentItem> comments){
+        ArrayList<PerformReviewCommentAdapter.CommentItem> comment_list = comments;
+
+        Collections.sort(comment_list, new Comparator<PerformReviewCommentAdapter.CommentItem>() {
+            @Override
+            public int compare(PerformReviewCommentAdapter.CommentItem o1, PerformReviewCommentAdapter.CommentItem o2) {
+                return o2.getDate().compareTo(o1.getDate());
+            }
+        });
+
+        return comment_list;
+    }
+
     public void updateComment(String journal_id){
         String journal_data = postGetCommentIds(journal_id, new VolleyCommentCallback() {
             @Override
@@ -752,10 +767,13 @@ public class JournalDetailFragment extends Fragment {
                                                         if (data.equals("-1")) {
                                                             Log.d("postGetUserData", "POST ResultFailed.");
                                                             all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                            all_comment_array = commentSort(all_comment_array);
+
                                                             Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
                                                             if(comment_array.size() < visible_cmt){
                                                                 comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
                                                                 Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
+                                                                comment_array = commentSort(comment_array);
                                                                 performReviewCommentAdapter.notifyDataSetChanged();
                                                             }
                                                             if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
@@ -779,10 +797,13 @@ public class JournalDetailFragment extends Fragment {
                                                                 if (comment_reply.equals("")) {
                                                                     //recomment가 없는 comment 객체 추가
                                                                     all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
+                                                                    all_comment_array = commentSort(all_comment_array);
+
                                                                     Log.d("add all_comment", "Success " + comment + " | num of all_comment_array = " + all_comment_array.size());
                                                                     if(comment_array.size() < visible_cmt){
                                                                         comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, false));
                                                                         Log.d("add comment", "Success " + comment + " | num of comment_array = " + all_comment_array.size());
+                                                                        comment_array = commentSort(comment_array);
                                                                         performReviewCommentAdapter.notifyDataSetChanged();
                                                                     }
                                                                     if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
@@ -824,9 +845,13 @@ public class JournalDetailFragment extends Fragment {
                                                                                                 recomment_data.add(new PerformReviewCommentAdapter.CommentItem(recomment_user_pic, recomment_user_name, recomment_date, recomment, true));
                                                                                                 //recomment를 가진 comment 객체 추가
                                                                                                 all_comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
+                                                                                                all_comment_array = commentSort(all_comment_array);
+
                                                                                                 if(comment_array.size() < visible_cmt){
                                                                                                     comment_array.add(new PerformReviewCommentAdapter.CommentItem(user_pic, user_name, comment_date, comment, recomment_data, false));
                                                                                                     Log.d("add comment", "Success " + comment + " | num of comment_array = " + comment_array.size());
+                                                                                                    comment_array = commentSort(comment_array);
+
                                                                                                     performReviewCommentAdapter.notifyDataSetChanged();
                                                                                                 }
                                                                                                 if(all_comment_array.size() - comment_array.size() > 3) more_comment_btn.setVisibility(View.VISIBLE);
