@@ -222,6 +222,21 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
     }
 
+    public void replaceFragmentHome(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("banners",banners);
+        bundle.putSerializable("recommands",recommands);
+        bundle.putSerializable("recommandj",recommandj);
+        bundle.putSerializable("rankings",rankings);
+        bundle.putSerializable("line",line);
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.main_frameLayout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     public void replaceFragment(Fragment fragment, int journal_id) {
         Log.d("MainActivity", "replaceFragment: journal_id = " + journal_id + " | user_id = " + userId);
         Bundle bundle = new Bundle();

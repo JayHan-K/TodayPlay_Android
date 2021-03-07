@@ -40,7 +40,7 @@ public class PerformDetailFragment extends Fragment {
     TextView perform_detail_sub_tv, perform_detail_title_tv;
     private Context mContext;
 
-    int play_id;
+    int play_id = -1;
     String[] crews;
     String[] relation_journals;
 
