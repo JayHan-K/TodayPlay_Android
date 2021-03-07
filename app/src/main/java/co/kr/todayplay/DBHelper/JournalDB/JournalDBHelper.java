@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 
+import co.kr.todayplay.object.Recommend;
+
 public class JournalDBHelper extends SQLiteOpenHelper {
     public JournalDBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -242,5 +244,30 @@ public class JournalDBHelper extends SQLiteOpenHelper {
         }
         Log.i("getJournalFile", "getJournalFile: " + file);
         return file;
+    }
+
+    public ArrayList<Recommend> getkeywordjournal_id(String keyword){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Recommend> keywords = new ArrayList<>();
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT journal_id FROM Journal WHERE journal_keyword LIKE ? ");
+        String[] params = {"%"+keyword+"%"};
+        Cursor cursor;
+        cursor = db.rawQuery(sb.toString(),params);
+        while(cursor.moveToNext()){
+            Recommend recommend = new Recommend(cursor.getInt(0));
+            keywords.add(recommend);
+        }
+        return keywords;
+    }
+
+    public ArrayList<Recommend> getalljournal_id(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT journal_id FROM Journal",null);
+        ArrayList<Recommend> journalArraylist = new ArrayList<>();
+        while(cursor.moveToNext()){
+            journalArraylist.add(new Recommend(cursor.getInt(0)));
+        }
+        return journalArraylist;
     }
 }

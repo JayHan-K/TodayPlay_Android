@@ -1,5 +1,7 @@
 package co.kr.todayplay.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.fragment.PerformInfoFragment;
 import co.kr.todayplay.object.Data;
 
 
 public class SearchDetailAdapter extends RecyclerView.Adapter<SearchDetailAdapter.ItemViewHolder> {
-    ArrayList<Data> items = new ArrayList<>();
+    ArrayList<Integer> items = new ArrayList<>();
 
 
     public interface OnItemClickListener{
@@ -24,7 +29,7 @@ public class SearchDetailAdapter extends RecyclerView.Adapter<SearchDetailAdapte
     }
     private OnItemClickListener onItemClickListener;
 
-    public SearchDetailAdapter(ArrayList<Data> items,OnItemClickListener onItemClickListener){
+    public SearchDetailAdapter(ArrayList<Integer> items,OnItemClickListener onItemClickListener){
         this.items = items;
         this.onItemClickListener = onItemClickListener;
     }
@@ -40,11 +45,15 @@ public class SearchDetailAdapter extends RecyclerView.Adapter<SearchDetailAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchDetailAdapter.ItemViewHolder holder, int position) {
-        holder.onBind(items.get(position));
+        PlayDBHelper playDBHelper = new PlayDBHelper(holder.itemView.getContext(),"Play.db",null,1);
+        String imgpath = holder.itemView.getContext().getFilesDir().toString()+"/"+playDBHelper.getPlayPoster(items.get(position));
+        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+        holder.onBind(bm);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                PerformInfoFragment performInfoFragment = new PerformInfoFragment();
+                ((MainActivity)holder.itemView.getContext()).replaceFragment2(performInfoFragment,items.get(position));
             }
         });
 
@@ -63,6 +72,6 @@ public class SearchDetailAdapter extends RecyclerView.Adapter<SearchDetailAdapte
             imageView = (ImageView)itemView.findViewById(R.id.pf_post_iv2);
         }
 
-        void onBind(Data data){imageView.setImageResource(data.getresId());}
+        void onBind(Bitmap bm){imageView.setImageBitmap(bm);}
     }
 }

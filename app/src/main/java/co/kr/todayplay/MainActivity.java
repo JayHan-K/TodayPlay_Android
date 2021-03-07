@@ -212,6 +212,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+
+
+
     public void replaceFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", Integer.parseInt(userId));

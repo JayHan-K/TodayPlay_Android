@@ -16,18 +16,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Random;
 
+import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 import co.kr.todayplay.ItemClickListener;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalAdapter;
+import co.kr.todayplay.adapter.JournalAdapter2;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.adapter.SearchDetailAdapter;
+import co.kr.todayplay.object.CategoryRe;
 import co.kr.todayplay.object.Data;
 import co.kr.todayplay.object.Journal;
+import co.kr.todayplay.object.Recommend;
+import co.kr.todayplay.object.dbsearch1;
 
 public class SearchDetailFragment extends Fragment {
     private ArrayList<Journal> journalList = new ArrayList<Journal>();
     private ArrayList dataList;
+    private ArrayList<dbsearch1> dbsearch1s;
+    private ArrayList<Integer> search_play_id;
+    private ArrayList<CategoryRe> midkeyword;
+    private ArrayList<Recommend> jouranl_id;
+    private ArrayList<Recommend> di;
 
 
 
@@ -38,15 +50,45 @@ public class SearchDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_search_detail, container, false);
         RecyclerView  seachresultrv = (RecyclerView)viewGroup.findViewById(R.id.search_result_rv);
+        PlayDBHelper playDBHelper = new PlayDBHelper(getContext(),"Play.db",null,1);
+        JournalDBHelper journalDBHelper = new JournalDBHelper(getContext(),"Journal.db",null,1);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),3);
         LinearLayoutManager journalLayoutManager =new LinearLayoutManager(this.getContext());
         journalLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        search_play_id = new ArrayList<>();
         String title = getArguments().getString("title");
         Log.d("title","title="+title);
+        dbsearch1s = playDBHelper.getmidsearch(title);
+        dbsearch1 fe = dbsearch1s.get(0);
+        Log.d("dbsearch1s","getit="+fe.getImg_path()+"  "+fe.getKeyword());
+        search_play_id.add(fe.getPlay_id());
+        String[] fekey = fe.getKeyword().split(",");
+        midkeyword = playDBHelper.getkeywordplay_id(fekey[5]);
+        if(midkeyword.size()>7){
+            for(int i =0; i<8;++i){
+                search_play_id.add(midkeyword.get(i).getPlay_id());
+            }
+        }else if(midkeyword.size()<7){
+            for(int i =0; i<midkeyword.size();++i){
+                search_play_id.add(midkeyword.get(i).getPlay_id());
+            }
+        }
+
+        jouranl_id = journalDBHelper.getalljournal_id();
+        Log.d("journal","journal="+jouranl_id.size());
+        Random r = new Random();
+        di = new ArrayList<>();
+        for(int i =0;i<3;++i){
+            di.add(jouranl_id.get(r.nextInt(17)));
+        }
+
+
+
+
         journalList=getJournals();
         dataList = getresults();
 
-        SearchDetailAdapter searchDetailAdapter = new SearchDetailAdapter(dataList, new SearchDetailAdapter.OnItemClickListener() {
+        SearchDetailAdapter searchDetailAdapter = new SearchDetailAdapter(search_play_id, new SearchDetailAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 System.out.println(position);
@@ -75,8 +117,8 @@ public class SearchDetailFragment extends Fragment {
 
         });
 
-        JournalAdapter journalAdapter = new JournalAdapter(journalList,getContext(),listener);
-
+//        JournalAdapter journalAdapter = new JournalAdapter(journalList,getContext(),listener);
+        JournalAdapter2 journalAdapter = new JournalAdapter2(di,getContext(),listener);
 
         RecyclerView recyclerView2 = viewGroup.findViewById(R.id.recyclerView2);
         recyclerView2.setLayoutManager(journalLayoutManager);
