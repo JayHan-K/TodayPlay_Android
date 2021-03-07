@@ -29,7 +29,7 @@ public class HomeAdMidPagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.e("clicked", "onClick: image");
-                ((MainActivity)getActivity()).replaceFragment(journalViewFragment);
+//                ((MainActivity)getActivity()).replaceFragment(journalViewFragment);
             }
         });
         homeMainAdIV.setBackgroundResource(imageResource);

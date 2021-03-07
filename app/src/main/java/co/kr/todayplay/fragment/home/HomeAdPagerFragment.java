@@ -64,7 +64,7 @@ public class HomeAdPagerFragment extends Fragment {
         homeMainAdIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("clicked", "onClick: image");
+//                Log.e("clicked", "onClick: image");
                 ((MainActivity)getActivity()).replaceFragment2(performInfoFragment,banneritem.getPlay_id());
             }
         });
