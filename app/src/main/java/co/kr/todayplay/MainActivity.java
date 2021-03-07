@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_profile:
-                        transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();
+                        //transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();
                         break;
                 }
                 return true;

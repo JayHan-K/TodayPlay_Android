@@ -95,6 +95,7 @@ public class PerformVideoFragment extends Fragment {
                         getDataFromYoutube(apiUrl, new YoutubeVolleyCallback() {
                             @Override
                             public void onSuccess(String returnUrl, String title, String channelTitle, String viewCount) {
+                                Log.d("youtube", "callback onSucess, " + returnUrl );
                                 data.add(new PerformVideoAdapter.Item(returnUrl, title, channelTitle, viewCount));
                             }
                         });
@@ -144,6 +145,8 @@ public class PerformVideoFragment extends Fragment {
                         viewCount = viewCount.trim();
 
                         String returnUrl = "https://www.youtube.com/watch?v=" + url.split("id=")[1].split("&")[0];
+
+                        Log.d("youtube","return URL : " + returnUrl);
                         callback.onSuccess(returnUrl, title, channelTitle, viewCount);
                     }
 
