@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,8 @@ public class PerformReviewFragment extends Fragment {
     PieChart recommend_ratio_chart;
     ImageView keywords_iv;
 
+    int play_id;
+
     public PerformReviewFragment(){}
 
     @Nullable
@@ -53,6 +56,12 @@ public class PerformReviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         int review_data_size = 5;
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_review,container,false);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            play_id = bundle.getInt("play_id");
+            Log.d("Bundle result", "play_id: " + play_id);
+        }
+
         review_rv = (RecyclerView)viewGroup.findViewById(R.id.review_rv);
         write_review_btn = (Button)viewGroup.findViewById(R.id.write_rv_btn);
         more_review_btn = (Button)viewGroup.findViewById(R.id.more_rv_btn);
@@ -203,7 +212,7 @@ public class PerformReviewFragment extends Fragment {
         write_review_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment);
+                ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment, play_id);
             }
         });
 

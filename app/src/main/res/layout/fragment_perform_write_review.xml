@@ -15,6 +15,7 @@
         android:paddingBottom="15dp">
         <ImageButton
             android:id="@+id/back_btn"
+            android:clickable="true"
             android:layout_width="16dp"
             android:layout_height="17dp"
             android:background="@drawable/perform_info_back_icon"
@@ -268,6 +269,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/photo_part"
                     app:layout_constraintStart_toStartOf="@id/photo_part"/>
                 <TextView
+                    android:id="@+id/photo_tv"
                     android:text="사진 첨부 (선택)"
                     android:textSize="10sp"
                     android:textColor="#252525"
