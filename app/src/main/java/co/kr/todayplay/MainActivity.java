@@ -19,6 +19,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -31,6 +38,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import co.kr.todayplay.adapter.JournalHotListAdapter;
 import co.kr.todayplay.fragment.CategoryFragment;
@@ -99,15 +108,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         //인기작정보
         UpdateRankingInfo updateRankingInfo = new UpdateRankingInfo();
         updateRankingInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
         updateBannerInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        //추천정보
-        UpdateRecommendInfo updateRecommendInfo =new UpdateRecommendInfo();
-        updateRecommendInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
         //저널정보
         UpdateJournalInfo updateJournalInfo = new UpdateJournalInfo();
         updateJournalInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -123,6 +131,19 @@ public class MainActivity extends AppCompatActivity {
         if(userId !=null){
             SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
         }
+        String get = get_play_id_from_user_id(userId, new VolleyCallback() {
+            @Override
+            public void onSuccess(String data) {
+                Log.d("volley data","volley data="+data);
+                Recommend_all_jsonString = data;
+                //추천정보
+                UpdateRecommendInfo updateRecommendInfo =new UpdateRecommendInfo();
+                updateRecommendInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        });
+
+
+
 
         BottomNavigationView main_bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         main_bottomNavigationView.setSelectedItemId(R.id.bottom_home);
@@ -172,7 +193,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void replaceFragment2(Fragment fragment){
+    public void replaceFragment2(Fragment fragment, int play_id){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", Integer.parseInt(userId));
+        bundle.putInt("play_id",play_id);
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.main_frameLayout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+    public void replaceFragment3(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frameLayout, fragment);
@@ -285,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Recommend_all_jsonString = getJsonFromServer(all_Recommend_result_url);
+//                Recommend_all_jsonString = getJsonFromServer(all_Recommend_result_url);
                 Log.d("Recommend_all_json", Recommend_all_jsonString);
                 JSONObject jsonObject = new JSONObject(Recommend_all_jsonString);
                 Log.d("Recommend jsonObject", jsonObject.toString());
@@ -302,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("recommend_done?","recommend_done");
                 cnt++;
 
-            } catch (JSONException | IOException e) {
+            } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -435,6 +467,47 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
             }
         }
+    }
+
+    public String get_play_id_from_user_id(String userId,VolleyCallback callback){
+        try{
+            String[] resposeData ={""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://211.174.237.197/request_todays_recommend_by_id/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("get play_id", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("error",error.toString());
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError{
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type","application/json");
+                    params.put("user_id",userId);
+                    return params;
+                }
+
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+        }catch (Exception e){
+            Log.d("error_get_play_id",e.toString());
+        }
+        return "0";
     }
 
 }

@@ -51,6 +51,7 @@ public class PerformInfoFragment extends Fragment {
     TextView rangking_tv;
     Button back_btn;
     int play_id;
+    int user_id;
     TextView perform_title_tv;
     PlayDBHelper playDBHelper;
 
@@ -82,6 +83,8 @@ public class PerformInfoFragment extends Fragment {
         else{
             heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
         }
+        play_id = getArguments().getInt("play_id");
+        user_id = getArguments().getInt("user_id");
 
         heart_btn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -68,7 +68,7 @@ public class PlayCoverflowAdapter extends BaseAdapter {
                 bundle.putInt("play_id",mData.get(position).getPlay_id());
                 PerformInfoFragment performInfoFragment =new PerformInfoFragment();
                 performInfoFragment.setArguments(bundle);
-                ((MainActivity) finalRowView.getContext()).replaceFragment2(performInfoFragment);
+                ((MainActivity) finalRowView.getContext()).replaceFragment2(performInfoFragment,mData.get(position).getPlay_id());
                 Log.d("clicked item","item="+mData.get(position).getPlay_id());
             }
         });

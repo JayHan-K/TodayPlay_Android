@@ -53,7 +53,7 @@ class HomeShowAdapter(homeShows: ArrayList<Recommend>, context: Context, itemCli
                     putInt("play_id",homeShow.play_id)
                 }
             }
-            (context as MainActivity).replaceFragment2(performInfoFragment)
+            (context as MainActivity).replaceFragment2(performInfoFragment,homeShow.play_id)
         })
 
     }

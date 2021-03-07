@@ -147,10 +147,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     PerformInfoFragment performInfoFragment = new PerformInfoFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("play_id",play_id);
-                    performInfoFragment.setArguments(bundle);
-                    ((MainActivity)getActivity()).replaceFragment2(performInfoFragment);
+                    ((MainActivity)getActivity()).replaceFragment2(performInfoFragment,play_id);
                 }
             });
         }

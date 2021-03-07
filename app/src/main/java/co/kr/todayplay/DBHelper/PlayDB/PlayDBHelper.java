@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import co.kr.todayplay.object.CategoryRe;
 
@@ -244,4 +245,40 @@ public class PlayDBHelper extends SQLiteOpenHelper {
         }
         return journalArrayList;
     }
+
+    public List<String> getAlltitle(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT play_title FROM Play",null);
+        List<String> titleList = new ArrayList<>();
+        while(cursor.moveToNext()){
+            titleList.add(cursor.getString(0));
+        }
+        titleList.add("연극");
+        titleList.add("뮤지컬");
+        titleList.add("창극");
+        titleList.add("어린이");
+        titleList.add("로맨스");
+        titleList.add("스릴러");
+        titleList.add("공포");
+        titleList.add("감동");
+        titleList.add("드라마");
+        titleList.add("역사");
+        titleList.add("고전극");
+        titleList.add("신나는");
+        titleList.add("역동적인");
+        titleList.add("대극장");
+        titleList.add("중극장");
+        titleList.add("소극장");
+        titleList.add("눈물 콧물 쏙 빼는");
+        titleList.add("마음이 따뜻해지는");
+        titleList.add("웃음 폭탄");
+        titleList.add("긴장감이 있는");
+        titleList.add("여운이 남는");
+        return titleList;
+    }
+
+
+
+
+
 }

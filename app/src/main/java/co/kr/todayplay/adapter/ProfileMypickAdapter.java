@@ -59,7 +59,7 @@ public class ProfileMypickAdapter extends RecyclerView.Adapter<RecyclerView.View
             @Override
             public void onClick(View view) {
                 PerformInfoFragment performInfoFragment = new PerformInfoFragment();
-                ((MainActivity)view.getContext()).replaceFragment2(performInfoFragment);            }
+                ((MainActivity)view.getContext()).replaceFragment2(performInfoFragment,10);            }
         });
 
     }

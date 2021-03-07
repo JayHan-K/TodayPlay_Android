@@ -70,7 +70,7 @@ public class RecommandCategoryAdapter extends RecyclerView.Adapter<RecyclerView.
                 bundle.putString("category",category);
                 CategoryClickedFragment categoryClickedFragment = new CategoryClickedFragment();
                 categoryClickedFragment.setArguments(bundle);
-                ((MainActivity)view.getContext()).replaceFragment2(categoryClickedFragment);
+                ((MainActivity)view.getContext()).replaceFragment3(categoryClickedFragment);
             }
         });
 

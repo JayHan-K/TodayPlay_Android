@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class SearchDetailFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(),3);
         LinearLayoutManager journalLayoutManager =new LinearLayoutManager(this.getContext());
         journalLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        String title = getArguments().getString("title");
+        Log.d("title","title="+title);
         journalList=getJournals();
         dataList = getresults();
 

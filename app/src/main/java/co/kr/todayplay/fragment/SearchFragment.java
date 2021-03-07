@@ -2,6 +2,7 @@ package co.kr.todayplay.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.KeywordRecyAdapter;
 import co.kr.todayplay.adapter.SearchSuggestAdapter;
@@ -36,6 +38,7 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
     private FrameLayout searchFrameLayout;
     private ConstraintLayout searchConst;
     private androidx.appcompat.widget.SearchView searchView;
+    private List<String> popularDataList;
     public SearchFragment(){
 
     }
@@ -51,6 +54,7 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
         flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
         searchFrameLayout = (FrameLayout)viewGroup.findViewById(R.id.serch_frame);
         searchConst = (ConstraintLayout)viewGroup.findViewById(R.id.search_list_cl);
+        PlayDBHelper playDBHelper = new PlayDBHelper(getContext(),"Play.db",null,1);
 
 
         searchView = viewGroup.findViewById(R.id.search_bar);
@@ -69,8 +73,19 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
         });
 
         itemList = new ArrayList<>();
-        fillData();
-        adapter = new SearchSuggestAdapter(itemList);
+        popularDataList = new ArrayList<>();
+        itemList = playDBHelper.getAlltitle();
+        popularDataList.add((String)itemList.get(124));
+        popularDataList.add(itemList.get(27));
+        popularDataList.add(itemList.get(145));
+        popularDataList.add(itemList.get(266));
+        popularDataList.add(itemList.get(346));
+        popularDataList.add(itemList.get(417));
+        popularDataList.add(itemList.get(448));
+        popularDataList.add(itemList.get(371));
+        Log.d("length", String.valueOf(itemList.size()));
+//        fillData();
+        adapter = new SearchSuggestAdapter(itemList,popularDataList);
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener(){
 
@@ -78,10 +93,14 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
             public boolean onQueryTextSubmit(String query) {
                 searchConst.setVisibility(View.GONE);
                 searchFrameLayout.setVisibility(View.VISIBLE);
-
+                Log.d("query","query="+query);
+                Bundle bundle = new Bundle();
+                bundle.putString("title",query);
+                SearchDetailFragment searchDetailFragment = new SearchDetailFragment();
+                searchDetailFragment.setArguments(bundle);
                 getChildFragmentManager().beginTransaction().replace(
                         R.id.serch_frame,
-                        new SearchDetailFragment()
+                        searchDetailFragment
                 ).commitAllowingStateLoss();
                 searchFrameLayout.setVisibility(View.VISIBLE);
 
@@ -109,17 +128,17 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
         adapter.setOnClickListener(this);
         return viewGroup;
     }
-    private void fillData(){
-        itemList = new ArrayList<>();
-        itemList.add("오페라의 유령");
-        itemList.add("캣츠");
-        itemList.add("로맨스");
-        itemList.add("공포");
-        itemList.add("브로드웨이 42번가");
-        itemList.add("돈 조반니");
-        itemList.add("렌트");
-        itemList.add("공포의 떡볶이");
-    }
+//    private void fillData(){
+//        itemList = new ArrayList<>();
+//        itemList.add("오페라의 유령");
+//        itemList.add("캣츠");
+//        itemList.add("로맨스");
+//        itemList.add("공포");
+//        itemList.add("브로드웨이 42번가");
+//        itemList.add("돈 조반니");
+//        itemList.add("렌트");
+//        itemList.add("공포의 떡볶이");
+//    }
 
 
     @Override

@@ -65,7 +65,7 @@ public class TotalCategoryAdapter extends RecyclerView.Adapter<RecyclerView.View
                 bundle2.putString("category",category);
                 CategoryClickedFragment categoryClickedFragment = new CategoryClickedFragment();
                 categoryClickedFragment.setArguments(bundle2);
-                ((MainActivity)view.getContext()).replaceFragment2(categoryClickedFragment);
+                ((MainActivity)view.getContext()).replaceFragment3(categoryClickedFragment);
 
             }
         });

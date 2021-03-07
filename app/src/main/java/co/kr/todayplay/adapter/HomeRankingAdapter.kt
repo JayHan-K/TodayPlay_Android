@@ -56,7 +56,7 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>,rankpos:Int, context: Conte
                     putInt("play_id",get_ranking.play_id)
                 }
             }
-            (context as MainActivity).replaceFragment2(performInfoFragment)
+            (context as MainActivity).replaceFragment2(performInfoFragment,get_ranking.play_id)
         }
     }
 

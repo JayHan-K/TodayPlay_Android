@@ -20,19 +20,24 @@ public class SearchSuggestAdapter extends RecyclerView.Adapter<SearchSuggestAdap
 
     private List<String> mDataList;
     private List<String> mDataListAll;
+    List<String> popularDataList2;
 
-    public SearchSuggestAdapter(List<String> items){
-        mDataList = items;
+
+    public SearchSuggestAdapter(List<String> items, List<String> popularDataList){
+//        mDataList = items;
+        mDataList = popularDataList;
+        popularDataList2 = popularDataList;
         mDataListAll = new ArrayList<>(items);
+
     }
     private onItemListener mListener;
     public void setOnClickListener(onItemListener listener){
         mListener = listener;
     }
-    public void dataSetChanged(List<String> exampleList){
-        mDataList = exampleList;
-        notifyDataSetChanged();
-    }
+//    public void dataSetChanged(List<String> exampleList){
+//        mDataList = exampleList;
+//        notifyDataSetChanged();
+//    }
 
 
 
@@ -49,7 +54,6 @@ public class SearchSuggestAdapter extends RecyclerView.Adapter<SearchSuggestAdap
     @Override
     public void onBindViewHolder(@NonNull SearchSuggestAdapter.ItemViewHolder holder, final int position) {
         String currentItem = mDataList.get(position);
-
         holder.textView69.setText(currentItem);
         if(mListener != null){
             final int pos = position;
@@ -60,6 +64,10 @@ public class SearchSuggestAdapter extends RecyclerView.Adapter<SearchSuggestAdap
                 }
             });
         }
+//        if(position == 124 || position == 27 || position == 145 || position == 266 || position == 346|| position ==417|| position == 448|| position == 371  ){
+
+
+
 
     }
 
@@ -77,7 +85,8 @@ public class SearchSuggestAdapter extends RecyclerView.Adapter<SearchSuggestAdap
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<String> filteredList = new ArrayList<>();
             if(charSequence == null || charSequence.length() == 0){
-                filteredList.addAll(mDataListAll);
+//                filteredList.addAll(mDataListAll);
+                filteredList.addAll(popularDataList2);
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
                 for(String item : mDataListAll){

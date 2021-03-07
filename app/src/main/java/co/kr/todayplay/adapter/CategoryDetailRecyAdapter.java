@@ -46,7 +46,7 @@ public class CategoryDetailRecyAdapter extends RecyclerView.Adapter<CategoryDeta
                 PerformInfoFragment performInfoFragment = new PerformInfoFragment();
                 performInfoFragment.setArguments(bundle);
 
-                ((MainActivity)holder.itemView.getContext()).replaceFragment2(performInfoFragment);
+                ((MainActivity)holder.itemView.getContext()).replaceFragment2(performInfoFragment,listdata2.get(position));
 
             }
         });

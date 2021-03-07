@@ -65,7 +65,7 @@ public class HomeAdPagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.e("clicked", "onClick: image");
-                ((MainActivity)getActivity()).replaceFragment2(performInfoFragment);
+                ((MainActivity)getActivity()).replaceFragment2(performInfoFragment,banneritem.getPlay_id());
             }
         });
 //        String imgpath = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/" + file + "/" +banneritem.getBanner();
