@@ -81,10 +81,11 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                     @Override
                     public void onSuccess(String data) {
                         //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                        if (data.equals("-1")) {
+                        if (!data.equals("1")) {
                             Log.d("postSendReviewData", "POST ResultFailed.");
                             HomeFragment homeFragment = new HomeFragment();
                             ((MainActivity)view.getContext()).replaceFragmentHome(homeFragment);
+                            dismiss();
 
                         } else {
                             Log.d("postSendReviewData","Success to send review");

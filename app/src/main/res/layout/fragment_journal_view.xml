@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent">
         <ImageButton
             android:id="@+id/hidden_back_btn"
+            android:clickable="true"
             android:layout_width="16dp"
             android:layout_height="17dp"
             android:background="@drawable/perform_info_back_icon"
@@ -56,10 +57,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/scroll_part"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="42.3dp">
+            android:layout_height="match_parent">
             <WebView
-                android:id="@+id/jouranl_webview"
+                android:id="@+id/journal_webview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/scroll_part"

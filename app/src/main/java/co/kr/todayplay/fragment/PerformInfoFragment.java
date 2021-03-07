@@ -65,8 +65,8 @@ public class PerformInfoFragment extends Fragment {
     ImageButton heart_btn;
     TextView rangking_tv;
     Button back_btn;
-    int play_id;
-    int user_id;
+    int play_id = -1;
+    int user_id = -1;
     TextView perform_title_tv;
 
     Boolean heart_flag = false;
@@ -80,7 +80,12 @@ public class PerformInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
-        play_id = getArguments().getInt("play_id");
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            play_id = bundle.getInt("play_id");
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
+        }
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
 
@@ -104,8 +109,7 @@ public class PerformInfoFragment extends Fragment {
             heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
 
         }
-        play_id = getArguments().getInt("play_id");
-        user_id = getArguments().getInt("user_id");
+
 
         heart_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +207,7 @@ public class PerformInfoFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("History"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        performPagerAdapter = new PerformPagerAdapter(getFragmentManager(), tabLayout.getTabCount(), play_id);
+        performPagerAdapter = new PerformPagerAdapter(getFragmentManager(), tabLayout.getTabCount(), play_id, user_id);
         viewPager = (ViewPager)viewGroup.findViewById(R.id.viewPager);
         viewPager.setAdapter(performPagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -380,11 +384,11 @@ public class PerformInfoFragment extends Fragment {
                 //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
                 if (data.equals("0")) {
                     Log.d("postGetRankingData", "POST ResultFailed.");
-                    rangking_tv.setText("- 위");
+                    rangking_tv.setText("찜랭킹 - 위");
 
                 } else {
                     Log.d("postGetRankingData","Success to get ranking data | play_id = " + play_id);
-                    rangking_tv.setText(data + " 위");
+                    rangking_tv.setText("찜랭킹 " + data + " 위");
                 }
             }
 

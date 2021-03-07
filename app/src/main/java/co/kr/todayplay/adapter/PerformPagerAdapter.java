@@ -21,12 +21,13 @@ import co.kr.todayplay.fragment.perform.PerformVideoFragment;
 public class PerformPagerAdapter extends FragmentStatePagerAdapter {
     int num;
     int play_id;
+    int user_id;
 
-    public PerformPagerAdapter(FragmentManager fm, int num, int play_id) {
+    public PerformPagerAdapter(FragmentManager fm, int num, int play_id, int user_id) {
         super(fm);
         this.num = num;
         this.play_id = play_id;
-
+        this.user_id = user_id;
     }
 
     @Override
@@ -35,6 +36,7 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 Bundle bundle = new Bundle();
                 bundle.putInt("play_id", this.play_id);
+                bundle.putInt("user_id", this.user_id);
                 PerformDetailFragment tab1 = new PerformDetailFragment();
                 tab1.setArguments(bundle);
                 return tab1;
@@ -42,6 +44,8 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 Bundle bundle2 = new Bundle();
                 bundle2.putInt("play_id", this.play_id);
+                bundle2.putInt("user_id", this.user_id);
+
                 PerformReviewFragment tab2 = new PerformReviewFragment();
                 tab2.setArguments(bundle2);
 
@@ -50,6 +54,8 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 Bundle bundle3 = new Bundle();
                 bundle3.putInt("play_id", this.play_id);
+                bundle3.putInt("user_id", this.user_id);
+
                 PerformVideoFragment tab3 = new PerformVideoFragment();
                 tab3.setArguments(bundle3);
 
@@ -58,6 +64,8 @@ public class PerformPagerAdapter extends FragmentStatePagerAdapter {
             case 3:
                 Bundle bundle4 = new Bundle();
                 bundle4.putInt("play_id", this.play_id);
+                bundle4.putInt("user_id", this.user_id);
+
                 PerformHistoryFragment tab4 = new PerformHistoryFragment();
                 tab4.setArguments(bundle4);
 

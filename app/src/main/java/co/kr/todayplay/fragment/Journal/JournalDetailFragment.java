@@ -83,7 +83,7 @@ public class JournalDetailFragment extends Fragment {
 
     //journal_title, journal_editor, journal_num_of_scrap, journal_comments, journal_num_of_view, journal_file
 
-    int journal_id;
+    int journal_id = -1;
     int user_id = -1;
     String journal_title;
     String[] comments, relation_journal;
@@ -291,7 +291,7 @@ public class JournalDetailFragment extends Fragment {
             }
         });
 
-        //--WebView Part--
+        //--WebView Part Start--
         webView = (WebView)viewGroup.findViewById(R.id.journal_wv);
         if(webView == null){
             Log.d("webView", "onCreateView: webView is null");
@@ -309,6 +309,7 @@ public class JournalDetailFragment extends Fragment {
         String file = journalDBHelper.getJournalFile(journal_id);
         String[] file_name = file.split("[.]");
         webView.loadUrl("http://211.174.237.197/media/journal/" + file_name[0] + "/index.html");
+        //--WebView Part Start--
 
 
         //--Comments 로드 Part Start--
@@ -380,14 +381,16 @@ public class JournalDetailFragment extends Fragment {
 
 
         //Relation_jouranl part
+        TextView recommend_journal_tv = (TextView)viewGroup.findViewById(R.id.recommend_journal_tv);
+        recommend_journal_tv.setText("");
         recommend_journal_rv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         ArrayList<JournalRecommendListAdapter.Item> recommend_journal_data = new ArrayList<>();
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
         recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
 
 

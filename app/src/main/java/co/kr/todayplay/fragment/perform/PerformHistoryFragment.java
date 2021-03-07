@@ -35,7 +35,8 @@ import co.kr.todayplay.adapter.PerformHistoryAdapter;
 public class PerformHistoryFragment extends Fragment {
     RecyclerView history_rv;
     PlayDBHelper playDBHelper;
-    int play_id;
+    int play_id = -1;
+    int user_id = -1;
     String play_name;
 
     public PerformHistoryFragment(){}
@@ -47,7 +48,8 @@ public class PerformHistoryFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             play_id = bundle.getInt("play_id");
-            Log.d("Bundle result", "play_id: " + play_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
         }
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         play_name = playDBHelper.getPlayTitle(play_id);

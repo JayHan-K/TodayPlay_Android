@@ -31,6 +31,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +48,8 @@ public class PerformReviewFragment extends Fragment {
     PieChart recommend_ratio_chart;
     ImageView keywords_iv;
 
-    int play_id;
+    int play_id = -1;
+    int user_id = -1;
 
     public PerformReviewFragment(){}
 
@@ -56,10 +58,13 @@ public class PerformReviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         int review_data_size = 5;
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_review,container,false);
+        ConstraintLayout constraintLayout = (ConstraintLayout)viewGroup.findViewById(R.id.constraintLayout);
+        constraintLayout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         if(bundle != null){
             play_id = bundle.getInt("play_id");
-            Log.d("Bundle result", "play_id: " + play_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Review Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
         }
 
         review_rv = (RecyclerView)viewGroup.findViewById(R.id.review_rv);
@@ -205,14 +210,14 @@ public class PerformReviewFragment extends Fragment {
         more_review_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment(performTotalReviewFragment);
+                ((MainActivity)getActivity()).replaceFragment2(performTotalReviewFragment, play_id);
             }
         });
 
         write_review_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment, play_id);
+                ((MainActivity)getActivity()).replaceFragment2(performWriteReviewFragment, play_id);
             }
         });
 

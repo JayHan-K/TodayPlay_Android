@@ -41,6 +41,7 @@ public class PerformDetailFragment extends Fragment {
     private Context mContext;
 
     int play_id = -1;
+    int user_id = -1;
     String[] crews;
     String[] relation_journals;
 
@@ -63,7 +64,8 @@ public class PerformDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             play_id = bundle.getInt("play_id");
-            Log.d("Bundle result", "play_id: " + play_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
         }
         String thumbnail1_img = playDBHelper.getPlayThumbnail1(play_id);
         Log.d("thumbnail1_img","thumbnail="+thumbnail1_img);
@@ -80,7 +82,7 @@ public class PerformDetailFragment extends Fragment {
             perform_iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((MainActivity)getActivity()).replaceFragment(journalViewFragment);
+                    ((MainActivity)getActivity()).replaceFragment2(journalViewFragment, play_id);
                 }
             });
         }
@@ -174,7 +176,8 @@ public class PerformDetailFragment extends Fragment {
         String relation_journal_string = playDBHelper.getPlayRelative_Journal(play_id);
         Log.d("relation_journal", relation_journal_string);
         relation_journals = relation_journal_string.split(",");
-
+        TextView journal_tv = (TextView)viewGroup.findViewById(R.id.journal_tv);
+        journal_tv.setText("");
         journal_rv = (RecyclerView)viewGroup.findViewById(R.id.journal_rv);
         //journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         //journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));

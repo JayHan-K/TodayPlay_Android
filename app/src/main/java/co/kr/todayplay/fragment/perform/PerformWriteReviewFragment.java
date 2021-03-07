@@ -58,7 +58,7 @@ public class PerformWriteReviewFragment extends Fragment {
         show();
         Bundle bundle = getArguments();
         if(bundle != null){
-            play_id = bundle.getInt("journal_id");
+            play_id = bundle.getInt("play_id");
             user_id = bundle.getInt("user_id");
             Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
         }

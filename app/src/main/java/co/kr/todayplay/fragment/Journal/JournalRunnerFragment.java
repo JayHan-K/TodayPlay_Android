@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +60,8 @@ public class JournalRunnerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_journal_level, container, false);
         journalDBHelper = new JournalDBHelper(getParentFragment().getContext(), "Journal.db", null, 1);
-
+        TextView storyteller_tv = (TextView) viewGroup.findViewById(R.id.storyteller_tv);
+        storyteller_tv.setText("");
         hot_journal_rv = (RecyclerView)viewGroup.findViewById(R.id.hot_journal_rv);
         //hot_journal_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.HORIZONTAL, false));
         //ArrayList<PerformDetailJournalAdapter.JournalItem> hot_journal_data = new ArrayList<>();
@@ -79,10 +81,10 @@ public class JournalRunnerFragment extends Fragment {
         storyteller_rv = (RecyclerView)viewGroup.findViewById(R.id.storyteller_rv);
         storyteller_rv.setLayoutManager(new GridLayoutManager(getParentFragment().getContext(), 2));
         ArrayList<JournalStorytellerAdapter.JournalItem> journal_storyteller_data = new ArrayList<>();
-        journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        //journal_storyteller_data.add(new JournalStorytellerAdapter.JournalItem(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
         storyteller_rv.setAdapter(new JournalStorytellerAdapter(journal_storyteller_data));
 
         hot_rv2 = (RecyclerView)viewGroup.findViewById(R.id.hot_rv2);

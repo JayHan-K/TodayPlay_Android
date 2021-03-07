@@ -155,6 +155,7 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
             itemController.parent_layout.setBackgroundColor(Color.TRANSPARENT);
             itemController.rcm_btn.setVisibility(View.GONE);
         }
+        itemController.rcm_btn.setVisibility(View.GONE);
 
         //recycler
         if (item.recomment_data != null){

@@ -43,7 +43,8 @@ public class PerformVideoFragment extends Fragment {
     public RecyclerView video_rv;
     private Context mContext;
     public String[] result;
-    int play_id;
+    int play_id = -1;
+    int user_id = -1;
     public HashMap<String, String> youtubeDataResult = new HashMap<>();
     public ArrayList<PerformVideoAdapter.Item> data = new ArrayList<>();
     public PerformVideoFragment(){}
@@ -58,7 +59,8 @@ public class PerformVideoFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             play_id = bundle.getInt("play_id");
-            Log.d("Bundle result", "play_id: " + play_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
         }
 
         video_rv = (RecyclerView)viewGroup.findViewById(R.id.video_rv);
