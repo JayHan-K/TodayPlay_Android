@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,14 +28,25 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import co.kr.todayplay.BlurredImage;
+import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
 import co.kr.todayplay.DBHelper.PlayDB.Play;
 import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
+import co.kr.todayplay.DBHelper.UserDB.UserDBHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformPagerAdapter;
@@ -42,6 +54,9 @@ import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.Ranking;
 
 public class PerformInfoFragment extends Fragment {
+    PlayDBHelper playDBHelper;
+    UserDBHelper userDBHelper;
+
     TabLayout tabLayout;
     ViewPager viewPager;
     PerformPagerAdapter performPagerAdapter;
@@ -53,7 +68,6 @@ public class PerformInfoFragment extends Fragment {
     int play_id;
     int user_id;
     TextView perform_title_tv;
-    PlayDBHelper playDBHelper;
 
     Boolean heart_flag = false;
 
@@ -68,20 +82,27 @@ public class PerformInfoFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_perform_info, container, false);
         play_id = getArguments().getInt("play_id");
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
+        userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
 
         realposter = (ImageView)viewGroup.findViewById(R.id.perfrom_img);
         back_btn = (Button)viewGroup.findViewById(R.id.button5);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
 
-        //찜하기 part
+        // -- 찜하기 part Start --
         rangking_tv = (TextView)viewGroup.findViewById(R.id.rangking_tv);
-        rangking_tv.setText("- 위");
+
+        // 랭킹 로드
+        loadRanking(Integer.toString(play_id));
+
         heart_btn = (ImageButton)viewGroup.findViewById(R.id.heart_icon);
+        heart_flag = userDBHelper.IsHeart(play_id);
+
         if(!heart_flag){
-            heart_btn.setBackgroundResource(R.drawable.icon_heart_line);
+            heart_btn.setBackgroundResource(R.drawable.perform_info_heart_default);
         }
         else{
             heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
+
         }
         play_id = getArguments().getInt("play_id");
         user_id = getArguments().getInt("user_id");
@@ -91,16 +112,48 @@ public class PerformInfoFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("heart_btn", "onClicked");
                 if(heart_flag){
-                    heart_btn.setBackgroundResource(R.drawable.icon_heart_line);
+                    heart_btn.setBackgroundResource(R.drawable.perform_info_heart_default);
                     heart_flag = false;
+                    // Delete to Server
+                    String delete_heart = postSendHeartChange("12", Integer.toString(play_id), "delete", new VolleyPlayCallback() {
+                        @Override
+                        public void onSuccess(String data) {
+                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                            if (!data.equals("1")) {
+                                Log.d("postSendHeartChange", "POST ResultFailed.");
+
+                            } else {
+                                Log.d("postSendHeartChange","Success to get ranking data | play_id = " + play_id);
+                                userDBHelper.delete_heart(play_id);
+                                loadRanking(Integer.toString(play_id));
+                            }
+                        }
+
+                    });
                 }
                 else{
                     heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
                     heart_flag = true;
+                    // Insert to Server
+                    String insert_heart = postSendHeartChange("12", Integer.toString(play_id), "insert", new VolleyPlayCallback() {
+                        @Override
+                        public void onSuccess(String data) {
+                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                            if (!data.equals("1")) {
+                                Log.d("postSendHeartChange", "POST ResultFailed.");
+
+                            } else {
+                                Log.d("postSendHeartChange","Success to get ranking data | play_id = " + play_id);
+                                userDBHelper.add_heart(12, play_id);
+                                loadRanking(Integer.toString(play_id));
+                            }
+                        }
+
+                    });
                 }
             }
         });
-
+        // -- 찜하기 part End --
 
         perform_title_tv = viewGroup.findViewById(R.id.perfrom_title_tv);
 
@@ -219,4 +272,127 @@ public class PerformInfoFragment extends Fragment {
 
         return result;
     }
+
+    public String postGetRankingData(String play_id, VolleyPlayCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = " http://211.174.237.197/request_rank_by_play_id/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postGetRankingData", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postGetRankingData", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("play_id", play_id);
+
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postGetRankingData", e.toString());
+
+        }
+        return "1";
+    }
+
+    public String postSendHeartChange(String user_id, String play_id, String action, VolleyPlayCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://211.174.237.197/request_user_play_update_by_id/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postSendHeartChange", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postSendHeartChange", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("action", action);
+                    params.put("user_id", user_id);
+                    params.put("play_id", play_id);
+
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postSendHeartChange", e.toString());
+
+        }
+        return "1";
+    }
+
+    public void loadRanking(String play_id){
+        String rankingData = postGetRankingData(play_id, new VolleyPlayCallback() {
+            @Override
+            public void onSuccess(String data) {
+                //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                if (data.equals("0")) {
+                    Log.d("postGetRankingData", "POST ResultFailed.");
+                    rangking_tv.setText("- 위");
+
+                } else {
+                    Log.d("postGetRankingData","Success to get ranking data | play_id = " + play_id);
+                    rangking_tv.setText(data + " 위");
+                }
+            }
+
+        });
+    }
+
+}
+
+interface VolleyPlayCallback{
+    void onSuccess(String data);
 }

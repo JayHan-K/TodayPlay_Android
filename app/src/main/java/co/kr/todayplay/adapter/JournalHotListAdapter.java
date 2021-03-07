@@ -92,6 +92,7 @@ public class JournalHotListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
         itemController.imageView.setImageBitmap(bm);
         itemController.journal_title_tv.setText(item.getTitle());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

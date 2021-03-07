@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void replaceFragment(Fragment fragment, int journal_id) {
+        Log.d("MainActivity", "replaceFragment: journal_id = " + journal_id + " | user_id = " + userId);
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", Integer.parseInt(userId));
         bundle.putInt("journal_id", journal_id);
