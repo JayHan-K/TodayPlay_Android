@@ -20,9 +20,9 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
     private ArrayList<StaffHolder> itemController = new ArrayList<>();
     public static class StaffItem{
         private int drawable;
-        private String img_path;
-        private String job;
-        private String name;
+        private String img_path = "";
+        private String job = "";
+        private String name = "";
 
         public StaffItem(){}
         public StaffItem(int drawable, String img_path, String job, String name){
@@ -78,7 +78,7 @@ public class PerformDetailStaffAdapter extends RecyclerView.Adapter<RecyclerView
         StaffItem item = data.get(position);
         StaffHolder itemController = (StaffHolder)holder;
         itemController.name_tv.setText(item.getName());
-        if(!("").equals(item.getImg_path())){
+        if(!item.getImg_path().equals("")){
             Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
             itemController.imageView.setImageBitmap(bm);
         }else itemController.imageView.setImageResource(item.getDrawable());

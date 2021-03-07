@@ -10,6 +10,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -65,8 +66,8 @@ import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
 public class JournalDetailFragment extends Fragment {
     AppBarLayout appBarLayout;
     Button more_comment_btn, comment_save_btn;
-    ImageButton back_btn, bookmark_btn;
-    TextView num_bookmarks_tv, num_bookmarks_tv2, num_comment_tv, num_comment_tv2, num_view_tv, editor_tv;
+    ImageButton back_btn, scrap_btn;
+    TextView num_of_scrap_tv, num_of_scrap_tv2, num_comment_tv, num_comment_tv2, num_view_tv, editor_tv;
     RecyclerView comment_rv, recommend_journal_rv;
     EditText comment_et;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -86,6 +87,8 @@ public class JournalDetailFragment extends Fragment {
 
     int visible_cmt = 3;
 
+    Boolean scrap_flag = false;
+
     public JournalDetailFragment(){}
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -94,14 +97,121 @@ public class JournalDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_journal_detail, container, false);
         journalDBHelper = new JournalDBHelper(getActivity().getApplicationContext(), "Journal.db", null, 1);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            journal_id = bundle.getInt("journal_id");
+            Log.d("Bundle result", "journal_id: " + journal_id);
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "user_id: " + user_id);
+        }
+
         appBarLayout = (AppBarLayout) viewGroup.findViewById(R.id.app_bar);
         back_btn = (ImageButton) viewGroup.findViewById(R.id.back_btn);
-        bookmark_btn = (ImageButton) viewGroup.findViewById(R.id.bookmark_btn);
+
+        //scrap part
+        num_of_scrap_tv = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv);
+        num_of_scrap_tv2 = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv2);
+        String get_scrap_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
+            @Override
+            public void onSuccess(String data){
+                if (data.equals("-1")) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                    Log.d("postGetNumOfScrap", "POST ResultFailed.");
+                } else {
+                    Log.d("postGetNumOfScrap", "onSuccess: " + data);
+                    try {
+                        String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
+                        Log.d("journal_num_of_scrap", journal_num_of_scrap);
+
+                        num_of_scrap_tv.setText(journal_num_of_scrap);
+                        num_of_scrap_tv2.setText(journal_num_of_scrap);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+        scrap_btn = (ImageButton) viewGroup.findViewById(R.id.bookmark_btn);
+        if(!scrap_flag) scrap_btn.setBackgroundResource(R.drawable.journal_scrap_default);
+        else scrap_btn.setBackgroundResource(R.drawable.journal_bookmark_icon_yellow);
+        scrap_btn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!scrap_flag){
+                    scrap_btn.setBackgroundResource(R.drawable.journal_bookmark_icon_yellow);
+                    String send_scrap_result = postSendScrapData(Integer.toString(journal_id), new VolleyCommentCallback() {
+                        @Override
+                        public void onSuccess(String data) {
+                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                            if (data.equals("-1")) {
+                                Log.d("postSendScrapData", "POST ResultFailed.");
+                                String get_scrap_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
+                                    @Override
+                                    public void onSuccess(String data){
+                                        if (data.equals("-1")) {
+                                            Log.d("postGetNumOfScrap", "POST ResultFailed.");
+                                        } else {
+                                            Log.d("postGetNumOfScrap", "onSuccess: " + data);
+                                            try {
+                                                String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
+                                                Log.d("journal_num_of_scrap", journal_num_of_scrap);
+
+                                                num_of_scrap_tv.setText(journal_num_of_scrap);
+                                                num_of_scrap_tv2.setText(journal_num_of_scrap);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }
+                                });
+                            } else {
+                                Log.d("postSendScrapData","Success to send scrap | journal_id = " + journal_id);
+                                String get_scrap_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
+                                    @Override
+                                    public void onSuccess(String data){
+                                        if (data.equals("-1")) {
+                                            Log.d("postGetNumOfScrap", "POST ResultFailed.");
+                                        } else {
+                                            Log.d("postGetNumOfScrap", "onSuccess: " + data);
+                                            try {
+                                                String journal_num_of_scrap = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_scrap");
+                                                Log.d("journal_num_of_scrap", journal_num_of_scrap);
+
+                                                num_of_scrap_tv.setText(journal_num_of_scrap);
+                                                num_of_scrap_tv2.setText(journal_num_of_scrap);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+                    });
+                    scrap_flag = true;
+                }
+                else{
+                    scrap_btn.setBackgroundResource(R.drawable.journal_scrap_default);
+                    scrap_flag = false;
+                    //감소 반영
+                }
+                Log.d("scrap_btn", "Clicked");
+            }
+        });
+
+
         more_comment_btn = (Button)viewGroup.findViewById(R.id.more_comment_btn);
         more_comment_btn.setVisibility(View.GONE);
         comment_save_btn = (Button)viewGroup.findViewById(R.id.comment_btn);
-        num_bookmarks_tv = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv);
-        num_bookmarks_tv2 = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv2);
+
         num_comment_tv = (TextView)viewGroup.findViewById(R.id.num_comment_tv);
         num_comment_tv2 = (TextView)viewGroup.findViewById(R.id.num_comment);
         num_view_tv = (TextView)viewGroup.findViewById(R.id.num_views_tv);
@@ -112,19 +222,49 @@ public class JournalDetailFragment extends Fragment {
         journal_banner_iv = (ImageView)viewGroup.findViewById(R.id.journal_poster_iv);
         relation_journal_container = (ConstraintLayout)viewGroup.findViewById(R.id.bottom_part);
         comment_save_btn = (Button)viewGroup.findViewById(R.id.comment_save_btn);
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            journal_id = bundle.getInt("journal_id");
-            Log.d("Bundle result", "journal_id: " + journal_id);
-            user_id = bundle.getInt("user_id");
-            Log.d("Bundle result", "user_id: " + user_id);
-        }
+
         journal_title = journalDBHelper.getJournalTitle(journal_id);
         editor_tv.setText("by. " + journalDBHelper.getJournalEditor(journal_id));
         Log.d("JournalDetail", "journal_id " + journal_id + ": journal_title = " + journal_title + " , journal_num_of_scrap = " + journalDBHelper.getJournalNum_of_scrap(journal_id) + ", journal_num_of_view = " + journalDBHelper.getJournalNum_of_view(journal_id) + ", journal_comments = " + journalDBHelper.getJournalComments(journal_id) + ", journal_banner_img = " + journalDBHelper.getJournalBanner_img(journal_id) + ", relation_journal = " + journalDBHelper.getJournalRelation_journal(journal_id));
-        num_bookmarks_tv.setText(journalDBHelper.getJournalNum_of_scrap(journal_id) + "");
-        num_bookmarks_tv2.setText(journalDBHelper.getJournalNum_of_scrap(journal_id) + "");
-        num_view_tv.setText(journalDBHelper.getJournalNum_of_view(journal_id) + "");
+        num_of_scrap_tv.setText(journalDBHelper.getJournalNum_of_scrap(journal_id) + "");
+        num_of_scrap_tv2.setText(journalDBHelper.getJournalNum_of_scrap(journal_id) + "");
+
+        //num_of_view
+        String send_view_result = postSendViewData(Integer.toString(journal_id), new VolleyCommentCallback() {
+            @Override
+            public void onSuccess(String data) {
+                //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+                if (data.equals("-1")) {
+                    Log.d("postSendViewData", "POST ResultFailed.");
+                } else {
+                    Log.d("postSendViewData","Success to send view | journal_id = " + journal_id);
+                }
+            }
+
+        });
+
+        String get_num_view = postGetCommentIds(Integer.toString(journal_id), new VolleyCommentCallback() {
+            @Override
+            public void onSuccess(String data){
+                if (data.equals("-1")) {
+                    Log.d("postGetNumOfView", "POST ResultFailed.");
+                } else {
+                    Log.d("postGetNumOfView", "onSuccess: " + data);
+                    try {
+                        String journal_num_of_view = new JSONObject(data).getJSONObject("journal").getString("journal_num_of_view");
+                        Log.d("journal_num_of_view", journal_num_of_view);
+
+                        num_view_tv.setText(journal_num_of_view);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+
         String banner_img_path = getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalBanner_img(journal_id)).toString();
         Bitmap bm = BitmapFactory.decodeFile(banner_img_path);
         journal_banner_iv.setImageBitmap(bm);
@@ -140,7 +280,8 @@ public class JournalDetailFragment extends Fragment {
             }
         }
 
-        back_btn.setOnClickListener(new View.OnClickListener() {
+        back_btn.setEnabled(true);
+        back_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("pressed","pressed=");
@@ -391,7 +532,7 @@ public class JournalDetailFragment extends Fragment {
                     }
         });
 
-        more_comment_btn.setOnClickListener(new View.OnClickListener() {
+        more_comment_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("more_btn", "onClicked");
@@ -594,7 +735,7 @@ public class JournalDetailFragment extends Fragment {
         recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
 
         //--댓글 저장 Part--
-        comment_save_btn.setOnClickListener(new View.OnClickListener() {
+        comment_save_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(comment_et.getText().toString().equals("")){
@@ -831,6 +972,106 @@ public class JournalDetailFragment extends Fragment {
         else Toast.makeText(getActivity(), "html이 없습니다", Toast.LENGTH_LONG).show();
     }
     */
+
+    public String postSendViewData(String journal_id, VolleyCommentCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://211.174.237.197/request_increment_journal_num_of_view/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postSendViewData", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postSendViewData", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("journal_id", journal_id);
+
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postSendViewData", e.toString());
+
+        }
+        return "1";
+    }
+
+    public String postSendScrapData(String journal_id, VolleyCommentCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+            String url = "http://211.174.237.197/request_increment_journal_num_of_scrap/";
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("postSendScrapData", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("postSendScrapData", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("journal_id", journal_id);
+
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("postSendScrapData", e.toString());
+
+        }
+        return "1";
+    }
+
+
     //Comment Save
     public String postSendCommentData(String user_id, String comment, String comment_date, String comment_source_id, VolleyCommentCallback callback){
 

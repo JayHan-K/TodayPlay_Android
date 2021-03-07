@@ -125,7 +125,10 @@ public class PerformDetailFragment extends Fragment {
         //crew_name, crew_pic
         for(int i=0; i<crew_ids.size(); i++){
             String img_path = crewDBHelper.getCrewPic(crew_ids.get(i));
-            if(!img_path.equals("")) img_path =  getActivity().getApplicationContext().getFileStreamPath(crewDBHelper.getCrewPic(crew_ids.get(i))).toString();
+            if(!img_path.equals("")){
+                Log.d("crew_img_path", img_path);
+                img_path =  getActivity().getApplicationContext().getFileStreamPath(crewDBHelper.getCrewPic(crew_ids.get(i))).toString();
+            }
 
             String name =  crew_names.get(i);
             String position = crewDBHelper.getCrewPosition(crew_ids.get(i));
@@ -150,16 +153,16 @@ public class PerformDetailFragment extends Fragment {
                 //Log.d("crews", "Success to add crew");
             //}
         }
-        if(!("").equals(director.getName())){
+        if(!director.getName().equals("")){
             crew_data.add(director);
         }
-        if(!("").equals(writer.getName())){
+        if(!writer.getName().equals("")){
             crew_data.add(writer);
         }
-        if(!("").equals(composer.getName())){
+        if(!composer.getName().equals("")){
             crew_data.add(composer);
         }
-        if(!("").equals(maker.getName())){
+        if(!maker.getName().equals("")){
             crew_data.add(maker);
         }
 
@@ -167,18 +170,19 @@ public class PerformDetailFragment extends Fragment {
         staff_rv.setAdapter(performDetailStaffAdapter);
 
 
+        //관련 저널 파트
         String relation_journal_string = playDBHelper.getPlayRelative_Journal(play_id);
         Log.d("relation_journal", relation_journal_string);
         relation_journals = relation_journal_string.split(",");
 
         journal_rv = (RecyclerView)viewGroup.findViewById(R.id.journal_rv);
-        journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        //journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         //journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
-        data2.add(new PerformDetailJournalAdapter.JournalItem(0,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(1)).toString(), "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
-        data2.add(new PerformDetailJournalAdapter.JournalItem(0,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(2)).toString(), "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
-        PerformDetailJournalAdapter performDetailJournalAdapter = new PerformDetailJournalAdapter(data2);
-        journal_rv.setAdapter(performDetailJournalAdapter);
+        //ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
+        //data2.add(new PerformDetailJournalAdapter.JournalItem(0,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(1)).toString(), "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
+        //data2.add(new PerformDetailJournalAdapter.JournalItem(0,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(2)).toString(), "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
+        //PerformDetailJournalAdapter performDetailJournalAdapter = new PerformDetailJournalAdapter(data2);
+        //journal_rv.setAdapter(performDetailJournalAdapter);
 
         return viewGroup;
     }

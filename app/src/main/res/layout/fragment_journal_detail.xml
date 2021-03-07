@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -34,16 +35,7 @@
                     app:layout_constraintTop_toTopOf="@id/parallax_constraintlayout"
                     app:layout_constraintStart_toStartOf="@id/parallax_constraintlayout"
                     android:scaleType="centerCrop"/>
-                <ImageButton
-                    android:layout_marginTop="43dp"
-                    android:layout_marginLeft="24dp"
-                    android:id="@+id/back_btn"
-                    android:layout_width="16dp"
-                    android:layout_height="17dp"
-                    app:layout_collapseMode="pin"
-                    android:background="@drawable/perform_info_back_icon"
-                    app:layout_constraintStart_toStartOf="@id/parallax_constraintlayout"
-                    app:layout_constraintTop_toTopOf="@id/parallax_constraintlayout" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout1"
                     android:layout_width="wrap_content"
@@ -134,6 +126,17 @@
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageButton
+        android:layout_marginTop="43dp"
+        android:layout_marginLeft="24dp"
+        android:id="@+id/back_btn"
+        android:clickable="true"
+        android:layout_width="16dp"
+        android:layout_height="17dp"
+        android:background="@drawable/perform_info_back_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include layout="@layout/fragment_journal_detail_content" />
 
