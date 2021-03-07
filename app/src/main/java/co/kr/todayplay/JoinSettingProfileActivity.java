@@ -157,7 +157,7 @@ public class JoinSettingProfileActivity extends AppCompatActivity {
         try{
             String[] resposeData = {""};
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://183.111.253.75/request_user_nickname_duplicate/";
+            String url = "http://211.174.237.197/request_user_nickname_duplicate/";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
 
                 @Override

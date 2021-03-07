@@ -190,7 +190,7 @@ public class Register_default extends AppCompatActivity {
         try{
             String[] resposeData = {""};
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://183.111.253.75/request_user_email_duplicate/";
+            String url = "http://211.174.237.197/request_user_email_duplicate/";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
 
                 @Override
