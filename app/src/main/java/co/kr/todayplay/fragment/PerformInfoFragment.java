@@ -119,7 +119,7 @@ public class PerformInfoFragment extends Fragment {
                     heart_btn.setBackgroundResource(R.drawable.perform_info_heart_default);
                     heart_flag = false;
                     // Delete to Server
-                    String delete_heart = postSendHeartChange("12", Integer.toString(play_id), "delete", new VolleyPlayCallback() {
+                    String delete_heart = postSendHeartChange(Integer.toString(user_id), Integer.toString(play_id), "delete", new VolleyPlayCallback() {
                         @Override
                         public void onSuccess(String data) {
                             //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
@@ -139,7 +139,7 @@ public class PerformInfoFragment extends Fragment {
                     heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
                     heart_flag = true;
                     // Insert to Server
-                    String insert_heart = postSendHeartChange("12", Integer.toString(play_id), "insert", new VolleyPlayCallback() {
+                    String insert_heart = postSendHeartChange(Integer.toString(user_id), Integer.toString(play_id), "insert", new VolleyPlayCallback() {
                         @Override
                         public void onSuccess(String data) {
                             //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
@@ -148,7 +148,7 @@ public class PerformInfoFragment extends Fragment {
 
                             } else {
                                 Log.d("postSendHeartChange","Success to get ranking data | play_id = " + play_id);
-                                userDBHelper.add_heart(12, play_id);
+                                userDBHelper.add_heart(user_id, play_id);
                                 loadRanking(Integer.toString(play_id));
                             }
                         }
