@@ -93,9 +93,13 @@ public class PlayDBHelper extends SQLiteOpenHelper {
             CategoryRe categoryRe = new CategoryRe(cursor.getInt(0),cursor.getString(2),cursor.getString(3),cursor.getInt(10));
             keywords.add(categoryRe);
         }
-        Log.i("category_keywords",keywords.get(0).getCategory()+" ");
-        cursor.close();
+        if(keywords.size()>0){
+            Log.i("category_keywords",keywords.get(0).getCategory()+" ");
+            cursor.close();
+
+        }
         return keywords;
+
     }
 
 

@@ -72,7 +72,7 @@ public class CategoryPlay extends Fragment {
     public ArrayList getRecommands(){
         ArrayList<RecommandItem> data_recommand = new ArrayList();
         data_recommand.add(new RecommandItem(-1, R.drawable.recommand_popular,"인기작"));
-        data_recommand.add(new RecommandItem(-1, R.drawable.recommand_fame,"명예전당"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.recommand_fame,"명예의 전당"));
         data_recommand.add(new RecommandItem(-1, R.drawable.recommand_old,"고전극"));
         data_recommand.add(new RecommandItem(-1, R.drawable.recommand,"국내"));
         data_recommand.add(new RecommandItem(-1, R.drawable.recommand_abroad,"해외"));

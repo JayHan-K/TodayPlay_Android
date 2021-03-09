@@ -96,9 +96,16 @@ public class CategoryClickedFragment extends Fragment {
 
         UpdateCategoryInfo updateCategoryInfo = new UpdateCategoryInfo();
         updateCategoryInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        String singlekeyword = "";
 
+        if(keyword.equals("명예의 전당")){
+            keyword = "인기작";
+            singlekeyword = "%"+keyword+"%";
+            keyword ="명예의 전당";
+        }else{
+            singlekeyword = "%"+keyword+"%";
+        }
 
-        String singlekeyword = "%"+keyword+"%";
         Log.d("keywordinclicked","keywordinclicked"+singlekeyword);
         play_id_first = playDBHelper.getkeywordplay_id(singlekeyword);
 
@@ -267,16 +274,17 @@ public class CategoryClickedFragment extends Fragment {
                     break;
                 case "뮤지컬":
                     for (int i = 0; i < category_recommends.size(); ++i) {
-                        if (category_recommends.get(i).getKeyword().contains(keyword)) {
+                        if (category_recommends.get(i).getKeyword().equals(keyword)&&category_recommends.get(i).getCategory().equals(category)) {
                             category_re.add(category_recommends.get(i));
                             Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                            Log.i("categroy_re","keyword= "+keyword);
                             break;
                         }
                     }
                     break;
                 case "연극":
                     for (int i = 0; i < category_recommends.size(); ++i) {
-                        if (category_recommends.get(i).getKeyword().equals(keyword)) {
+                        if (category_recommends.get(i).getKeyword().equals(keyword) && category_recommends.get(i).getCategory().equals(category)) {
                             category_re.add(category_recommends.get(i));
                             Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
                             break;
