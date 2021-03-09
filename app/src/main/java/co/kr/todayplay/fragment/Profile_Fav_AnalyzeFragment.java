@@ -99,12 +99,12 @@ public class Profile_Fav_AnalyzeFragment extends Fragment {
 
     public ArrayList getRecommands(){
         ArrayList<RecommandItem> data_recommand = new ArrayList();
-        data_recommand.add(new RecommandItem(R.drawable.poster_sample1,"82%"));
-        data_recommand.add(new RecommandItem(R.drawable.poster_sample10,"82%"));
-        data_recommand.add(new RecommandItem(R.drawable.poster_sample11,"82%"));
-        data_recommand.add(new RecommandItem(R.drawable.poster_sample12,"82%"));
-        data_recommand.add(new RecommandItem(R.drawable.poster_sample13,"82%"));
-        data_recommand.add(new RecommandItem(R.drawable.poster_sample14,"82%"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.poster_sample1,"82%"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.poster_sample10,"82%"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.poster_sample11,"82%"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.poster_sample12,"82%"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.poster_sample13,"82%"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.poster_sample14,"82%"));
         return data_recommand;
     }
     public ArrayList getKeywords(){

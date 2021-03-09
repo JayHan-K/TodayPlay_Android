@@ -509,6 +509,7 @@ public class JournalDetailFragment extends Fragment {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/json");
                     params.put("journal_id", journal_id);
+                    params.put("user_id", String.valueOf(user_id));
 
                     return params;
                 }

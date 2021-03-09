@@ -217,10 +217,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void profileChangeToScrap(){
-        Bundle bundle = new Bundle();
-        MyScrapFragment myScrapFragment = new MyScrapFragment();
-        bundle.putSerializable("user_id", user_id);
-        myScrapFragment.setArguments(bundle);
+        MyScrapFragment myScrapFragment = new MyScrapFragment(user_id);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
                 myScrapFragment

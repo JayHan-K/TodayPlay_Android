@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import co.kr.todayplay.adapter.pf_myPickPagerAdapter;
 public class MypickFragment extends Fragment {
     ViewPager2 viewPager2;
     pf_myPickPagerAdapter adapter;
+    int user_id=-1;
 
     public MypickFragment(){
 
@@ -35,6 +37,12 @@ public class MypickFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.activity_mypick,container,false);
         Button pf_to_profile = rootView.findViewById(R.id.back_profile4);
 
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "MyPickFragment user_id: " + user_id);
+        }
+
         final TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.pf_tab_ly);
         tabLayout.addTab((tabLayout.newTab().setText("공연중")));
         tabLayout.addTab((tabLayout.newTab().setText("공연예정")));
@@ -43,7 +51,7 @@ public class MypickFragment extends Fragment {
 
         final List<String> tabElement = Arrays.asList("공연중","공연예정","미정");
 
-        adapter = new pf_myPickPagerAdapter(this,tabLayout.getTabCount());
+        adapter = new pf_myPickPagerAdapter(this,tabLayout.getTabCount(), user_id);
         viewPager2 = (ViewPager2)rootView.findViewById(R.id.viewPager2);
         viewPager2.setAdapter(adapter);
         new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {

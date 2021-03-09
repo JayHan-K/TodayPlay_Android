@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,13 @@ import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
+import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.object.RecommandItem;
 
 public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<RecommandItem> data = new ArrayList<>();
     private ArrayList<RecommandHolder> itemController = new ArrayList<>();
+    private int user_id = -1;
 
 
     public class RecommandHolder extends RecyclerView.ViewHolder{
@@ -34,9 +38,10 @@ public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public ProfileMyScrapDetailAdapter(ArrayList<RecommandItem> data){
+    public ProfileMyScrapDetailAdapter(ArrayList<RecommandItem> data, int user_id){
         super();
         this.data = data;
+        this.user_id = user_id;
     }
 
     @NonNull
@@ -60,7 +65,7 @@ public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onClick(View view) {
                 JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
-                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment, recommandItem.getId());
             }
         });
 

@@ -75,10 +75,10 @@ public class CategoryCurrent extends Fragment {
 
     public ArrayList getRecommands(){
         ArrayList<RecommandItem> data_recommand = new ArrayList();
-        data_recommand.add(new RecommandItem(R.drawable.recommand_popular,"인기작"));
-        data_recommand.add(new RecommandItem(R.drawable.recommand_hot,"핫딜"));
-        data_recommand.add(new RecommandItem(R.drawable.recommand_musical,"뮤지컬"));
-        data_recommand.add(new RecommandItem(R.drawable.recommand_play,"연극"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.recommand_popular,"인기작"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.recommand_hot,"핫딜"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.recommand_musical,"뮤지컬"));
+        data_recommand.add(new RecommandItem(-1, R.drawable.recommand_play,"연극"));
         return data_recommand;
     }
 
