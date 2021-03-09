@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
     RecyclerDecoration spaceDecoration = new RecyclerDecoration(25,0);
     ScrollView profileFragmentmainScrollView;
     FrameLayout profileFragmentChildFragment;
+    int user_id = -1;
     public ProfileFragment(){
 
     }
@@ -41,6 +43,12 @@ public class ProfileFragment extends Fragment {
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.activity_profile_fragment,container,false);
         profileFragmentmainScrollView = viewGroup.findViewById(R.id.pf_scrollView);
         profileFragmentChildFragment = viewGroup.findViewById(R.id.pf_fragment_child_fragment);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "user_id: " + user_id);
+        }
+
         RecyclerView profileMyShowRecyclerView= viewGroup.findViewById(R.id.profile_my_show_rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -180,9 +188,14 @@ public class ProfileFragment extends Fragment {
     }
 
     public void profileChangeToReview(){
+        Bundle bundle = new Bundle();
+        MyReviewActivity myReviewActivity = new MyReviewActivity();
+        bundle.putSerializable("user_id", user_id);
+        myReviewActivity.setArguments(bundle);
+
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
-                new MyReviewActivity()
+                myReviewActivity
         ).commitAllowingStateLoss();
         profileFragmentmainScrollView.setVisibility(View.GONE);
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
@@ -190,9 +203,13 @@ public class ProfileFragment extends Fragment {
     }
 
     public void profileChangeToPick(){
+        Bundle bundle = new Bundle();
+        MypickFragment mypickFragment = new MypickFragment();
+        bundle.putSerializable("user_id", user_id);
+        mypickFragment.setArguments(bundle);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
-                new MypickFragment()
+                mypickFragment
         ).commitAllowingStateLoss();
         profileFragmentmainScrollView.setVisibility(View.GONE);
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
@@ -200,9 +217,13 @@ public class ProfileFragment extends Fragment {
     }
 
     public void profileChangeToScrap(){
+        Bundle bundle = new Bundle();
+        MyScrapFragment myScrapFragment = new MyScrapFragment();
+        bundle.putSerializable("user_id", user_id);
+        myScrapFragment.setArguments(bundle);
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
-                new MyScrapFragment()
+                myScrapFragment
         ).commitAllowingStateLoss();
         profileFragmentmainScrollView.setVisibility(View.GONE);
         profileFragmentChildFragment.setVisibility(View.VISIBLE);

@@ -163,10 +163,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
                 switch (menuItem.getItemId()){
                     case R.id.bottom_home:
                         HomeFragment homeFragment1 = new HomeFragment();
-                        Bundle bundle = new Bundle();
+
                         bundle.putSerializable("banners",banners);
                         bundle.putSerializable("recommands",recommands);
                         bundle.putSerializable("recommandj",recommandj);
@@ -185,7 +186,10 @@ public class MainActivity extends AppCompatActivity {
                         transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
                         break;
                     case R.id.bottom_profile:
-                        //transaction.replace(R.id.main_frameLayout, new ProfileFragment()).commitAllowingStateLoss();
+                        ProfileFragment profileFragment = new ProfileFragment();
+                        bundle.putSerializable("user_id", Integer.valueOf(userId));
+                        profileFragment.setArguments(bundle);
+                        transaction.replace(R.id.main_frameLayout, profileFragment).commitAllowingStateLoss();
                         break;
                 }
                 return true;
