@@ -289,6 +289,7 @@ public class CategoryClickedFragment extends Fragment {
             for (int i =0; i<category_re.size();++i){
                 for(int j =0; j< category_re.get(i).getPlay_id().length;++j){
                     String path = getActivity().getFilesDir() + "/"+ playDBHelper.getPlayPoster(category_re.get(i).getPlay_id()[j]);
+                    Log.d("category_re","category_re"+category_re.get(i).getPlay_id()[j]);
                     imagepath.add(path);
                     imageint.add(category_re.get(i).getPlay_id()[j]);
                 }

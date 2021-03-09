@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="234dp"
-        android:layout_height="51dp"
+        android:layout_height="52dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,13 +30,13 @@
 
         <ImageView
             android:id="@+id/ranking_iv"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="39dp"
+            android:layout_height="52dp"
             android:layout_marginStart="13dp"
             android:layout_marginLeft="13dp"
             app:layout_constraintStart_toEndOf="@+id/ranking_num_tv"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/ad_sample2" />
 
         <TextView

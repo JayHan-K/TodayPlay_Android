@@ -120,7 +120,7 @@ public class Login_Home_Activity extends AppCompatActivity {
                             String result = postData(email, new VolleyCallback() {
                                 @Override
                                 public void onSuccess(String data) {
-                                    Toast.makeText(getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
                                     String email = user.getEmail();
                                     Log.d("emailfirst","email="+email);
                                     if (data.equals("1")) {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     app:cardBackgroundColor="#FF6C6C6C"
     app:cardCornerRadius="5dp">
 
@@ -11,6 +11,6 @@
         android:id="@+id/pf_post_iv2"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitXY" />
 
 </androidx.cardview.widget.CardView>
