@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
@@ -30,11 +33,13 @@ public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerVi
     public class RecommandHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
         private TextView title_tv;
+        private TextView title_tv2;
 
         public RecommandHolder(@NonNull View itemView){
             super(itemView);
             this.imageView = itemView.findViewById(R.id.pf_scrap_post_iv);
             this.title_tv = itemView.findViewById(R.id.pf_scrap_post_tv);
+            this.title_tv2 = itemView.findViewById(R.id.pf_sub_scrap_post_tv);
         }
     }
 
@@ -57,10 +62,14 @@ public class ProfileMyScrapDetailAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position){
+        JournalDBHelper journalDBHelper = new JournalDBHelper(holder.itemView.getContext(),"Journal.db",null,1);
         RecommandItem recommandItem = data.get(position);
         RecommandHolder itemController = (RecommandHolder) holder;
-        itemController.imageView.setImageResource(recommandItem.getDrawable());
+        String imgpath = holder.itemView.getContext().getFilesDir() + "/" + journalDBHelper.getJournalBanner_img(recommandItem.getId());
+        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+        itemController.imageView.setImageBitmap(bm);
         itemController.title_tv.setText(recommandItem.getTitle());
+        itemController.title_tv2.setText(journalDBHelper.getJournalSubtitle(recommandItem.getId()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

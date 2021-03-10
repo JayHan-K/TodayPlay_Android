@@ -14,20 +14,36 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_marginTop="125dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="75dp"
         android:elevation="1dp">
+
+        <TextView
+            android:id="@+id/pf_sub_scrap_post_tv"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:layout_above="@+id/pf_scrap_post_tv"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/kopubworlddotummedium"
+            android:text="TextView"
+            android:textColor="#FFFFFF"
+            android:textSize="13dp" />
 
         <TextView
             android:id="@+id/pf_scrap_post_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/kopubworlddotummedium"
-            android:textStyle="bold"
             android:text="오이디푸스"
             android:textColor="#FFFFFF"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

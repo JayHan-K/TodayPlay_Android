@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.fragment.PerformInfoFragment;
@@ -51,9 +54,12 @@ public class ProfileMypickAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position){
+        PlayDBHelper playDBHelper = new PlayDBHelper(holder.itemView.getContext(),"Play.db",null,1);
         RecommandItem recommandItem = data.get(position);
         RecommandHolder itemController = (RecommandHolder) holder;
-        itemController.imageView.setImageResource(recommandItem.getDrawable());
+        String imgpath = holder.itemView.getContext().getFilesDir()+"/"+ playDBHelper.getPlayPoster(recommandItem.getId());
+        Bitmap bm = BitmapFactory.decodeFile(imgpath);
+        itemController.imageView.setImageBitmap(bm);
         itemController.title_tv.setText(recommandItem.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
