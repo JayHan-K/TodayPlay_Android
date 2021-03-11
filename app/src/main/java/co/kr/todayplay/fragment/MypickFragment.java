@@ -191,6 +191,7 @@ public class MypickFragment extends Fragment {
             get_user_info(new MyPickVolleyCallback() {
                 @Override
                 public void onSuccess(String data) {
+                    Log.d("profile_data","profile_data="+data);
                     String[] my_play_Str = data.split("my_play\": \"")[1].split("\",")[0].split(",");
                     maxCount = my_play_Str.length;
                     for (int i = 0; i < my_play_Str.length; i++) {

@@ -21,6 +21,7 @@ public class SearchSuggestAdapter extends RecyclerView.Adapter<SearchSuggestAdap
     private List<String> mDataList;
     private List<String> mDataListAll;
     List<String> popularDataList2;
+    private int count=0;
 
 
     public SearchSuggestAdapter(List<String> items, List<String> popularDataList){
@@ -83,18 +84,25 @@ public class SearchSuggestAdapter extends RecyclerView.Adapter<SearchSuggestAdap
     private final Filter exampleFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
+//            if(count==1){
+//                charSequence = null;
+//                count=0;
+//            }
             List<String> filteredList = new ArrayList<>();
             if(charSequence == null || charSequence.length() == 0){
 //                filteredList.addAll(mDataListAll);
                 filteredList.addAll(popularDataList2);
             } else {
+//                count++;
                 String filterPattern = charSequence.toString().toLowerCase().trim();
                 for(String item : mDataListAll){
                     if(item.toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
+
             }
+
             FilterResults results = new FilterResults();
             results.values = filteredList;
             return results;

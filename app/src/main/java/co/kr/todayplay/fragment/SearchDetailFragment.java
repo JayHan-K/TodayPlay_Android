@@ -59,6 +59,9 @@ public class SearchDetailFragment extends Fragment {
         String title = getArguments().getString("title");
         Log.d("title","title="+title);
         dbsearch1s = playDBHelper.getmidsearch(title);
+        if(dbsearch1s.size()==0){
+            return viewGroup;
+        }
         dbsearch1 fe = dbsearch1s.get(0);
         Log.d("dbsearch1s","getit="+fe.getImg_path()+"  "+fe.getKeyword());
         search_play_id.add(fe.getPlay_id());

@@ -103,7 +103,6 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
                         searchDetailFragment
                 ).commitAllowingStateLoss();
                 searchFrameLayout.setVisibility(View.VISIBLE);
-
                 return false;
             }
 
@@ -111,7 +110,6 @@ public class SearchFragment extends Fragment implements SearchSuggestAdapter.onI
             public boolean onQueryTextChange(String newText) {
                 searchFrameLayout.setVisibility(View.GONE);
                 searchConst.setVisibility(View.VISIBLE);
-
                 adapter.getFilter().filter(newText);
                 if(newText.equals("")){
                     search_pop_rec_tv.setText("인기 검색어");
