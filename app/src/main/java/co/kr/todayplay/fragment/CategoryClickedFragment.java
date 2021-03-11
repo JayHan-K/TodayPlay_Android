@@ -151,6 +151,8 @@ public class CategoryClickedFragment extends Fragment {
 
         mAdapter.setData(play_id_second);
         mCoverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverflow);
+        mCoverFlow.scroll(1);
+        mCoverFlow.computeScroll();
         mCoverFlow.setAdapter(mAdapter);
 
 //        mCoverFlow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -167,6 +169,7 @@ public class CategoryClickedFragment extends Fragment {
 
             @Override
             public void onScrolling() {
+
 
             }
         });
@@ -305,6 +308,7 @@ public class CategoryClickedFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
             categoryDetailRecyAdapter.addItem(imagepath,imageint);
             recyclerView.setAdapter(categoryDetailRecyAdapter);
+            recyclerView.setNestedScrollingEnabled(false);
             categoryDetailRecyAdapter.notifyDataSetChanged();
 
         }

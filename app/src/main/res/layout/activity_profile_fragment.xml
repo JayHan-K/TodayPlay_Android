@@ -56,6 +56,7 @@
                 android:layout_marginRight="35dp"
                 android:src="@drawable/icon_pre_mirror"
                 android:elevation="4dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
@@ -78,7 +79,7 @@
                 android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="38dp"
-                android:src="@drawable/editor_profile_3"
+                app:srcCompat="@drawable/btn_custom_rounded_gray"
                 app:civ_border_width="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -129,6 +130,7 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginEnd="45dp"
                     android:layout_marginRight="45dp"
+                    android:visibility="gone"
                     android:background="@color/cardview_light_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -142,6 +144,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="14dp"
                     android:fontFamily="@font/kopubworlddotumbold"
+                    android:visibility="gone"
                     android:text="45%"
                     android:textColor="#ffffff"
                     android:textSize="14dp"
@@ -178,6 +181,7 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
+                        android:id="@+id/review_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -230,6 +234,7 @@
                     app:layout_constraintStart_toEndOf="@+id/profile_my_review_rl">
 
                     <TextView
+                        android:id="@+id/my_pick_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -294,6 +299,7 @@
                         app:srcCompat="@drawable/profile_bookmark" />
 
                     <TextView
+                        android:id="@+id/scrap_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
@@ -344,6 +350,7 @@
                 android:fontFamily="@font/kopubworlddotumbold"
                 android:text="취향 분석실"
                 android:textColor="#ffffff"
+                android:visibility="gone"
                 android:textSize="14dp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -355,6 +362,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="17dp"
                 android:layout_marginEnd="24dp"
+                android:visibility="gone"
                 android:layout_marginRight="24dp"
                 android:background="#252525"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -377,6 +385,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:background="#252525"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
                 tools:layout_editor_absoluteX="0dp">
 
