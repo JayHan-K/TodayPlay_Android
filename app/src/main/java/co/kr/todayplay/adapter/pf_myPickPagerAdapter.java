@@ -30,16 +30,23 @@ import co.kr.todayplay.fragment.category.CategoryCurrent;
 import co.kr.todayplay.fragment.category.CategoryMusical;
 import co.kr.todayplay.fragment.category.CategoryPlay;
 import co.kr.todayplay.fragment.category.CategoryTotal;
+import co.kr.todayplay.object.RecommandItem;
 
 
 public class pf_myPickPagerAdapter extends FragmentStateAdapter {
     int num;
     int user_id;
+    ArrayList<RecommandItem> playing_play_list;
+    ArrayList<RecommandItem> before_play_list;
+    ArrayList<RecommandItem> not_play_list;
 
-    public pf_myPickPagerAdapter(Fragment fm, int num, int user_id){
+    public pf_myPickPagerAdapter(Fragment fm, int num, int user_id, ArrayList<RecommandItem> playing_play_list, ArrayList<RecommandItem> before_play_list, ArrayList<RecommandItem> not_play_list){
         super(fm);
         this.num = num;
         this.user_id = user_id;
+        this.playing_play_list = playing_play_list;
+        this.before_play_list = before_play_list;
+        this.not_play_list = not_play_list;
     }
 
     @NonNull
@@ -48,15 +55,15 @@ public class pf_myPickPagerAdapter extends FragmentStateAdapter {
         Log.d("Bundle result", "pf_myPickPagerAdapter user_id: " + user_id);
         switch (position){
             case 0:
-                ProfileIng tab1 = new ProfileIng(user_id, 0);
+                ProfileIng tab1 = new ProfileIng(playing_play_list);
                 return tab1;
 
             case 1:
-                ProfileIng tab2 = new ProfileIng(user_id, 1);
+                ProfileIng tab2 = new ProfileIng(before_play_list);
                 return tab2;
 
             case 2:
-                ProfileIng tab3 = new ProfileIng(user_id, 2);
+                ProfileIng tab3 = new ProfileIng(not_play_list);
                 return tab3;
 
             default:
