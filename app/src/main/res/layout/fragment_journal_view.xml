@@ -22,17 +22,8 @@
             android:layout_height="17dp"
             android:background="@drawable/perform_info_back_icon"
             app:layout_constraintStart_toStartOf="@id/hidden_top_part"
-            app:layout_constraintTop_toTopOf="@id/hidden_top_part"/>
-        <TextView
-            android:id="@+id/perform_subtitle_tv"
-            android:text="모든 이야기의 시작이 된 이야기"
-            android:textColor="#ffffff"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/hidden_back_btn"
             app:layout_constraintTop_toTopOf="@id/hidden_top_part"
-            android:layout_marginLeft="12dp"/>
+            app:layout_constraintBottom_toBottomOf="@id/hidden_top_part"/>
         <TextView
             android:id="@+id/perform_title_tv"
             android:text="오이디푸스 I"
@@ -41,9 +32,10 @@
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="15dp"
             app:layout_constraintStart_toEndOf="@id/hidden_back_btn"
-            app:layout_constraintTop_toBottomOf="@id/perform_subtitle_tv"
+            app:layout_constraintTop_toTopOf="@id/hidden_top_part"
+            app:layout_constraintBottom_toBottomOf="@id/hidden_top_part"
             android:layout_marginTop="1dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ScrollView

@@ -25,7 +25,7 @@ import co.kr.todayplay.fragment.HomeFragment;
 
 public class JournalViewFragment extends Fragment {
     PlayDBHelper playDBHelper;
-    TextView hidden_journal_title, hidden_journal_subtitle;
+    TextView hidden_journal_title;
     ImageButton hidden_back_btn;
     WebView webView;
     //RecyclerView recommend_journal_rv;
@@ -48,10 +48,8 @@ public class JournalViewFragment extends Fragment {
             Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id);
         }
 
-        hidden_journal_subtitle = (TextView)viewGroup.findViewById(R.id.perform_subtitle_tv);
         hidden_journal_title = (TextView)viewGroup.findViewById(R.id.perform_title_tv);
         hidden_journal_title.setText(playDBHelper.getPlayTitle(play_id));
-        hidden_journal_subtitle.setText("");
         hidden_back_btn = (ImageButton) viewGroup.findViewById(R.id.hidden_back_btn);
         hidden_back_btn.setEnabled(true);
         hidden_back_btn.setOnClickListener(new View.OnClickListener() {

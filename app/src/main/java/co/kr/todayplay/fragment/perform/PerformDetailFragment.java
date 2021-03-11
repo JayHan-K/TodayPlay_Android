@@ -117,8 +117,13 @@ public class PerformDetailFragment extends Fragment {
 
         }
         staff_rv = (RecyclerView)viewGroup.findViewById(R.id.staff_rv);
-        staff_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        //staff_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        staff_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false){
+
+            @Override
+            public boolean canScrollHorizontally() { //가로 스크롤막기
+                return false;
+            }
+        });
         ArrayList<PerformDetailStaffAdapter.StaffItem> crew_data = new ArrayList<>();
         PerformDetailStaffAdapter.StaffItem director = new PerformDetailStaffAdapter.StaffItem();
         PerformDetailStaffAdapter.StaffItem writer = new PerformDetailStaffAdapter.StaffItem();
