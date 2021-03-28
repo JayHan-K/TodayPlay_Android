@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import co.kr.todayplay.DBHelper.CrewDB.CrewDBHelper;
@@ -43,7 +44,6 @@ public class PerformDetailFragment extends Fragment {
     int play_id = -1;
     int user_id = -1;
     String[] crews;
-    String[] relation_journals;
 
     public PerformDetailFragment(){}
 
@@ -178,19 +178,26 @@ public class PerformDetailFragment extends Fragment {
 
 
         //관련 저널 파트
-        String relation_journal_string = playDBHelper.getPlayRelative_Journal(play_id);
-        Log.d("relation_journal", relation_journal_string);
-        relation_journals = relation_journal_string.split(",");
-        TextView journal_tv = (TextView)viewGroup.findViewById(R.id.journal_tv);
-        journal_tv.setText("");
-        journal_rv = (RecyclerView)viewGroup.findViewById(R.id.journal_rv);
-        //journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        //journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        //ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
-        //data2.add(new PerformDetailJournalAdapter.JournalItem(0,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(1)).toString(), "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
-        //data2.add(new PerformDetailJournalAdapter.JournalItem(0,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(2)).toString(), "모든 이야기의 시작이 된 이야기", "오이디푸스I"));
-        //PerformDetailJournalAdapter performDetailJournalAdapter = new PerformDetailJournalAdapter(data2);
-        //journal_rv.setAdapter(performDetailJournalAdapter);
+        String relation_journals = playDBHelper.getPlayRelative_Journal(play_id);
+        if (!relation_journals.equals("[]")){
+            relation_journals = relation_journals.replace("[","");
+            relation_journals = relation_journals.replace("]","");
+            String[] relative_journals = relation_journals.split(",");
+
+            journal_rv = (RecyclerView)viewGroup.findViewById(R.id.journal_rv);
+            journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+            ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
+            for(int i=0; i<relative_journals.length; i++){
+                Log.d("relative_journals", i + " = " + relative_journals[i]);
+                int new_relative_journal = Integer.parseInt(relative_journals[i]);
+                data2.add(new PerformDetailJournalAdapter.JournalItem(new_relative_journal,getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(new_relative_journal)).toString(), journalDBHelper.getJournalSubtitle(new_relative_journal), journalDBHelper.getJournalTitle(new_relative_journal)));
+
+            }
+            PerformDetailJournalAdapter performDetailJournalAdapter = new PerformDetailJournalAdapter(data2);
+            journal_rv.setAdapter(performDetailJournalAdapter);
+        }
+
 
         return viewGroup;
     }

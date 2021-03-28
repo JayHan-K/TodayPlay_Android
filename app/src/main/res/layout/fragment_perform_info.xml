@@ -44,12 +44,11 @@
                         app:layout_constraintTop_toBottomOf="@id/perfrom_title_tv"
                         app:layout_constraintBottom_toBottomOf="@id/title_ranking_part"
                         app:layout_constraintStart_toStartOf="@id/title_ranking_part"
-                        app:layout_constraintEnd_toEndOf="@id/title_ranking_part"
                         android:layout_marginTop="6dp">
                         <ImageButton
                             android:id="@+id/heart_icon"
-                            android:layout_width="13dp"
-                            android:layout_height="12dp"
+                            android:layout_width="19dp"
+                            android:layout_height="18dp"
                             android:clickable="true"
                             android:background="@drawable/perform_info_heart_icon"
                             app:layout_constraintTop_toTopOf="@id/ranking_part"
@@ -60,7 +59,7 @@
                             android:id="@+id/rangking_tv"
                             android:textColor="#fed702"
                             android:text="찜 랭킹 21위"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintLeft_toRightOf="@id/heart_icon"
@@ -129,8 +128,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tabLayout"
                     app:layout_constraintStart_toStartOf="@id/vp_part"
                     app:layout_constraintEnd_toEndOf="@id/vp_part"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:paddingTop="20dp">
+                    app:layout_constraintBottom_toBottomOf="parent">
                 </androidx.viewpager.widget.ViewPager>
             </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,8 +64,14 @@ public class PerformVideoFragment extends Fragment {
         }
 
         video_rv = (RecyclerView)viewGroup.findViewById(R.id.video_rv);
-        //video_rv.setLayoutManager(new LinearLayoutManager(getParentFragment().getContext(), LinearLayoutManager.VERTICAL, false));
-        video_rv.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false));
+        video_rv.setLayoutManager(new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false)
+        {
+
+            @Override
+            public boolean canScrollVertically() { //가로 스크롤막기
+                return false;
+            }
+        });
         performVideoAdapter = new PerformVideoAdapter(data);
 
         String youtube_link_string = playDBHelper.getPlayVideos(play_id);

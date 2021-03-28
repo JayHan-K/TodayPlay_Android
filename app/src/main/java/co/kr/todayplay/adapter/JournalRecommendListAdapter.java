@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ public class JournalRecommendListAdapter extends RecyclerView.Adapter<RecyclerVi
     public ArrayList<JournalRecommendListViewHolder> itemController = new ArrayList<>();
 
     public static class Item{
+        private int journal_id;
+        private String img_path;
         private int drawable;
         private String subtitle;
         private String title;
@@ -27,10 +31,22 @@ public class JournalRecommendListAdapter extends RecyclerView.Adapter<RecyclerVi
         public Item(){
 
         }
-        public Item(int drawable, String subtitle, String title){
+        public Item(int journal_id, int drawable, String subtitle, String title){
+            this.journal_id = journal_id;
             this.subtitle = subtitle;
             this.drawable = drawable;
             this.title = title;
+        }
+
+        public Item(int journal_id, String img_path, String subtitle, String title){
+            this.journal_id = journal_id;
+            this.subtitle = subtitle;
+            this.img_path = img_path;
+            this.title = title;
+        }
+
+        public String getImg_path() {
+            return img_path;
         }
 
         public String getTitle() {
@@ -42,6 +58,10 @@ public class JournalRecommendListAdapter extends RecyclerView.Adapter<RecyclerVi
         }
         public int getDrawable(){
             return drawable;
+        }
+
+        public int getJournal_id() {
+            return journal_id;
         }
     }
 
@@ -79,13 +99,14 @@ public class JournalRecommendListAdapter extends RecyclerView.Adapter<RecyclerVi
         Item item = data.get(position);
         JournalRecommendListViewHolder itemController = (JournalRecommendListViewHolder) holder;
         itemController.journal_subtitle_tv.setText(item.getSubtitle());
-        itemController.imageView.setImageResource(item.getDrawable());
+        Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+        itemController.imageView.setImageBitmap(bm);
         itemController.journal_title_tv.setText(item.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 JournalDetailFragment journalDetailFragment = new JournalDetailFragment();
-                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment);
+                ((MainActivity)view.getContext()).replaceFragment(journalDetailFragment, item.getJournal_id());
             }
         });
     }

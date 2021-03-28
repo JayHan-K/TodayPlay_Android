@@ -57,7 +57,14 @@ public class PerformHistoryFragment extends Fragment {
         history = history.replace("[", "{ history : [");
         history = history.replace("]","]}");
         history_rv = (RecyclerView)viewGroup.findViewById(R.id.history_rv);
-        history_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+        history_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false)
+        {
+
+            @Override
+            public boolean canScrollVertically() { //가로 스크롤막기
+                return false;
+            }
+        });
         ArrayList<PerformHistoryAdapter.Item> data = new ArrayList<>();
 
         try {

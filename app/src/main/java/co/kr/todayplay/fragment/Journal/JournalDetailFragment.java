@@ -64,6 +64,7 @@ import co.kr.todayplay.JoinIdentificationActivityVer2;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.JournalRecommendListAdapter;
+import co.kr.todayplay.adapter.PerformDetailJournalAdapter;
 import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
 
 public class JournalDetailFragment extends Fragment {
@@ -380,17 +381,20 @@ public class JournalDetailFragment extends Fragment {
         //--Comments 로드 Part Start--
 
 
-        //Relation_jouranl part
-        TextView recommend_journal_tv = (TextView)viewGroup.findViewById(R.id.recommend_journal_tv);
-        recommend_journal_tv.setText("");
+        //Relation_journal part
         recommend_journal_rv.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         ArrayList<JournalRecommendListAdapter.Item> recommend_journal_data = new ArrayList<>();
-        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img03, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img04, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img05, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
-        //recommend_journal_data.add(new JournalRecommendListAdapter.Item(R.drawable.editor_journal_img06, "모든 이야기의 시작이 된 이야기","오이디푸스I"));
+        String relation_journals = journalDBHelper.getJournalRelation_journal(journal_id);
+        Log.d("relation_journals", relation_journals);
+        if (!relation_journals.equals("")){
+            String[] relative_journals = relation_journals.split(",");
+            for(int i=0; i<relative_journals.length; i++){
+                Log.d("relative_journals", i + " = " + relative_journals[i]);
+                String[] relative_id = relative_journals[i].split("[.]");
+                int new_relative_journal = Integer.parseInt(relative_id[0]);
+                recommend_journal_data.add(new JournalRecommendListAdapter.Item(new_relative_journal, getActivity().getApplicationContext().getFileStreamPath(journalDBHelper.getJournalThumbnail2_img(new_relative_journal)).toString(), journalDBHelper.getJournalSubtitle(new_relative_journal),journalDBHelper.getJournalTitle(new_relative_journal)));
+            }
+        }
         recommend_journal_rv.setAdapter(new JournalRecommendListAdapter(recommend_journal_data));
 
 
