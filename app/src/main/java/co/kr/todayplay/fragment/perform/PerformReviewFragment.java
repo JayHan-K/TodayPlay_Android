@@ -44,7 +44,7 @@ public class PerformReviewFragment extends Fragment {
     Button write_review_btn, more_review_btn;
     BarChart satisfy_ratio_chart;
     PerformTotalReviewFragment performTotalReviewFragment = new PerformTotalReviewFragment();
-    PerformWriteReviewFragment performWriteReviewFragment = new PerformWriteReviewFragment();
+    PerformWriteReviewFragment1 performWriteReviewFragment1 = new PerformWriteReviewFragment1();
     PieChart recommend_ratio_chart;
     ImageView keywords_iv;
 
@@ -217,7 +217,7 @@ public class PerformReviewFragment extends Fragment {
         write_review_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment2(performWriteReviewFragment, play_id);
+                ((MainActivity)getActivity()).replaceFragment2(performWriteReviewFragment1, play_id);
             }
         });
 

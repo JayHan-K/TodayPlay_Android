@@ -36,7 +36,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
     private ImageView recommend_hover_iv, not_recommend_hover_iv;
     boolean recommend_flag = false;
     int play_id, user_id, num_of_star, recommend;
-    String review_good, review_bad, review_tip, review_pic;
+    String review_good, review_bad, review_tip, certification_imgpath;
 
     public PerformRecommendDialogFragment(){}
 
@@ -55,10 +55,11 @@ public class PerformRecommendDialogFragment extends DialogFragment {
             review_good = bundle.getString("review_good");
             review_bad = bundle.getString("review_bad");
             review_tip = bundle.getString("review_tip");
-            review_pic = bundle.getString("review_pic");
+            //후기 인증 사진
+            certification_imgpath = bundle.getString("certification_imgpath");
             num_of_star = bundle.getInt("num_of_star");
 
-            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id + " | review_good = " + review_good + " | review_bad = " + review_bad + " | review_tip = " + review_tip + " | review_pic = " + review_pic + " | num_of_star = " + num_of_star);
+            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id + " | review_good = " + review_good + " | review_bad = " + review_bad + " | review_tip = " + review_tip + " | certification_imgpath = " + certification_imgpath + " | num_of_star = " + num_of_star);
         }
 
         recommend_hover_iv = (ImageView)view.findViewById(R.id.recomend_hover_iv);
@@ -77,7 +78,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                 recommend_hover_iv.setImageResource(R.drawable.write_review_recomend_icon_gray);
 
                 recommend = 0;
-                String send_review = postSendReviewData(Integer.toString(play_id), Integer.toString(user_id), review_good, review_bad, review_tip, review_pic, Integer.toString(recommend), Integer.toString(num_of_star), new VolleyReviewCallback() {
+                String send_review = postSendReviewData(Integer.toString(play_id), Integer.toString(user_id), review_good, review_bad, review_tip, certification_imgpath, Integer.toString(recommend), Integer.toString(num_of_star), new VolleyReviewCallback() {
                     @Override
                     public void onSuccess(String data) {
                         //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
@@ -89,7 +90,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
 
                         } else {
                             Log.d("postSendReviewData","Success to send review");
-                            Toast.makeText(getActivity().getApplicationContext(), "후기가 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "후기가 등록되었습니다.", Toast.LENGTH_LONG).show();
                             Log.d("pressed","pressed=");
                             HomeFragment homeFragment = new HomeFragment();
                             ((MainActivity)view.getContext()).replaceFragmentHome(homeFragment);
@@ -110,7 +111,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                 not_recommend_hover_iv.setImageResource(R.drawable.write_review_not_recomend_icon_gray);
                 recommend = 1;
 
-                String send_review = postSendReviewData(Integer.toString(play_id), Integer.toString(user_id), review_good, review_bad, review_tip, review_pic, Integer.toString(recommend), Integer.toString(num_of_star), new VolleyReviewCallback() {
+                String send_review = postSendReviewData(Integer.toString(play_id), Integer.toString(user_id), review_good, review_bad, review_tip, certification_imgpath, Integer.toString(recommend), Integer.toString(num_of_star), new VolleyReviewCallback() {
                     @Override
                     public void onSuccess(String data) {
                         //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
@@ -119,7 +120,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
 
                         } else {
                             Log.d("postSendReviewData","Success to send review");
-                            Toast.makeText(getActivity().getApplicationContext(), "후기가 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "후기가 등록되었습니다.", Toast.LENGTH_LONG).show();
                             Log.d("pressed","pressed=");
                             HomeFragment homeFragment = new HomeFragment();
                             ((MainActivity)view.getContext()).replaceFragmentHome(homeFragment);

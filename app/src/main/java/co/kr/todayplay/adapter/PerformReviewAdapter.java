@@ -166,8 +166,8 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
                         return false;
                     }
                 });
-                PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
-                itemController.photo_rv.setAdapter(performReviewImageAdapter);
+                //PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
+                //itemController.photo_rv.setAdapter(performReviewImageAdapter);
             }
             else Log.d("IsImage", "onBindViewHolder: image is null!!");
     }

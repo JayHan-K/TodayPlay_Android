@@ -191,8 +191,8 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
                         return false;
                     }
                 });
-                PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
-                itemController.photo_rv.setAdapter(performReviewImageAdapter);
+                //PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
+                //itemController.photo_rv.setAdapter(performReviewImageAdapter);
             }
             else Log.d("IsImage", "onBindViewHolder: image is null!!");
             itemController.more_comment_tv.setOnClickListener(new View.OnClickListener() {

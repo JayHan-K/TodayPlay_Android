@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/question_tv"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="26dp">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/recommend_btn"

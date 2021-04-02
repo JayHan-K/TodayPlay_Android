@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -217,8 +218,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void replaceFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", Integer.parseInt(userId));
@@ -249,6 +248,19 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", Integer.parseInt(userId));
         bundle.putInt("journal_id", journal_id);
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
+    }
+
+    public void replaceFragment(Fragment fragment, int play_id, int certification_type, String certification_imgpath) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", Integer.parseInt(userId));
+        bundle.putInt("play_id", play_id);
+        bundle.putInt("certification_type", certification_type);
+        bundle.putString("certification_imgpath", certification_imgpath);
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
