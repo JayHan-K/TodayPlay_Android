@@ -317,7 +317,7 @@ public class JournalDetailFragment extends Fragment {
 
         //--Journal 본문 Part Start--
         journal_content_iv = (ImageView)viewGroup.findViewById(R.id.journal_iv);
-        journal_content_iv.setImageResource(R.drawable.journal_sample);
+        journal_content_iv.setImageResource(R.drawable.journal_sample2);
 
         //--Comments 로드 Part Start--
         //ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
