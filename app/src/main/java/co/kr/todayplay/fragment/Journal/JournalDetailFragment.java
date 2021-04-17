@@ -78,7 +78,7 @@ public class JournalDetailFragment extends Fragment {
     RecyclerView comment_rv, recommend_journal_rv;
     EditText comment_et;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    ImageView journal_banner_iv;
+    ImageView journal_banner_iv, journal_content_iv;
     WebView webView;
     ConstraintLayout relation_journal_container;
 
@@ -110,6 +110,7 @@ public class JournalDetailFragment extends Fragment {
         journalDBHelper = new JournalDBHelper(getActivity().getApplicationContext(), "Journal.db", null, 1);
         userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
 
+        //이전 fragment의 데이터 가져오기 JOURNAL_ID, USER_ID
         Bundle bundle = getArguments();
         if(bundle != null){
             journal_id = bundle.getInt("journal_id");
@@ -292,6 +293,7 @@ public class JournalDetailFragment extends Fragment {
             }
         });
 
+        /*
         //--WebView Part Start--
         webView = (WebView)viewGroup.findViewById(R.id.journal_wv);
         if(webView == null){
@@ -311,7 +313,11 @@ public class JournalDetailFragment extends Fragment {
         String[] file_name = file.split("[.]");
         webView.loadUrl("http://211.174.237.197/media/journal/" + file_name[0] + "/index.html");
         //--WebView Part Start--
+        */
 
+        //--Journal 본문 Part Start--
+        journal_content_iv = (ImageView)viewGroup.findViewById(R.id.journal_iv);
+        journal_content_iv.setImageResource(R.drawable.journal_sample);
 
         //--Comments 로드 Part Start--
         //ArrayList<PerformReviewCommentAdapter.CommentItem> recomment_data = new ArrayList<>();
@@ -588,25 +594,36 @@ public class JournalDetailFragment extends Fragment {
 
         try{
             String[] resposeData = {""};
+
+            //서버 요청자: 다른 Request 클래스들의 정보대로 서버에 요청을 보내는 역할, StringRequest가 add되면 서버 연동을 발생시킨다.
             RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+            //요청을 보낼 url
             String url = "http://211.174.237.197/request_journal_info_by_id/";
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+            //String Request 객체
+            //서버 요청 정보와 결과 처리 방법을 표현한다. StringRequest 객체를 RequestQueue에 넘겨 서버 요청이 발생됨.
+            //매개변수 1. HTTP Method (GET, POST) 2. 서버 URL 3. 결과 콜백 4. 에러 콜백
+            StringRequest stringRequest = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>(){
+                        //결과 처리 콜백 - 서버 수신 문자열이 전달된다.
+                        @Override
+                        public void onResponse(String response) {
+                            String data = response;
+                            Log.d("postGetCommentIds", data);
+                            callback.onSuccess(data);
+                        }
+                    }, new Response.ErrorListener() {
 
-                @Override
-                public void onResponse(String response) {
-                    String data = response;
-                    Log.d("postGetCommentIds", data);
-                    callback.onSuccess(data);
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("postGetCommentIds", error.toString());
-                }
-            }) {
-
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("postGetCommentIds", error.toString());
+                        }
+                    }) {
+                //Request에 서버에 전송할 데이터를 Map객체에 담아 반환
+                //getParams() 함수에서 반환한 Map객체의 데이터를 웹의 질의 문자열 형식으로 만들어 RequestQueue에서 해당 Request가 서버에 요청될 때 서버에 전송된다.
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<String, String>();
@@ -615,6 +632,7 @@ public class JournalDetailFragment extends Fragment {
                     return params;
                 }
             };
+            //String Request 객체
             queue.add(stringRequest);
             return resposeData[0];
 
@@ -912,6 +930,7 @@ public class JournalDetailFragment extends Fragment {
 
     }
 
+    //volley: SCRAP 데이터 요청
     public void loadScrap(String journal_id){
         String get_scrap_view = postGetCommentIds(journal_id, new VolleyCommentCallback() {
             @Override
@@ -944,42 +963,46 @@ public class JournalDetailFragment extends Fragment {
             RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
             String url = "http://211.174.237.197/request_increment_journal_num_of_scrap/";
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+            StringRequest stringRequest = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>(){
 
-                @Override
-                public void onResponse(String response) {
-
-
-                    String data = response;
-                    Log.d("postSendScrapChange", data);
-                    resposeData[0] = data;
-
-                    callback.onSuccess(data);
+                        @Override
+                        public void onResponse(String response) {
 
 
-                }
-            }, new Response.ErrorListener() {
+                            String data = response;
+                            Log.d("postSendScrapChange", data);
+                            resposeData[0] = data;
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("postSendScrapChange", error.toString());
-                }
-            }) {
+                            callback.onSuccess(data);
 
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Content-Type", "application/json");
-                    params.put("action", action);
-                    params.put("user_id", user_id);
-                    params.put("journal_id", journal_id);
 
-                    return params;
-                }
-            };
+                        }
+                    },
+                    new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("postSendScrapChange", error.toString());
+                        }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("action", action);
+                        params.put("user_id", user_id);
+                        params.put("journal_id", journal_id);
+
+                        return params;
+                    }
+                };
+
+            //stringRequest.setShouldCache(false);
             queue.add(stringRequest);
             return resposeData[0];
-
 
         } catch (Exception e) {
             Log.d("postSendScrapChange", e.toString());

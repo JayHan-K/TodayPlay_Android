@@ -17,8 +17,16 @@
             android:background="#ffffff"
             app:layout_constraintTop_toTopOf="@id/container"
             app:layout_constraintStart_toStartOf="@id/container">
+            <!--
             <WebView
                 android:id="@+id/journal_wv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/scroll_part"
+                app:layout_constraintStart_toStartOf="@id/scroll_part"/>
+                -->
+            <ImageView
+                android:id="@+id/journal_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/scroll_part"
@@ -29,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/scroll_part"
-                app:layout_constraintTop_toBottomOf="@id/journal_wv"
+                app:layout_constraintTop_toBottomOf="@id/journal_iv"
                 android:layout_marginTop="28dp"
                 android:layout_marginLeft="26dp"
                 android:layout_marginRight="26dp"
