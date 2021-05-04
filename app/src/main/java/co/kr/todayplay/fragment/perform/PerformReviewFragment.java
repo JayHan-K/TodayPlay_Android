@@ -11,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,6 +40,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewAdapter;
@@ -51,6 +57,8 @@ public class PerformReviewFragment extends Fragment {
     int play_id = -1;
     int user_id = -1;
 
+    String review_info_request_url = "http://211.174.237.197/request_review_info_by_play_id/";
+
     public PerformReviewFragment(){}
 
     @Nullable
@@ -58,8 +66,6 @@ public class PerformReviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         int review_data_size = 5;
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_review,container,false);
-        ConstraintLayout constraintLayout = (ConstraintLayout)viewGroup.findViewById(R.id.constraintLayout);
-        constraintLayout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         if(bundle != null){
             play_id = bundle.getInt("play_id");
@@ -188,6 +194,10 @@ public class PerformReviewFragment extends Fragment {
         keywords_iv.setImageBitmap(generatedWordCloudBmp);
         //--후기 키워드 End --
 
+        //후기
+        sendPOSTPlay_idRequest(review_info_request_url, Integer.toString(play_id));
+
+        //수정
         final ArrayList<PerformReviewAdapter.ReviewItem> data = new ArrayList<>();
         ArrayList<Integer> image_data = new ArrayList<>();
         image_data.add(R.drawable.poster_sample1);
@@ -222,5 +232,34 @@ public class PerformReviewFragment extends Fragment {
         });
 
         return viewGroup;
+    }
+
+    public void sendPOSTPlay_idRequest(String url, String play_id){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Play_idRequest", "Response = " + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Play_idRequest", error.toString());
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("play_id", play_id);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
     }
 }
