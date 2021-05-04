@@ -26,16 +26,17 @@ import co.kr.todayplay.fragment.perform.PerformTotalReviewCommentFragment;
 public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public ArrayList<PerformReviewCommentAdapter.CommentItem> data = new ArrayList<>();
     private ArrayList<PerformReviewCommentAdapter.CommentHolder> itemController = new ArrayList<>();
+    private int visible_cmt = 0;
     private Context context;
 
     public static class CommentItem{
-        private boolean isRecomment = false;
         private int profile_drawable;
         private String img_path;
         private String user_name;
         private String date;
         private String comment;
         private ArrayList<CommentItem> recomment_data;
+        private boolean isRecomment = false;
 
         public CommentItem(){}
         public CommentItem(int profile_drawable, String user_name, String date, String comment, boolean isRecomment){
@@ -125,12 +126,24 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
         super();
         this.context = context;
         this.data = data;
+        this.visible_cmt = 0;
     }
 
     public PerformReviewCommentAdapter(ArrayList<PerformReviewCommentAdapter.CommentItem> data){
         super();
         this.data = data;
+        this.visible_cmt = 0;
     }
+
+    public int getVisible_cmt() {
+        return visible_cmt;
+    }
+
+    public void setVisible_cmt(int visible_cmt) {
+        this.visible_cmt = visible_cmt;
+    }
+
+    public int getDataSize(){return this.data.size();}
 
     @NonNull
     @Override
@@ -146,8 +159,10 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         CommentItem item = data.get(position);
         PerformReviewCommentAdapter.CommentHolder itemController = (PerformReviewCommentAdapter.CommentHolder) holder;
-        Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
-        itemController.profile_iv.setImageBitmap(bm);
+        if(!item.getImg_path().equals("")){
+            Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+            itemController.profile_iv.setImageBitmap(bm);
+        }
         itemController.user_name_tv.setText(item.user_name);
         itemController.date_tv.setText(item.getDate());
         itemController.comment_tv.setText(item.getComment());
@@ -173,6 +188,6 @@ public class PerformReviewCommentAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return visible_cmt;
     }
 }
