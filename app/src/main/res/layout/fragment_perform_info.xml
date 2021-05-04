@@ -8,7 +8,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/poster_part"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="300dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/poster_part"
@@ -21,45 +21,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@id/poster_part"
-                    app:layout_constraintStart_toStartOf="@id/poster_part"
+                    app:layout_constraintStart_toEndOf="@id/perfrom_img"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="22dp">
+                    android:layout_marginLeft="14dp">
                     <TextView
-                        android:id="@+id/perfrom_title_tv"
+                        android:id="@+id/category_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="연극 라이어"
                         android:textColor="#ffffff"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintTop_toTopOf="@id/title_ranking_part"
+                        android:text="연극"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@id/title_ranking_part"
-                        app:layout_constraintEnd_toEndOf="@id/title_ranking_part"
-                        app:layout_constraintBottom_toTopOf="@id/ranking_part"
-                        android:layout_marginBottom="6dp"/>
+                        app:layout_constraintTop_toTopOf="@id/title_ranking_part"/>
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ranking_part"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/perfrom_title_tv"
-                        app:layout_constraintBottom_toBottomOf="@id/title_ranking_part"
-                        app:layout_constraintStart_toStartOf="@id/title_ranking_part"
-                        android:layout_marginTop="6dp">
-                        <ImageButton
+                        app:layout_constraintBottom_toTopOf="@id/perfrom_title_tv"
+                        app:layout_constraintTop_toTopOf="@id/title_ranking_part"
+                        app:layout_constraintStart_toEndOf="@id/category_tv"
+                        android:layout_marginLeft="15dp">
+                        <ImageView
                             android:id="@+id/heart_icon"
-                            android:layout_width="19dp"
-                            android:layout_height="18dp"
-                            android:clickable="true"
-                            android:background="@drawable/perform_info_heart_icon"
+                            android:layout_width="15dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/perform_info_heart_icon"
                             app:layout_constraintTop_toTopOf="@id/ranking_part"
                             app:layout_constraintBottom_toBottomOf="@id/ranking_part"
-                            app:layout_constraintRight_toLeftOf="@id/rangking_tv"
-                            android:layout_marginRight="8dp"/>
+                            app:layout_constraintRight_toLeftOf="@id/rangking_tv"/>
                         <TextView
                             android:id="@+id/rangking_tv"
                             android:textColor="#fed702"
-                            android:text="찜 랭킹 21위"
-                            android:textSize="16sp"
+                            android:text="-위"
+                            android:textSize="14sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintLeft_toRightOf="@id/heart_icon"
@@ -67,32 +61,36 @@
                             app:layout_constraintBottom_toBottomOf="@id/ranking_part"
                             android:layout_marginLeft="8dp"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/perfrom_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="라이어"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/title_ranking_part"
+                        app:layout_constraintStart_toStartOf="@id/title_ranking_part"
+                        app:layout_constraintTop_toBottomOf="@id/ranking_part"
+                        android:layout_marginTop="4dp"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <ImageButton
                     android:id="@+id/back_btn"
                     android:layout_width="16dp"
-                    android:layout_height="17dp"
+                    android:layout_height="18dp"
                     android:background="@drawable/perform_info_back_icon"
                     app:layout_constraintStart_toStartOf="@id/poster_part"
                     app:layout_constraintTop_toTopOf="@id/poster_part"
-                    android:layout_marginLeft="22dp"/>
-
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="100dp"
-                    style="?android:borderlessButtonStyle"
-                    app:layout_constraintBottom_toTopOf="@+id/title_ranking_part"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:layout_marginLeft="26dp"/>
 
                 <ImageView
                     android:id="@+id/perfrom_img"
                     android:layout_width="162dp"
                     android:layout_height="202dp"
                     android:src="@drawable/poster_sample16"
-                    app:layout_constraintEnd_toEndOf="@id/poster_part"
-                    app:layout_constraintTop_toTopOf="@id/poster_part"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@id/poster_part"
                     app:layout_constraintBottom_toBottomOf="@id/poster_part"
                     android:layout_marginRight="25dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

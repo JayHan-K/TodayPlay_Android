@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.BlurredImage;
 import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
 import co.kr.todayplay.DBHelper.PlayDB.Play;
@@ -62,18 +63,16 @@ public class PerformInfoFragment extends Fragment {
     PerformPagerAdapter performPagerAdapter;
     ConstraintLayout poster;
     ImageView realposter;
-    ImageButton heart_btn;
-    TextView rangking_tv;
-    Button back_btn;
+    TextView rangking_tv, category_tv;
+    ImageButton back_btn;
+    TextView perform_title_tv;
+
     int play_id = -1;
     int user_id = -1;
-    TextView perform_title_tv;
 
     Boolean heart_flag = false;
 
-//    public PerformInfoFragment(int play_id){
-//        this.play_id = play_id;
-//    }
+    String send_play_id_url = " http://211.174.237.197/request_rank_by_play_id/";
 
 
     @Nullable
@@ -89,117 +88,19 @@ public class PerformInfoFragment extends Fragment {
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
 
+        //메인 Activity가 메모리에서 만들어질 때, RequestQueue를 하나만 생성한다.
+        if(AppHelper.requestQueue == null){
+            AppHelper.requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        }
+
         realposter = (ImageView)viewGroup.findViewById(R.id.perfrom_img);
-        back_btn = (Button)viewGroup.findViewById(R.id.button5);
+        back_btn = (ImageButton)viewGroup.findViewById(R.id.back_btn);
         poster = (ConstraintLayout)viewGroup.findViewById(R.id.poster_part);
-
-        // -- 찜하기 part Start --
         rangking_tv = (TextView)viewGroup.findViewById(R.id.rangking_tv);
+        category_tv = (TextView)viewGroup.findViewById(R.id.category_tv);
+        perform_title_tv = (TextView)viewGroup.findViewById(R.id.perfrom_title_tv);
 
-        // 랭킹 로드
-        loadRanking(Integer.toString(play_id));
-
-        heart_btn = (ImageButton)viewGroup.findViewById(R.id.heart_icon);
-        heart_flag = userDBHelper.IsHeart(play_id);
-
-        if(!heart_flag){
-            heart_btn.setBackgroundResource(R.drawable.perform_info_heart_default);
-        }
-        else{
-            heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
-
-        }
-
-
-        heart_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("heart_btn", "onClicked");
-                if(heart_flag){
-                    heart_btn.setBackgroundResource(R.drawable.perform_info_heart_default);
-                    heart_flag = false;
-                    // Delete to Server
-                    String delete_heart = postSendHeartChange(Integer.toString(user_id), Integer.toString(play_id), "delete", new VolleyPlayCallback() {
-                        @Override
-                        public void onSuccess(String data) {
-                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                            if (!data.equals("1")) {
-                                Log.d("postSendHeartChange", "POST ResultFailed.");
-
-                            } else {
-                                Log.d("postSendHeartChange","Success to get ranking data | play_id = " + play_id);
-                                userDBHelper.delete_heart(play_id);
-                                loadRanking(Integer.toString(play_id));
-                            }
-                        }
-
-                    });
-                }
-                else{
-                    heart_btn.setBackgroundResource(R.drawable.perform_info_heart_icon);
-                    heart_flag = true;
-                    // Insert to Server
-                    String insert_heart = postSendHeartChange(Integer.toString(user_id), Integer.toString(play_id), "insert", new VolleyPlayCallback() {
-                        @Override
-                        public void onSuccess(String data) {
-                            //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                            if (!data.equals("1")) {
-                                Log.d("postSendHeartChange", "POST ResultFailed.");
-
-                            } else {
-                                Log.d("postSendHeartChange","Success to get ranking data | play_id = " + play_id);
-                                userDBHelper.add_heart(user_id, play_id);
-                                loadRanking(Integer.toString(play_id));
-                            }
-                        }
-
-                    });
-                }
-            }
-        });
-        // -- 찜하기 part End --
-
-        perform_title_tv = viewGroup.findViewById(R.id.perfrom_title_tv);
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 7;
-
-        Log.d("perform Play_id","play_id="+play_id);
-        String category = playDBHelper.getPlayCategory(play_id);
-        String title = playDBHelper.getPlayTitle(play_id);
-        String sum = category+" "+title;
-
-        perform_title_tv.setText(sum);
-        Log.d("perform path","path="+playDBHelper.getPlayPoster(play_id));
-        String main_poster_path = getActivity().getApplicationContext().getFileStreamPath(playDBHelper.getPlayPoster(play_id)).toString();
-        Bitmap bm = BitmapFactory.decodeFile(main_poster_path);
-        realposter.setImageBitmap(bm);
-
-        back_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity)viewGroup.getContext()).onBackPressed();
-            }
-        });
-        /*
-        if(!poster2.equals("")){
-            Bitmap image = BitmapFactory.decodeFile(imgpath);
-            realposter.setImageBitmap(image);
-            Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
-            //Bitmap scaledImg = imageZoom(newImg,10);
-            //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
-            poster.setBackground(bitmapDrawable);
-        }else {
-            //Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
-            //realposter.setImageBitmap(bm);
-            //Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
-            //Bitmap scaledImg = imageZoom(newImg,10);
-            //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
-            //BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
-            //poster.setBackground(bitmapDrawable);
-        }
-         */
+        //Set 탭레이아웃, 뷰페이저
         tabLayout = (TabLayout)viewGroup.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("상세 정보"));
         tabLayout.addTab(tabLayout.newTab().setText("후기 분석"));
@@ -226,9 +127,81 @@ public class PerformInfoFragment extends Fragment {
 
         });
 
+        //Set 카테고리, 제목, 포스터
+        Log.d("perform Play_id","play_id="+play_id);
+        String category = playDBHelper.getPlayCategory(play_id);
+        String title = playDBHelper.getPlayTitle(play_id);
+        perform_title_tv.setText(title);
+        category_tv.setText(category);
+        Log.d("perform path","path="+playDBHelper.getPlayPoster(play_id));
+        String main_poster_path = getActivity().getApplicationContext().getFileStreamPath(playDBHelper.getPlayPoster(play_id)).toString();
+        Bitmap bm = BitmapFactory.decodeFile(main_poster_path);
+        realposter.setImageBitmap(bm);
+
+        //Set 랭킹
+        sendPOSTPlay_idRequest(send_play_id_url, Integer.toString(play_id));
+
+        //배경
+        /*
+        if(!poster2.equals("")){
+            Bitmap image = BitmapFactory.decodeFile(imgpath);
+            realposter.setImageBitmap(image);
+            Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
+            //Bitmap scaledImg = imageZoom(newImg,10);
+            //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
+            poster.setBackground(bitmapDrawable);
+        }else {
+            //Bitmap bm = BitmapFactory.decodeFile(item.getImg_path());
+            //realposter.setImageBitmap(bm);
+            //Bitmap newImg = BlurredImage.fastblur(this.getContext(), image, 25);
+            //Bitmap scaledImg = imageZoom(newImg,10);
+            //Bitmap gradientImg = addGradient(newImg, Color.TRANSPARENT, Color.argb(0,37,37,37));
+            //BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), newImg);
+            //poster.setBackground(bitmapDrawable);
+        }
+         */
+
+
         return viewGroup;
     }
 
+    public void sendPOSTPlay_idRequest(String url, String play_id){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Play_idRequest", "Response = " + response);
+                        if(!response.equals("0")){
+                            rangking_tv.setText(response + "위");
+                        }
+                        else{
+                            rangking_tv.setText("-위");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Play_idRequest", error.toString());
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("play_id", play_id);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
+    }
+
+    //수정
     public static Bitmap imageZoom(Bitmap bitmap, double maxSize) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
@@ -276,127 +249,4 @@ public class PerformInfoFragment extends Fragment {
 
         return result;
     }
-
-    public String postGetRankingData(String play_id, VolleyPlayCallback callback){
-
-        try{
-            String[] resposeData = {""};
-            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-            String url = " http://211.174.237.197/request_rank_by_play_id/";
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
-
-                @Override
-                public void onResponse(String response) {
-
-
-                    String data = response;
-                    Log.d("postGetRankingData", data);
-                    resposeData[0] = data;
-
-                    callback.onSuccess(data);
-
-
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("postGetRankingData", error.toString());
-                }
-            }) {
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Content-Type", "application/json");
-                    params.put("play_id", play_id);
-
-                    return params;
-                }
-            };
-            queue.add(stringRequest);
-            return resposeData[0];
-
-
-        } catch (Exception e) {
-            Log.d("postGetRankingData", e.toString());
-
-        }
-        return "1";
-    }
-
-    public String postSendHeartChange(String user_id, String play_id, String action, VolleyPlayCallback callback){
-
-        try{
-            String[] resposeData = {""};
-            RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-            String url = "http://211.174.237.197/request_user_play_update_by_id/";
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
-
-                @Override
-                public void onResponse(String response) {
-
-
-                    String data = response;
-                    Log.d("postSendHeartChange", data);
-                    resposeData[0] = data;
-
-                    callback.onSuccess(data);
-
-
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("postSendHeartChange", error.toString());
-                }
-            }) {
-
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Content-Type", "application/json");
-                    params.put("action", action);
-                    params.put("user_id", user_id);
-                    params.put("play_id", play_id);
-
-                    return params;
-                }
-            };
-            queue.add(stringRequest);
-            return resposeData[0];
-
-
-        } catch (Exception e) {
-            Log.d("postSendHeartChange", e.toString());
-
-        }
-        return "1";
-    }
-
-    public void loadRanking(String play_id){
-        String rankingData = postGetRankingData(play_id, new VolleyPlayCallback() {
-            @Override
-            public void onSuccess(String data) {
-                //Toast.makeText(getActivity().getApplicationContext(), "Result: " + data, Toast.LENGTH_SHORT).show();
-                if (data.equals("0")) {
-                    Log.d("postGetRankingData", "POST ResultFailed.");
-                    rangking_tv.setText("찜랭킹 - 위");
-
-                } else {
-                    Log.d("postGetRankingData","Success to get ranking data | play_id = " + play_id);
-                    rangking_tv.setText("찜랭킹 " + data + " 위");
-                }
-            }
-
-        });
-    }
-
-}
-
-interface VolleyPlayCallback{
-    void onSuccess(String data);
 }
