@@ -169,6 +169,7 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
         ReviewItem item = data.get(position);
         ReviewHolder itemController = (ReviewHolder) holder;
             if(item.getProfile_path().equals("")) itemController.profile_iv.setImageResource(R.drawable.icon_mypage);
+            //수정 profile image
             itemController.user_name_tv.setText(item.user_name);
             if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
             else itemController.thumb_iv.setImageResource(R.drawable.icon_bad);
@@ -179,6 +180,7 @@ public class PerformReviewAdapter extends RecyclerView.Adapter<RecyclerView.View
             itemController.good_thing_tv.setText(item.getGood_thing());
             itemController.bad_thing_tv.setText(item.getBad_thing());
             //recycler
+        //수정 리뷰 이미지
             if (item.getReview_pics() != null){
                 itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
                     @Override

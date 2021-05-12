@@ -313,9 +313,6 @@ public class PerformReviewFragment extends Fragment {
                             String birth = user.getString("birthday");
                             Log.d("User_idRequest", "user_id = " + user_id + " nickname = " + nickname + " level = " + level + " profile_path = " + profile + " birth = " + birth);
 
-                            int review_id = review.getInt("review_id");
-                            int play_id = review.getInt("play_id");
-
                             String review_good = review.getString("review_good");
                             String review_bad = review.getString("review_bad");
                             String review_tip = review.getString("review_tip");
@@ -331,14 +328,20 @@ public class PerformReviewFragment extends Fragment {
                                 //review_pics.add(getUriFromPath(str_review_pics.get(i)));
                             }
                             String comment = review.getString("comment");
+                            int num_comment = 0;
+                            //수정 num_comment
+
                             int recommend = review.getInt("recommend");
                             boolean thumb = false;
                             if(recommend == 1) thumb = true;
                             int review_num_of_heart = review.getInt("review_num_of_heart");
                             String written_date = review.getString("written_date");
+
+                            int review_id = review.getInt("review_id");
+                            int play_id = review.getInt("play_id");
                             Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " pic1 = " + str_review_pics.get(0) + " pic2 = " + str_review_pics.get(1)  +  " pic3 = " + str_review_pics.get(2) + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
 
-                            all_review_data.add(new PerformReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart,0, review_good, review_bad, review_pics));
+                            all_review_data.add(new PerformReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart,num_comment, review_good, review_bad, review_pics));
                             performReviewAdapter.notifyDataSetChanged();
                             Log.d("User_idRequest", "review all_review_data size = " + all_review_data.size());
                         } catch (JSONException e) {
