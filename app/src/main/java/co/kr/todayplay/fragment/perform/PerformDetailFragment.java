@@ -197,15 +197,17 @@ public class PerformDetailFragment extends Fragment {
 
         //관련 저널 파트
         String relation_journals = playDBHelper.getPlayRelative_Journal(play_id);
-        if (!relation_journals.equals("[]")){
-            relation_journals = relation_journals.replace("[","");
-            relation_journals = relation_journals.replace("]","");
+        relation_journals = relation_journals.replace("[","");
+        relation_journals = relation_journals.replace("]","");
+        Log.d("relation_journals", relation_journals);
+        if (!relation_journals.equals("")){
             String[] relative_journals = relation_journals.split(",");
 
             journal_rv = (RecyclerView)viewGroup.findViewById(R.id.journal_rv);
             journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
             ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
+
             for(int i=0; i<relative_journals.length; i++){
                 Log.d("relative_journals", i + " = " + relative_journals[i]);
                 int new_relative_journal = Integer.parseInt(relative_journals[i]);

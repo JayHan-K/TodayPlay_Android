@@ -21,8 +21,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -76,7 +78,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
             review_pic3 = bundle.getString("review_pic3");
             num_of_star = bundle.getInt("num_of_star");
 
-            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id + " | review_good = " + review_good + " | review_bad = " + review_bad + " | review_tip = " + review_tip + " | certification_imgpath = " + certification_imgpath + " | num_of_star = " + num_of_star);
+            Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id + " | review_good = " + review_good + " | review_bad = " + review_bad + " | review_tip = " + review_tip + " | certification_imgpath = " + certification_imgpath +  " | review_pic1 = " + review_pic1 + " | review_pic2 = " + review_pic2 + " | review_pic3 = " + review_pic3 + " | num_of_star = " + num_of_star);
         }
         String[] certified = certification_imgpath.split("/");
         review_certified_pic = certified[certified.length-1];
@@ -229,6 +231,9 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                     long now_time = System.currentTimeMillis();
                     Date mDate = new Date(now_time);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.KOREA);
+                    Date date = Calendar.getInstance().getTime();
+                    String written_date = format.format(date);
                     String time = simpleDateFormat.format(mDate);
                     Log.d("PerformRecommendDialog", "time = " + time);
                     Log.d("PerformRecommendDialog", "send to server | play_id = " + play_id + " user_id = " + user_id + " review_good = " + review_good + " review_bad = " + review_bad + " review_tip = " + review_tip + " review_certified_pic = " + certification_type+"_"+time+review_certified_pic + " review_pic1 = " + time + review_pic1_name + " review_pic2 = " + time + review_pic2_name + " review_pic3 = " + time + review_pic3_name + " recommend = " + recommend + " num_of_star = " + num_of_star);
@@ -248,6 +253,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                     else params.put("review_pic3", "");
                     params.put("recommend", recommend);
                     params.put("num_of_star", num_of_star);
+                    params.put("written_date", written_date);
 
                     return params;
                 }

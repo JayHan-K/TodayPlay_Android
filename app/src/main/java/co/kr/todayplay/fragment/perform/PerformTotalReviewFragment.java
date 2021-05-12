@@ -1,6 +1,7 @@
 package co.kr.todayplay.fragment.perform;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewAdapter;
@@ -29,12 +39,22 @@ public class PerformTotalReviewFragment extends Fragment {
     ImageView perform_poster_iv;
     PerformWriteReviewFragment performWriteReviewFragment = new PerformWriteReviewFragment();
 
+    String play_info_request_url = "http://211.174.237.197/request_play_info_by_id/";
+
+    int play_id = -1;
+
     public PerformTotalReviewFragment(){}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_total_review,container,false);
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            play_id = bundle.getInt("play_id");
+            Log.d("Bundle result", "play_id: " + play_id);
+        }
+
         back_btn = (ImageButton)viewGroup.findViewById(R.id.back_btn);
         write_btn = (Button)viewGroup.findViewById(R.id.write_review_btn);
         perform_actor_tv = (TextView)viewGroup.findViewById(R.id.actor_tv);
@@ -43,6 +63,8 @@ public class PerformTotalReviewFragment extends Fragment {
         perform_title_tv = (TextView)viewGroup.findViewById(R.id.perform_title_tv);
         review_rv = (RecyclerView)viewGroup.findViewById(R.id.perform_review_rv);
         perform_poster_iv = (ImageView)viewGroup.findViewById(R.id.perform_iv);
+
+        sendPlay_idRequest(play_info_request_url, Integer.toString(play_id));
 
         final ArrayList<PerformTotalReviewAdapter.ReviewItem> data = new ArrayList<>();
         ArrayList<Integer> image_data = new ArrayList<>();
@@ -68,4 +90,36 @@ public class PerformTotalReviewFragment extends Fragment {
 
         return viewGroup;
     }
+
+    public void sendPlay_idRequest(String url, String play_id){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(!response.equals("-1")){
+                            Log.d("Play_idReaust", "response = " + response);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("play_id", play_id);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
+    }
+
 }

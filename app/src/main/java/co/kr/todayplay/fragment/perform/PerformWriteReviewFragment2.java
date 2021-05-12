@@ -125,6 +125,7 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 bundle1.putString("review_pic1", review_pic[0]);
                 bundle1.putString("review_pic2", review_pic[1]);
                 bundle1.putString("review_pic3", review_pic[2]);
+                Log.d("WriteReview2", "review_pic1 = " + review_pic[0] + " review_pic2 = " + review_pic[1] + "review_pic3 = " + review_pic[2]);
                 bundle1.putString("certification_type", certification_type);
                 bundle1.putString("certification_imgpath", certification_imgpath);
                 bundle1.putInt("num_of_star", (int)rate);
