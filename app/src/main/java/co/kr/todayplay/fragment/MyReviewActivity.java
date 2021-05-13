@@ -109,6 +109,7 @@ public class MyReviewActivity extends Fragment {
 
             }
         }));
+        //후기띄우는 수정해주는 데이터
         final ArrayList<MypageReviewAdapter.ReviewItem> data = new ArrayList<>();
         ArrayList<Integer> image_data = new ArrayList<>();
         image_data.add(R.drawable.poster_sample1);

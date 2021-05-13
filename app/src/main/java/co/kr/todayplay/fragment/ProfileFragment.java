@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
         mynickname = viewGroup.findViewById(R.id.textView19);
         textView18 = viewGroup.findViewById(R.id.textView18);
         textView20 = viewGroup.findViewById(R.id.textView20);
-
+        //user_id 받아오기
         Bundle bundle = getArguments();
         if (bundle != null) {
             user_id = bundle.getInt("user_id");
@@ -93,6 +93,7 @@ public class ProfileFragment extends Fragment {
         RecyclerView profileMyShowRecyclerView = viewGroup.findViewById(R.id.profile_my_show_rv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        //뱔잠링크 클릭하는 부분
         ItemClickListener mListener = (ItemClickListener) (new ItemClickListener() {
             @Override
             public void onItemClicked(@NotNull RecyclerView.ViewHolder vh, @NotNull Object item, int pos) {
@@ -122,7 +123,7 @@ public class ProfileFragment extends Fragment {
 
         }
 
-
+        //내후기 페이지로 넘어가는 버튼
         ConstraintLayout profileMyReviewRelativeLayout = viewGroup.findViewById(R.id.profile_my_review_rl);
         profileMyReviewRelativeLayout.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -131,7 +132,7 @@ public class ProfileFragment extends Fragment {
             }
 
         }));
-
+        //취향분석실 버튼
         Button profile_to_fav = viewGroup.findViewById(R.id.profile_to_fav);
         profile_to_fav.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -139,6 +140,7 @@ public class ProfileFragment extends Fragment {
                 profileChangeToFav();
             }
         }));
+        //프로필 수정 버튼
         Button profile_to_info = viewGroup.findViewById(R.id.button11);
         profile_to_info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +157,7 @@ public class ProfileFragment extends Fragment {
                 ((MainActivity)view.getContext()).replaceFragment3(pf_change_info_activity);
             }
         });
-
+        //찜하기 버튼
         ConstraintLayout profileScrapRelativeLayout = viewGroup.findViewById(R.id.profile_scrap_rl);
         profileScrapRelativeLayout.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -164,7 +166,7 @@ public class ProfileFragment extends Fragment {
             }
 
         }));
-
+        //스크랩 버튼
         ConstraintLayout profileMyQnARelativeLayout = viewGroup.findViewById(R.id.profile_qna_rl);
         profileMyQnARelativeLayout.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -173,7 +175,7 @@ public class ProfileFragment extends Fragment {
             }
 
         }));
-
+        //세팅 버튼
         ImageView pf_setting = viewGroup.findViewById(R.id.pf_setting);
         pf_setting.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -185,7 +187,7 @@ public class ProfileFragment extends Fragment {
 
         return viewGroup;
     }
-
+    // 나의 별점랭킹 임시 작품
     public ArrayList getPersonals() {
         ArrayList shows = new ArrayList();
         shows.add(
@@ -242,7 +244,7 @@ public class ProfileFragment extends Fragment {
 
         return shows;
     }
-
+    //리뷰화면으로 전환하는 메소드(리뷰작업시 여기 통해서 리뷰 id 넘겨주기)
     public void profileChangeToReview() {
         Bundle bundle = new Bundle();
         MyReviewActivity myReviewActivity = new MyReviewActivity();
@@ -257,7 +259,7 @@ public class ProfileFragment extends Fragment {
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
 
     }
-
+    //찜하기로 전화하는 메소드
     public void profileChangeToPick() {
         Bundle bundle = new Bundle();
         MypickFragment mypickFragment = new MypickFragment();
@@ -271,7 +273,7 @@ public class ProfileFragment extends Fragment {
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
 
     }
-
+    //스크랩으로 전환하는 메소드
     public void profileChangeToScrap() {
         MyScrapFragment myScrapFragment = new MyScrapFragment(user_id);
         getChildFragmentManager().beginTransaction().replace(
@@ -292,12 +294,8 @@ public class ProfileFragment extends Fragment {
 //        ).commitAllowingStateLoss();
 //        profileFragmentmainScrollView.setVisibility(View.GONE);
 //        profileFragmentChildFragment.setVisibility(View.VISIBLE);
-
-
-
-
     }
-
+    //취향분석실로 전환하는 메소드
     public void profileChangeToFav() {
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
@@ -307,7 +305,7 @@ public class ProfileFragment extends Fragment {
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
 
     }
-
+    //세팅으로 전환하는 메소드
     public void profileChangeToSettings() {
         getChildFragmentManager().beginTransaction().replace(
                 R.id.pf_fragment_child_fragment,
@@ -316,12 +314,12 @@ public class ProfileFragment extends Fragment {
         profileFragmentmainScrollView.setVisibility(View.GONE);
         profileFragmentChildFragment.setVisibility(View.VISIBLE);
     }
-
+    //뒤로가기
     public void BackToHome() {
         profileFragmentChildFragment.setVisibility(View.GONE);
         profileFragmentmainScrollView.setVisibility(View.VISIBLE);
     }
-
+    //user_info불러오는 volley
     public String get_user_info(profileVolleyCallback callback) {
         try {
             String[] resposeData = {""};
@@ -362,7 +360,7 @@ public class ProfileFragment extends Fragment {
         return "0";
     }
 
-
+    //유저 정보 미리 분리해놓기(리뷰데이터 여기서 분리하기)
     private class LoadingMyPick extends AsyncTask {
         boolean isFinished = false;
         int count = 0;
