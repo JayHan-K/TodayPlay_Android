@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,7 @@ import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.Line;
 import co.kr.todayplay.object.Ranking;
 import co.kr.todayplay.object.Recommend;
+import co.kr.todayplay.object.Sim_uri;
 
 public class MainActivity extends AppCompatActivity {
     private Long mBackwait = 0L;
@@ -298,6 +300,20 @@ public class MainActivity extends AppCompatActivity {
         bundle.putInt("play_id", play_id);
         bundle.putString("certification_type", certification_type);
         bundle.putString("certification_imgpath", certification_imgpath);
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
+    }
+
+    public void replaceFragment(Fragment fragment, int play_id, String certification_type, String certification_imgpath, ArrayList<Uri> images) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", Integer.parseInt(userId));
+        bundle.putInt("play_id", play_id);
+        bundle.putString("certification_type", certification_type);
+        bundle.putString("certification_imgpath", certification_imgpath);
+        bundle.putParcelableArrayList("image",images);
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

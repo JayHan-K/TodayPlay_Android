@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +36,7 @@ import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewImageAdapter;
 import co.kr.todayplay.fragment.HomeFragment;
+import co.kr.todayplay.object.Sim_uri;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -46,6 +48,7 @@ public class PerformWriteReviewFragment2 extends Fragment {
     ImageView good_more30_iv, bad_more30_iv, photo_icon;
     TextView good_num_text_tv, bad_num_text_tv, tip_num_text_tv, photo_tv;
     RatingBar star_rb;
+    ArrayList<Uri> images ;
 
     DialogFragment writeReviewDialogFragment2 = new WriteReviewDialogFragment2();
 
@@ -70,11 +73,15 @@ public class PerformWriteReviewFragment2 extends Fragment {
         Bundle bundle = getArguments();
         Log.d("WriteReview2", "onCreateView: ");
         if(bundle != null){
+//            images = (ArrayList<Sim_uri>)bundle.getSerializable("image");
+//            images = (ArrayList<Sim_uri>)getArguments().get("image");
+            images =bundle.getParcelableArrayList("image");
             play_id = bundle.getInt("play_id");
             user_id = bundle.getInt("user_id");
             certification_type = bundle.getString("certification_type");
             certification_imgpath = bundle.getString("certification_imgpath");
             Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id + " | certification_type = " + certification_type + " certification_imgpath = " + certification_imgpath);
+            Log.d("images Size = ",Integer.toString(images.size()));
         }
 
         back_btn = (ImageButton) viewGroup.findViewById(R.id.back_btn);
@@ -129,9 +136,11 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 bundle1.putString("certification_type", certification_type);
                 bundle1.putString("certification_imgpath", certification_imgpath);
                 bundle1.putInt("num_of_star", (int)rate);
+                bundle1.putParcelableArrayList("images",images);
                 performRecommendDialogFragment.setArguments(bundle1);
                 performRecommendDialogFragment.setCancelable(false);
                 performRecommendDialogFragment.show(getActivity().getSupportFragmentManager(),"PerformWriteReviewFragment");
+                Log.d("images_size",Integer.toString(images.size()));
             }
         });
 
@@ -276,24 +285,35 @@ public class PerformWriteReviewFragment2 extends Fragment {
             // 리사이클러뷰 초기화
             final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
             photo_rv.setAdapter(performReviewImageAdapter);
-            photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+            photo_rv.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+            Log.d("get_data",data.getData().toString());
+            Log.d("data_ClipData",data.getClipData().toString());
             if(data.getClipData() != null){
                 ClipData clipData = data.getClipData();
                 Log.d("WriteReviewFragment2", "picked photo num = " + clipData.getItemCount());
                 if(clipData.getItemCount() > 3){
                     Toast.makeText(getActivity().getApplicationContext(), "사진은 최대 3개까지 선택 가능 합니다.", Toast.LENGTH_SHORT).show();
+                    for(int i =1;i<images.size();i++){
+                        images.remove(i);
+                    }
+                    Log.d("images_Size",Integer.toString(images.size()));
                     uriList.clear();
                     return;
                 }else if(clipData.getItemCount() == 1){
                     Uri filePath = clipData.getItemAt(0).getUri();
+                    data.getData();
                     review_pic[0] = getRealPathFromUri(filePath);
                     Log.d("WriteReviewFragment2", "Uri = " + clipData.getItemAt(0).getUri());
+                    images.add(filePath);
+                    Log.d("images_confirm",images.get(1).toString());
                     uriList.add(filePath);
                 }else if(clipData.getItemCount() > 1 && clipData.getItemCount() <= 3){
                     for(int i=0; i<clipData.getItemCount(); i++){
+                        images.add(clipData.getItemAt(i).getUri());
                         uriList.add(clipData.getItemAt(i).getUri());
                         review_pic[i] = getRealPathFromUri(clipData.getItemAt(i).getUri());
                         Log.d("WriteReviewFragment2", "Uri " + i + " = " + clipData.getItemAt(i).getUri());
+                        Log.d("images_confirm",images.get(i).toString());
                     }
                 }
                 performReviewImageAdapter.notifyDataSetChanged();
@@ -301,6 +321,7 @@ public class PerformWriteReviewFragment2 extends Fragment {
             else if(data.getData() != null){
                 review_pic[0] = data.getData().toString();
                 Log.d("WriteReviewFragment2", "Uri = " + data.getData());
+                images.add(data.getData());
                 uriList.add(data.getData());
                 performReviewImageAdapter.notifyDataSetChanged();
             }
