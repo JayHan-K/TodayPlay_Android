@@ -154,9 +154,11 @@ public class Login_Actitivty extends AppCompatActivity {
                         Log.d("data","data="+data);
 
                         if(data.equals("-1")){
-                            Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                            startActivity(intent);
-                            finish();
+                            Toast.makeText(getApplicationContext(),"로그인 정보가 틀렸습니다",Toast.LENGTH_SHORT).show();
+//                            Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                            startActivity(intent);
+//                            finish();
+                            //현재 페이지에 고정후 알림만 제공
                         }else {
                             SharedPreference.setAttribute(getApplicationContext(),"userId", data);
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);

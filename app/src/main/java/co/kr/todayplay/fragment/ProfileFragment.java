@@ -18,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -27,28 +26,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import co.kr.todayplay.ItemClickListener;
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.RecyclerDecoration;
 import co.kr.todayplay.adapter.ProfileHomeShowAdapter;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
-import co.kr.todayplay.adapter.pf_myPickPagerAdapter;
-import co.kr.todayplay.object.RecommandItem;
 import co.kr.todayplay.object.Show;
 
 public class ProfileFragment extends Fragment {
@@ -61,10 +52,20 @@ public class ProfileFragment extends Fragment {
     String journal_count;
     String review_count;
     String nickname;
+    String birthday;
+    String job;
+    String phone;
+    String email;
     TextView my_review_id;
     TextView my_pick_id;
     TextView scrap_id;
     TextView mynickname;
+    String exp;
+    String rank;
+    String[] keyword;
+    TextView textView18;
+    TextView textView20;
+
 
     public ProfileFragment() {
 
@@ -80,6 +81,9 @@ public class ProfileFragment extends Fragment {
         my_pick_id = viewGroup.findViewById(R.id.my_pick_id);
         scrap_id = viewGroup.findViewById(R.id.scrap_id);
         mynickname = viewGroup.findViewById(R.id.textView19);
+        textView18 = viewGroup.findViewById(R.id.textView18);
+        textView20 = viewGroup.findViewById(R.id.textView20);
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             user_id = bundle.getInt("user_id");
@@ -105,6 +109,7 @@ public class ProfileFragment extends Fragment {
             }
 
         });
+
         PersonalizedShow = getPersonals();
         ProfileHomeShowAdapter profileAdapter = new ProfileHomeShowAdapter(PersonalizedShow, getContext(), mListener);
         profileMyShowRecyclerView.setAdapter(profileAdapter);
@@ -118,15 +123,11 @@ public class ProfileFragment extends Fragment {
         }
 
 
-
-
-
-
         ConstraintLayout profileMyReviewRelativeLayout = viewGroup.findViewById(R.id.profile_my_review_rl);
         profileMyReviewRelativeLayout.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                profileChangeToReview();
+                profileChangeToReview();
             }
 
         }));
@@ -142,7 +143,16 @@ public class ProfileFragment extends Fragment {
         profile_to_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                profileChangeToinfo();
+                Bundle bundle1 = new Bundle();
+                pf_change_info_Activity pf_change_info_activity = new pf_change_info_Activity();
+                bundle1.putString("birthday",birthday);
+                bundle1.putString("phone",phone);
+                bundle1.putString("nickname",nickname);
+                bundle1.putString("job",job);
+                bundle1.putString("email",email);
+                bundle1.putInt("user_id",user_id);
+                pf_change_info_activity.setArguments(bundle1);
+                ((MainActivity)view.getContext()).replaceFragment3(pf_change_info_activity);
             }
         });
 
@@ -276,12 +286,15 @@ public class ProfileFragment extends Fragment {
 
     public void profileChangeToinfo() {
 
-        getChildFragmentManager().beginTransaction().replace(
-                R.id.pf_fragment_child_fragment,
-                new pf_change_info_Activity()
-        ).commitAllowingStateLoss();
-        profileFragmentmainScrollView.setVisibility(View.GONE);
-        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+//        getChildFragmentManager().beginTransaction().replace(
+//                R.id.pf_fragment_child_fragment,
+//                new pf_change_info_Activity()
+//        ).commitAllowingStateLoss();
+//        profileFragmentmainScrollView.setVisibility(View.GONE);
+//        profileFragmentChildFragment.setVisibility(View.VISIBLE);
+
+
+
 
     }
 
@@ -365,6 +378,18 @@ public class ProfileFragment extends Fragment {
                     String[] my_journal_str = data.split("my_journal\": \"")[1].split("\",")[0].split(",");
                     String[] my_review_str = data.split("my_review\": \"")[1].split("\",")[0].split(",");
                     String my_nickname = data.split("nickname\": \"")[1].split("\",")[0];
+                    birthday = data.split("birthday\": \"")[1].split("\",")[0];
+                    job = data.split("job\": \"")[1].split("\",")[0];
+                    email = data.split("email\": \"")[1].split("\",")[0];
+                    phone = data.split("phone\": \"")[1].split("\",")[0];
+                    exp = data.split("exp\": ")[1].split(",")[0];
+                    rank = data.split("rank\": \"")[1].split("\",")[0];
+                    String[] my_keyword = data.split("keyword\": \"")[1].split("\",")[0].split(",");
+                    keyword = my_keyword;
+
+                    Log.d("rank",rank);
+                    Log.d("exp",exp);
+
                     play_count =Integer.toString(my_play_str.length) ;
                     journal_count = Integer.toString(my_journal_str.length);
                     review_count = Integer.toString(my_review_str.length-1);
@@ -374,7 +399,10 @@ public class ProfileFragment extends Fragment {
                     scrap_id.setText(journal_count);
                     nickname = StringEscapeUtils.unescapeJava(nickname);
                     mynickname.setText(nickname);
-                    Log.d("count", "count = " + play_count + "  " + journal_count + "  " + review_count);
+                    textView18.setText(rank);
+                    String exps = exp +"%";
+                    textView20.setText(exps);
+                    Log.d("count", "count = " + birthday + "  " + email + "  " + phone);
                     Log.d("nickname", "nickname= " + my_nickname);
                 }
             });

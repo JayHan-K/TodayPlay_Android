@@ -178,16 +178,16 @@ public class Intro_Activity extends AppCompatActivity {
         //Update 완료 체크
         if(getPlayJournalFileName.getStatus() == AsyncTask.Status.FINISHED && getCrewFileName.getStatus() == AsyncTask.Status.FINISHED && getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
          == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+            Intent intent = new Intent (getApplicationContext(),MainActivity.class);
             if(userId == null){
-                Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                startActivity(intent);
-                finish();
+//                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                        startActivity(intent);
+//                        finish();
             }else{
-                Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                 intent.putExtra("userId",userId);
-                startActivity(intent);
-                finish();
             }
+            startActivity(intent);
+            finish();
         }
 
 //        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -287,17 +287,17 @@ public class Intro_Activity extends AppCompatActivity {
                 //Update 완료 체크
                 if(getPlayJournalFileName.getStatus() == AsyncTask.Status.FINISHED && getCrewFileName.getStatus() == AsyncTask.Status.FINISHED && getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
                         == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     if(userId == null){
-                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                        startActivity(intent);
+//                        finish();
                     }else{
-                        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                         intent.putExtra("userId",userId);
-                        startActivity(intent);
-                        finish();
                     }
-                    }
+                    startActivity(intent);
+                    finish();
+                }
 
             }
 
@@ -428,16 +428,16 @@ public class Intro_Activity extends AppCompatActivity {
                 cnt = 10;
                 if(getPlayJournalFileName.getStatus() == AsyncTask.Status.FINISHED && getCrewFileName.getStatus() == AsyncTask.Status.FINISHED && getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
                         == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
+                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     if(userId == null){
-                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                        startActivity(intent);
+//                        finish();
                     }else{
-                        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                         intent.putExtra("userId",userId);
-                        startActivity(intent);
-                        finish();
                     }
+                    startActivity(intent);
+                    finish();
                 }
             }
         }
@@ -496,16 +496,16 @@ public class Intro_Activity extends AppCompatActivity {
             if(cnt == 10 && getPlayJournalFileName.getStatus() == AsyncTask.Status.FINISHED && getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == Status.FINISHED && updateCrewDB.getStatus()
                     == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
                 Log.d("Finish", "All update Finished!!");
+                Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                 if(userId == null){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                    startActivity(intent);
-                    finish();
+//                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                        startActivity(intent);
+//                        finish();
                 }else{
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     intent.putExtra("userId",userId);
-                    startActivity(intent);
-                    finish();
                 }
+                startActivity(intent);
+                finish();
             }
         }
     }
@@ -564,16 +564,16 @@ public class Intro_Activity extends AppCompatActivity {
             if(cnt == 10 && getPlayJournalFileName.getStatus() == AsyncTask.Status.FINISHED && getCrewFileName.getStatus() == AsyncTask.Status.FINISHED && getPlayFileName.getStatus() == Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updateCrewDB.getStatus()
                     == AsyncTask.Status.FINISHED){
                 Log.d("Finish", "All update Finished!!");
+                Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                 if(userId == null){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                    startActivity(intent);
-                    finish();
+//                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                        startActivity(intent);
+//                        finish();
                 }else{
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     intent.putExtra("userId",userId);
-                    startActivity(intent);
-                    finish();
                 }
+                startActivity(intent);
+                finish();
             }
         }
     }
@@ -631,20 +631,33 @@ public class Intro_Activity extends AppCompatActivity {
             Log.d("CrewUpdated", "Finish CrewUpdate" + " now cnt = " + cnt);
             if(cnt == 10 && getPlayJournalFileName.getStatus() == AsyncTask.Status.FINISHED && getCrewFileName.getStatus() == AsyncTask.Status.FINISHED && getPlayFileName.getStatus() == AsyncTask.Status.FINISHED && getFileFileName.getStatus() == AsyncTask.Status.FINISHED && getJournalFileName.getStatus() == AsyncTask.Status.FINISHED && updateJournalDB.getStatus() == AsyncTask.Status.FINISHED && updatePlayDB.getStatus() == AsyncTask.Status.FINISHED){
                 Log.d("Finish", "All update Finished!!");
+                Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                 if(userId == null){
-                    Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
-                    startActivity(intent);
-                    finish();
+//                        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//                        startActivity(intent);
+//                        finish();
                 }else{
-                    Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                     intent.putExtra("userId",userId);
-                    startActivity(intent);
-                    finish();
                 }
+                startActivity(intent);
+                finish();
             }
         }
     }
+
     //-- UpdateCrewDB Asynctask End --\
+
+//     if(userId == null){
+//        Intent intent = new Intent (getApplicationContext(),Login_Home_Activity.class);
+//        startActivity(intent);
+//        finish();
+//    }else{
+//        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+//        intent.putExtra("userId",userId);
+//        startActivity(intent);
+//        finish();
+//    }
+
 
 
     //-- Pemission 관련 --

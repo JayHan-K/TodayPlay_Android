@@ -12,6 +12,19 @@
         android:layout_height="match_parent"
         android:background="#252525">
 
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="152dp"
+            android:layout_marginEnd="156dp"
+            android:elevation="4dp"
+            android:src="@drawable/change_icon"
+            app:civ_border_width="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/back_profile2"
             android:layout_width="40dp"
@@ -137,6 +150,7 @@
             android:layout_marginTop="44dp"
             android:layout_marginBottom="7dp"
             android:text="전선호"
+            android:visibility="gone"
             android:fontFamily="@font/kopubworlddotumbold"
             android:textColor="#ffffff"
             android:textSize="14dp"
@@ -153,6 +167,7 @@
             android:layout_marginLeft="32dp"
             android:layout_marginTop="44dp"
             android:layout_marginBottom="7dp"
+            android:visibility="gone"
             android:text="이름"
             android:fontFamily="@font/kopubworlddotumbold"
             android:textColor="#ffffff"

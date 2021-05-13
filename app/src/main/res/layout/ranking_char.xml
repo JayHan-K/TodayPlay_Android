@@ -33,17 +33,16 @@
             android:layout_width="39dp"
             android:layout_height="52dp"
             android:layout_marginStart="13dp"
-            android:layout_marginLeft="13dp"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toEndOf="@+id/ranking_num_tv"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitXY"
             app:srcCompat="@drawable/ad_sample2" />
 
         <TextView
             android:id="@+id/ranking_num_tv"
             android:fontFamily="@font/kopubworlddotumbold"
-            android:layout_width="7dp"
-            android:layout_height="19dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="1"
             android:textColor="#FED700"

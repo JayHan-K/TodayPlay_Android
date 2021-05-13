@@ -68,6 +68,9 @@ public class CategoryClickedFragment extends Fragment {
      CategoryRe categoryRe;
      String category;
      String keyword;
+     String keyword2;
+     String keyword3;
+     int count =0;
      RecyclerView recyclerView;
      private CategoryDetailRecyAdapter categoryDetailRecyAdapter = new CategoryDetailRecyAdapter();
 
@@ -96,15 +99,26 @@ public class CategoryClickedFragment extends Fragment {
 
         UpdateCategoryInfo updateCategoryInfo = new UpdateCategoryInfo();
         updateCategoryInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+
+
+
         String singlekeyword = "";
 
         if(keyword.equals("명예의 전당")){
             keyword = "인기작";
             singlekeyword = "%"+keyword+"%";
             keyword ="명예의 전당";
+        }else if(keyword.contains("/")){
+            String sp[] = keyword.split("/");
+            keyword2=sp[0];
+            keyword3 = sp[1];
+            singlekeyword = "%"+keyword2+"%";
+
         }else{
             singlekeyword = "%"+keyword+"%";
         }
+
 
         Log.d("keywordinclicked","keywordinclicked"+singlekeyword);
         play_id_first = playDBHelper.getkeywordplay_id(singlekeyword);
@@ -118,8 +132,38 @@ public class CategoryClickedFragment extends Fragment {
                 }
 
             }
+        }
+        boolean tof =false;
+        if(keyword.contains("/")){
+            singlekeyword = "%"+keyword3+"%";
+            Log.d("keywordinclicked","keywordinclicked"+singlekeyword);
+            play_id_first = playDBHelper.getkeywordplay_id(singlekeyword);
+
+            if(play_id_first!=null){
+                Log.d("memory","size= "+play_id_second.size());
+                Log.d("memory","size= "+play_id_first.size());
+                for(int i =0; i<play_id_first.size();++i){
+                    categoryRe = play_id_first.get(i);
+
+
+                    if(categoryRe.getCategory().equals(category) || category.equals("전체")||category.equals("공연중")){
+                        for(int j = 0; j<play_id_second.size(); ++j){
+                            if(play_id_second.get(j).getPlay_id() !=categoryRe.getPlay_id()){
+                                tof = true;
+                            }
+                        }
+                        if(tof){
+                            play_id_second.add(categoryRe);
+                            tof = false;
+                        }
+                    }
+
+                }
+            }
 
         }
+
+
 
 
 
@@ -150,9 +194,8 @@ public class CategoryClickedFragment extends Fragment {
 
 
         mAdapter.setData(play_id_second);
-        mCoverFlow = (FeatureCoverFlow) rootView.findViewById(R.id.coverflow);
-        mCoverFlow.scroll(1);
-        mCoverFlow.computeScroll();
+        mCoverFlow = (FeatureCoverFlow)rootView.findViewById(R.id.coverflow);
+        mCoverFlow.fling(0,0);
         mCoverFlow.setAdapter(mAdapter);
 
 //        mCoverFlow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -251,6 +294,10 @@ public class CategoryClickedFragment extends Fragment {
                     Log.d("category","category = "+category_recommend_object.get("keyword"));
                     Log.d("category","category = "+play_id[0]);
                     category_recommends.add(data);
+
+
+
+
                     Log.d("category","category = "+category_recommends.get(0).getKeyword());
                 }
                 Log.d("category_done?","category_done");
@@ -264,36 +311,39 @@ public class CategoryClickedFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            switch (category) {
-                case "전체":
-                case "공연중":
-                    Log.i("category_re", "category_re_keyword = " + category_recommends.get(0).getKeyword());
-                    for (int i = 0; i < category_recommends.size(); ++i) {
-                        if (category_recommends.get(i).getKeyword().equals(keyword)) {
-                            category_re.add(category_recommends.get(i));
-                            Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+            if(count ==0){
+                switch (category) {
+                    case "전체":
+                    case "공연중":
+                        Log.i("category_re", "category_re_keyword = " + category_recommends.get(0).getKeyword());
+                        for (int i = 0; i < category_recommends.size(); ++i) {
+                            if (category_recommends.get(i).getKeyword().equals(keyword)) {
+                                category_re.add(category_recommends.get(i));
+                                Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                            }
                         }
-                    }
-                    break;
-                case "뮤지컬":
-                    for (int i = 0; i < category_recommends.size(); ++i) {
-                        if (category_recommends.get(i).getKeyword().equals(keyword)&&category_recommends.get(i).getCategory().equals(category)) {
-                            category_re.add(category_recommends.get(i));
-                            Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
-                            Log.i("categroy_re","keyword= "+keyword);
-                            break;
+                        break;
+                    case "뮤지컬":
+                        for (int i = 0; i < category_recommends.size(); ++i) {
+                            if (category_recommends.get(i).getKeyword().equals(keyword)&&category_recommends.get(i).getCategory().equals(category)) {
+                                category_re.add(category_recommends.get(i));
+                                Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                                Log.i("categroy_re","keyword= "+keyword);
+                                break;
+                            }
                         }
-                    }
-                    break;
-                case "연극":
-                    for (int i = 0; i < category_recommends.size(); ++i) {
-                        if (category_recommends.get(i).getKeyword().equals(keyword) && category_recommends.get(i).getCategory().equals(category)) {
-                            category_re.add(category_recommends.get(i));
-                            Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
-                            break;
+                        break;
+                    case "연극":
+                        for (int i = 0; i < category_recommends.size(); ++i) {
+                            if (category_recommends.get(i).getKeyword().equals(keyword) && category_recommends.get(i).getCategory().equals(category)) {
+                                category_re.add(category_recommends.get(i));
+                                Log.i("category_re", "category_re_keyword = " + category_recommends.get(i).getKeyword());
+                                break;
+                            }
                         }
-                    }
-                    break;
+                        break;
+                }
+                count++;
             }
             ArrayList<String> imagepath = new ArrayList<>();
             ArrayList<Integer> imageint = new ArrayList<>();
@@ -309,7 +359,7 @@ public class CategoryClickedFragment extends Fragment {
             categoryDetailRecyAdapter.addItem(imagepath,imageint);
             recyclerView.setAdapter(categoryDetailRecyAdapter);
             recyclerView.setNestedScrollingEnabled(false);
-            categoryDetailRecyAdapter.notifyDataSetChanged();
+//            categoryDetailRecyAdapter.notifyDataSetChanged();
 
         }
     }

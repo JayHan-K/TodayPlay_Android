@@ -18,6 +18,7 @@ import java.util.List;
 
 import co.kr.todayplay.Customer_Service_Activity;
 import co.kr.todayplay.JoinSettingProfileActivity;
+import co.kr.todayplay.LogOutPopupFragment;
 import co.kr.todayplay.Login_Home_Activity;
 import co.kr.todayplay.NoticeActivity;
 import co.kr.todayplay.R;
@@ -52,10 +53,12 @@ public class SettingsFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case 5:
-                        SharedPreference.removeAttribte(getContext(),"userId");
-                        Intent intent5 = new Intent(getContext(), Login_Home_Activity.class);
-                        startActivity(intent5);
-                        getActivity().finish();
+                        LogOutPopupFragment e1 = LogOutPopupFragment.getInstance();
+                        e1.show(getChildFragmentManager(),LogOutPopupFragment.TAG_EVENT_DIALOG);
+//                        SharedPreference.removeAttribte(getContext(),"userId");
+//                        Intent intent5 = new Intent(getContext(), Login_Home_Activity.class);
+//                        startActivity(intent5);
+//                        getActivity().finish();
                         break;
                 }
             }

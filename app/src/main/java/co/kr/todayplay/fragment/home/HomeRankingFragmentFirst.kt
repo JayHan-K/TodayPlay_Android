@@ -35,9 +35,9 @@ class HomeRankingFragmentFirst(rankings: java.util.ArrayList<Ranking>,postion: I
     ): View? {
         val viewGroup: ViewGroup =
             inflater.inflate(R.layout.activity_home_ranking_fragment_1p, null) as ViewGroup
-        var rankpos:Int = position1*3;
+        var rankpos:Int = position1*5;
         if(ranking.size>0){
-            var ranking2:Ranking = ranking.get(position1*3);
+            var ranking2:Ranking = ranking.get(position1*5);
 
             var text =viewGroup.findViewById<TextView>(R.id.textView6)
             text.setText(ranking2.category)

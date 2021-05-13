@@ -58,11 +58,8 @@
             <Button
                 android:id="@+id/button"
                 style="?android:borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="162dp"
-                android:layout_marginTop="110dp"
-                android:layout_marginEnd="161dp"
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
                 android:background="#252525"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +131,6 @@
                             android:layout_width="120dp"
                             android:layout_height="match_parent"
                             android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/homeinfo"
                             app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +141,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="18dp"
                             android:layout_marginStart="12dp"
-                            android:layout_marginLeft="12dp"
                             android:layout_marginTop="12dp"
                             android:letterSpacing="-0.02"
                             android:text="연극"
@@ -283,8 +278,8 @@
                 android:id="@+id/home_journal_rv"
                 android:layout_width="0dp"
                 android:layout_height="185dp"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2"></androidx.recyclerview.widget.RecyclerView>
@@ -314,7 +309,7 @@
                 android:id="@+id/personalizedShowRV"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:paddingLeft="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -326,6 +321,7 @@
                 android:layout_height="23dp"
                 android:layout_marginTop="33dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/ad_mid">
 
                 <TextView
@@ -334,6 +330,7 @@
                     android:fontFamily="@font/kopubworlddotumbold"
                     android:paddingLeft="25dp"
                     android:text="HOT 인기작"
+                    android:visibility="gone"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
@@ -343,8 +340,9 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/rankingview"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="360dp"
                 android:layout_marginTop="25dp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
@@ -352,11 +350,12 @@
                 android:id="@+id/linearLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="30dp"
-                android:background="#999999"
+                android:layout_marginTop="10dp"
+                android:background="#252525"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rankingview"></LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/rankingview"
+                android:orientation="horizontal"></LinearLayout>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"

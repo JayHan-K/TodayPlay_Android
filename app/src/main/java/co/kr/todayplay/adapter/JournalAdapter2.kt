@@ -24,7 +24,7 @@ class JournalAdapter2(journals: ArrayList<Recommend>, context: Context, itemClic
     var journalDBHelper = JournalDBHelper(context, "Journal.db", null, 1)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalHolder {
-        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.journal_list_item, parent, false)
+        val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.pf_scrap_rv_detail, parent, false)
         return JournalHolder(inflatedView)
     }
 
@@ -36,7 +36,8 @@ class JournalAdapter2(journals: ArrayList<Recommend>, context: Context, itemClic
         val bm = BitmapFactory.decodeFile(imgpath)
         System.out.println("jouranl_Adapter2" + journal.play_id);
         System.out.println("journal_Adapter2" + journalDBHelper.getJournalThumbnail2_img(journal.play_id));
-        holder.journal_tv.setText(journalDBHelper.getJournalComments(journal.play_id));
+        holder.journal_tv.setText(journalDBHelper.getJournalTitle(journal.play_id));
+        holder.journal_sub_tv.setText(journalDBHelper.getJournalSubtitle(journal.play_id))
 //        val resize = Bitmap.createScaledBitmap(bm,302,151,true);
         holder.journal_iv.setImageBitmap(bm);
         holder.itemView.setOnClickListener {
@@ -52,7 +53,8 @@ class JournalAdapter2(journals: ArrayList<Recommend>, context: Context, itemClic
 
 
     class JournalHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var journal_tv = itemView?.findViewById<TextView>(R.id.journal_tv)
-        var journal_iv = itemView?.findViewById<ImageView>(R.id.journal_iv);
+        var journal_iv = itemView?.findViewById<ImageView>(R.id.pf_scrap_post_iv)
+        var journal_tv = itemView?.findViewById<TextView>(R.id.pf_scrap_post_tv)
+        var journal_sub_tv = itemView.findViewById<TextView>(R.id.pf_sub_scrap_post_tv)
     }
 }

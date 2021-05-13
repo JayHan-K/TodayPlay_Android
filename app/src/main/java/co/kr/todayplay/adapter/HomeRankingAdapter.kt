@@ -61,7 +61,7 @@ class HomeRankingAdapter(ranking: ArrayList<Ranking>,rankpos:Int, context: Conte
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return 5
     }
 
 

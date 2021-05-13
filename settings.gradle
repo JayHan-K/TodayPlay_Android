@@ -1,3 +1,4 @@
+include ':lib'
 include ':commons-io-2.8.0'
 include ':app'
 rootProject.name = "TodayPlay"

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -43,6 +45,7 @@ import co.kr.todayplay.Intro_Activity;
 import co.kr.todayplay.ItemClickListener;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.SharedPreference;
 import co.kr.todayplay.adapter.HomeAdMidPagerAdapter;
 import co.kr.todayplay.adapter.HomeAdPagerAdapter;
 import co.kr.todayplay.adapter.HomeRankingViewPagerAdapter;
@@ -51,6 +54,8 @@ import co.kr.todayplay.adapter.JournalAdapter;
 import co.kr.todayplay.adapter.JournalAdapter2;
 import co.kr.todayplay.adapter.RealReviewSearchSuggestionAdapter;
 import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
+import co.kr.todayplay.fragment.PerformInfoFragment;
+import co.kr.todayplay.fragment.home.PopupActivity;
 import co.kr.todayplay.object.Banner;
 import co.kr.todayplay.object.History;
 import co.kr.todayplay.object.Journal;
@@ -73,6 +78,7 @@ public class HomeFragment extends Fragment {
     ArrayList<Ranking> ranking_chosen;
     ArrayList<Line> line_chosen;
     ArrayList<History> history_get;
+    String never="";
 
 
     @Nullable
@@ -90,6 +96,23 @@ public class HomeFragment extends Fragment {
         homeFragmentChildFragment = viewGroup.findViewById(R.id.home_fragment_child_fragment);
         homeFragmentMainScrollView = viewGroup.findViewById(R.id.home_fragment_main_sv);
         imageView12 = viewGroup.findViewById(R.id.imageView12);
+
+
+        never = SharedPreference.getAttribute(getContext(),"never");
+        Log.d("never value","never="+never);
+
+//        PopupActivity e1 = PopupActivity.getInstance();
+//        e1.show(getChildFragmentManager(),PopupActivity.TAG_EVENT_DIALOG);
+
+        if(null==never){
+//            Intent intent = new Intent(getContext(), PopupActivity.class);
+//            startActivityForResult(intent,1);
+            PopupActivity e1 = PopupActivity.getInstance();
+            e1.show(getChildFragmentManager(),PopupActivity.TAG_EVENT_DIALOG);
+        }
+
+
+
 
 
         //한줄관련부분
@@ -115,7 +138,7 @@ public class HomeFragment extends Fragment {
             }
             history_chosen = history_get.get(0);
 
-            String imgpath =  getContext().getFilesDir().toString() + "/" + data;
+            String imgpath =  requireContext().getFilesDir().toString() + "/" + data;
             Bitmap bm = BitmapFactory.decodeFile(imgpath);
             if(bm!=null){
                 imageView12.setImageBitmap(bm);
@@ -147,7 +170,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     PerformInfoFragment performInfoFragment = new PerformInfoFragment();
-                    ((MainActivity)getActivity()).replaceFragment2(performInfoFragment,play_id);
+                    ((MainActivity) requireActivity()).replaceFragment2(performInfoFragment,play_id);
                 }
             });
         }
@@ -164,47 +187,49 @@ public class HomeFragment extends Fragment {
         final ViewPager homeViewmidPager = (ViewPager) viewGroup.findViewById(R.id.ad_mid);
         homeViewmidPager.setAdapter(new HomeAdMidPagerAdapter(getChildFragmentManager()));
 
-        final ConstraintLayout hidden = (ConstraintLayout) viewGroup.findViewById(R.id.hidden);
-        Button button = (Button) viewGroup.findViewById(R.id.button);
-        button.setOnClickListener((new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                       if(hidden.getVisibility() == View.VISIBLE){
-                           hidden.setVisibility(View.GONE);
-                       }else if (hidden.getVisibility() == View.GONE){
-                           hidden.setVisibility(View.VISIBLE);
-                       }
-                    }
-                }));
+        //한줄 관련 상세정보 띄우는 버튼
+//        final ConstraintLayout hidden = (ConstraintLayout) viewGroup.findViewById(R.id.hidden);
+//        Button button = (Button) viewGroup.findViewById(R.id.button);
+//        button.setOnClickListener((new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                       if(hidden.getVisibility() == View.VISIBLE){
+//                           hidden.setVisibility(View.GONE);
+//                       }else if (hidden.getVisibility() == View.GONE){
+//                           hidden.setVisibility(View.VISIBLE);
+//                       }
+//                    }
+//                }));
 
 
 
 
+//        hotranking 관련 코드
 
-        final ViewPager2 mpager = (ViewPager2)viewGroup.findViewById(R.id.rankingview);
-        mpager.setAdapter(new HomeRankingViewPagerAdapter(this,2,ranking_chosen));
-        mpager.setCurrentItem(0);
-        mpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        mpager.setOffscreenPageLimit(3);
-
-        final float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
-        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
-
-        mpager.setPageTransformer(new ViewPager2.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                float myOffset = position * -(2 * pageOffset + pageMargin);
-                if (mpager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL){
-                    if(ViewCompat.getLayoutDirection(mpager) == ViewCompat.LAYOUT_DIRECTION_RTL){
-                        page.setTranslationX(-myOffset);
-                    }else{
-                        page.setTranslationX(myOffset);
-                    }
-                }else{
-                    page.setTranslationY(myOffset);
-                }
-            }
-        });
+//        final ViewPager2 mpager = (ViewPager2)viewGroup.findViewById(R.id.rankingview);
+//        mpager.setAdapter(new HomeRankingViewPagerAdapter(this,2,ranking_chosen));
+//        mpager.setCurrentItem(0);
+//        mpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+//        mpager.setOffscreenPageLimit(3);
+//
+//        final float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+//        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
+//
+//        mpager.setPageTransformer(new ViewPager2.PageTransformer() {
+//            @Override
+//            public void transformPage(@NonNull View page, float position) {
+//                float myOffset = position * -(2 * pageOffset + pageMargin);
+//                if (mpager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL){
+//                    if(ViewCompat.getLayoutDirection(mpager) == ViewCompat.LAYOUT_DIRECTION_RTL){
+//                        page.setTranslationX(-myOffset);
+//                    }else{
+//                        page.setTranslationX(myOffset);
+//                    }
+//                }else{
+//                    page.setTranslationY(myOffset);
+//                }
+//            }
+//        });
 
 
 
@@ -270,19 +295,7 @@ public class HomeFragment extends Fragment {
             homePersonalRV.setAdapter(personalAdapter);
         }
 
-
         return viewGroup;
     }
 
-
-
-
 }
-
-
-
-
-
-
-
-

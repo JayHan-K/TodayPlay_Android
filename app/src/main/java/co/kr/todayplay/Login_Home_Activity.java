@@ -130,6 +130,8 @@ public class Login_Home_Activity extends AppCompatActivity {
                                                 Log.d("Login_Home_Activity", "user_id : " + data);
                                                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                                 intent.putExtra("userId", data);
+                                                MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                                                mainActivity.finish();
                                                 startActivity(intent);
                                                 finish();
                                             }
@@ -162,6 +164,14 @@ public class Login_Home_Activity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+        mainActivity.finish();
+        startActivity(intent);
+        finish();
     }
 
     public String postData(String email, VolleyCallback callback){

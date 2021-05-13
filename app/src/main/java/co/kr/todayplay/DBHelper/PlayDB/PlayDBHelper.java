@@ -75,20 +75,25 @@ public class PlayDBHelper extends SQLiteOpenHelper {
         Log.i("getPlayTitle", "play_title"+play_title );
         return play_title;
     }
+
     public ArrayList<CategoryRe> getkeywordplay_id(String keyword){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<CategoryRe> keywords = new ArrayList<>() ;
         StringBuffer sb = new StringBuffer();
-        sb.append("SELECT * FROM Play WHERE play_keywords LIKE ? ");
+
         if(keyword.contains("/")){
             String sp[] = keyword.split("/");
             keyword=sp[0];
         }
+        sb.append("SELECT * FROM Play WHERE play_keywords LIKE ? ");
+
         Log.d("keywordin","keyword="+keyword);
         String[] params = {"%"+keyword+"%"};
         Cursor cursor;
 //        cursor = db.rawQuery("SELECT keyword FROM play WHERE keyword LIKE '%keyowrds +  = "+ keyword.toString()+"",null);
         cursor = db.rawQuery(sb.toString(),params);
+//        cursor = db.rawQuery("SELECT * FROM Play WHERE play_keywords LIKE ? "+params2+"",null);
+
         while (cursor.moveToNext()){
             CategoryRe categoryRe = new CategoryRe(cursor.getInt(0),cursor.getString(2),cursor.getString(3),cursor.getInt(10));
             keywords.add(categoryRe);

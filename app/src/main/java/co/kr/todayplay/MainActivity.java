@@ -5,19 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.service.notification.NotificationListenerService;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -42,12 +36,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.kr.todayplay.adapter.JournalHotListAdapter;
 import co.kr.todayplay.fragment.CategoryFragment;
 import co.kr.todayplay.fragment.CommunityFragment;
 import co.kr.todayplay.fragment.HomeFragment;
-import co.kr.todayplay.fragment.Journal.JournalDetailFragment;
 import co.kr.todayplay.fragment.JournalFragment;
+import co.kr.todayplay.fragment.Profile.profilePopupFragment;
 import co.kr.todayplay.fragment.ProfileFragment;
 import co.kr.todayplay.fragment.SearchFragment;
 import co.kr.todayplay.object.Banner;
@@ -57,7 +50,7 @@ import co.kr.todayplay.object.Recommend;
 
 public class MainActivity extends AppCompatActivity {
     private Long mBackwait = 0L;
-    // 선언해서 밑에서 작업할시 이동이 안돼는 현상이 나타나서 밑에 따로 선언해주었습니다.
+    // 선언해서 밑에서 작업할시 이동이 안되는 현상이 나타나서 밑에 따로 선언해주었습니다.
     private final CategoryFragment categoryFragment = new CategoryFragment();
     private final SearchFragment searchFragment = new SearchFragment();
     private final ProfileFragment profileFragment = new ProfileFragment();
@@ -93,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     static ArrayList<Ranking> rankings = new ArrayList<Ranking>();
     static Ranking data3;
 
-    //상단 배너부분 정보
+    //오늘의 한줄 정보
     static String Line_all_jsonString;
     static String all_Line_result_url = "http://211.174.237.197/request_todays_line/";
     static JSONArray Line_all_jsonArray;
@@ -102,12 +95,16 @@ public class MainActivity extends AppCompatActivity {
 
     String userId=null ;
     static int cnt=0;
+    int current =0;
+    public static Activity MainActivity;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        cnt =0;
+        MainActivity = MainActivity.this;
 
 
         //인기작정보
@@ -116,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
         //배너정보
         UpdateBannerInfo updateBannerInfo = new UpdateBannerInfo();
         updateBannerInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        //오늘의 추천
+        UpdateRecommendInfo updateRecommendInfo = new UpdateRecommendInfo();
+        updateRecommendInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         //저널정보
         UpdateJournalInfo updateJournalInfo = new UpdateJournalInfo();
         updateJournalInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -145,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         BottomNavigationView main_bottomNavigationView = findViewById(R.id.main_bottomNavigationView);
         main_bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
@@ -159,40 +157,77 @@ public class MainActivity extends AppCompatActivity {
 
 //        getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
 
-
         main_bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 FragmentTransaction transaction = MainActivity.this.getSupportFragmentManager().beginTransaction();
                 Bundle bundle = new Bundle();
-                switch (menuItem.getItemId()){
-                    case R.id.bottom_home:
-                        HomeFragment homeFragment1 = new HomeFragment();
 
-                        bundle.putSerializable("banners",banners);
-                        bundle.putSerializable("recommands",recommands);
-                        bundle.putSerializable("recommandj",recommandj);
-                        bundle.putSerializable("rankings",rankings);
-                        bundle.putSerializable("line",line);
-                        homeFragment1.setArguments(bundle);
-                        transaction.replace(R.id.main_frameLayout, homeFragment1).commitAllowingStateLoss();
-                        break;
-                    case R.id.bottom_category:
-                        transaction.replace(R.id.main_frameLayout, new CategoryFragment()).commitAllowingStateLoss();
-                        break;
-                    case R.id.bottom_search:
-                        transaction.replace(R.id.main_frameLayout, new SearchFragment()).commitAllowingStateLoss();
-                        break;
-                    case R.id.bottom_community:
-                        transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
-                        break;
-                    case R.id.bottom_profile:
-                        ProfileFragment profileFragment = new ProfileFragment();
+//                if(menuItem.getItemId() == R.id.bottom_home && current !=1){
+//                    HomeFragment homeFragment1 = new HomeFragment();
+//
+//                    bundle.putSerializable("banners",banners);
+//                    bundle.putSerializable("recommands",recommands);
+//                    bundle.putSerializable("recommandj",recommandj);
+//                    bundle.putSerializable("rankings",rankings);
+//                    bundle.putSerializable("line",line);
+//                    homeFragment1.setArguments(bundle);
+//                    transaction.replace(R.id.main_frameLayout, homeFragment1).commitAllowingStateLoss();
+//                    current=1;
+//                }else if(menuItem.getItemId() == R.id.bottom_category && current !=2){
+//                    transaction.replace(R.id.main_frameLayout, new CategoryFragment()).commitAllowingStateLoss();
+//                    current=2;
+//                }else if(menuItem.getItemId() == R.id.bottom_search && current !=3){
+//                    transaction.replace(R.id.main_frameLayout, new SearchFragment()).commitAllowingStateLoss();
+//                    current=3;
+//                }else if(menuItem.getItemId() == R.id.bottom_community && current !=4){
+//                    transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
+//                    current=4;
+//                }else if(menuItem.getItemId() == R.id.bottom_profile && current !=5){
+//                    ProfileFragment profileFragment = new ProfileFragment();
+//                    bundle.putSerializable("user_id", Integer.valueOf(userId));
+//                    profileFragment.setArguments(bundle);
+//                    transaction.replace(R.id.main_frameLayout, profileFragment).commitAllowingStateLoss();
+//                    current=5;
+//                }
+
+                if(menuItem.getItemId() == R.id.bottom_home && current !=1){
+                    Log.d("trace","back to home");
+                    HomeFragment homeFragment1 = new HomeFragment();
+
+                    bundle.putSerializable("banners",banners);
+                    bundle.putSerializable("recommands",recommands);
+                    bundle.putSerializable("recommandj",recommandj);
+                    bundle.putSerializable("rankings",rankings);
+                    bundle.putSerializable("line",line);
+                    homeFragment1.setArguments(bundle);
+                    transaction.replace(R.id.main_frameLayout, homeFragment1).commitAllowingStateLoss();
+                    current=1;
+                }else if(menuItem.getItemId() == R.id.bottom_category && current !=2){
+                    Toast.makeText(getApplicationContext(),"서비스 준비중 입니다.",Toast.LENGTH_SHORT).show();
+                    current=2;
+                }else if(menuItem.getItemId() == R.id.bottom_search && current !=3){
+                    Toast.makeText(getApplicationContext(),"서비스 준비중 입니다.",Toast.LENGTH_SHORT).show();
+                    current=3;
+                }else if(menuItem.getItemId() == R.id.bottom_community && current !=4){
+                    transaction.replace(R.id.main_frameLayout, new JournalFragment()).commitAllowingStateLoss();
+                    current=4;
+                }else if(menuItem.getItemId() == R.id.bottom_profile && current !=5){
+                    ProfileFragment profileFragment = new ProfileFragment();
+                    if(userId != null){
                         bundle.putSerializable("user_id", Integer.valueOf(userId));
                         profileFragment.setArguments(bundle);
                         transaction.replace(R.id.main_frameLayout, profileFragment).commitAllowingStateLoss();
-                        break;
+                    }else{
+//                        Intent intent = new Intent(getApplicationContext(), profilePopupActivity.class);
+//                        startActivityForResult(intent,1);
+                        profilePopupFragment profilePopupFragment = new profilePopupFragment();
+                        transaction.replace(R.id.main_frameLayout,profilePopupFragment).commitAllowingStateLoss();
+                    }
+
+                    current=5;
                 }
+
                 return true;
             }
         });
@@ -202,7 +237,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putInt("user_id", Integer.parseInt(userId));
+        if(null != userId){
+            bundle.putInt("user_id", Integer.parseInt(userId));
+        }
         bundle.putInt("play_id",play_id);
         fragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.main_frameLayout, fragment);
@@ -336,7 +373,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Log.d("update1","cnt="+cnt);
         if(cnt==5){
+            Log.d("update","done");
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
         }
 
@@ -352,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-//                Recommend_all_jsonString = getJsonFromServer(all_Recommend_result_url);
+                Recommend_all_jsonString = getJsonFromServer(all_Recommend_result_url);
                 Log.d("Recommend_all_json", Recommend_all_jsonString);
                 JSONObject jsonObject = new JSONObject(Recommend_all_jsonString);
                 Log.d("Recommend jsonObject", jsonObject.toString());
@@ -369,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("recommend_done?","recommend_done");
                 cnt++;
 
-            } catch (JSONException e) {
+            } catch (JSONException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -378,7 +417,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Log.d("update2","cnt="+cnt);
         if(cnt==5){
+            Log.d("update","done");
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
         }
     }
@@ -419,7 +460,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Log.d("update3","cnt="+cnt);
         if(cnt==5){
+            Log.d("update","done");
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
         }
     }
@@ -460,7 +503,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Log.d("update4","cnt="+cnt);
         if(cnt==5){
+            Log.d("update","done");
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
         }
     }
@@ -498,7 +543,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Log.d("update5","cnt="+cnt);
             if(cnt==5){
+                Log.d("update","done");
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frameLayout, homeFragment).commitAllowingStateLoss();
             }
         }
