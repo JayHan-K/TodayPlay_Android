@@ -8,8 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +26,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.DBHelper.CrewDB.CrewDBHelper;
 import co.kr.todayplay.DBHelper.JournalDB.JournalDBHelper;
 import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
+import co.kr.todayplay.DBHelper.UserDB.UserDBHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformDetailJournalAdapter;
@@ -30,22 +41,28 @@ import co.kr.todayplay.adapter.PerformDetailStaffAdapter;
 import co.kr.todayplay.fragment.Journal.JournalViewFragment;
 
 public class PerformDetailFragment extends Fragment {
+    public PerformDetailFragment(){}
+
     PlayDBHelper playDBHelper;
     CrewDBHelper crewDBHelper;
     JournalDBHelper journalDBHelper;
+    UserDBHelper userDBHelper;
 
     JournalViewFragment journalViewFragment = new JournalViewFragment();
     ImageView perform_iv;
     RecyclerView staff_rv;
     RecyclerView journal_rv;
     TextView perform_detail_sub_tv, perform_detail_title_tv;
+    Button like_btn;
+
     private Context mContext;
 
     int play_id = -1;
     int user_id = -1;
     String[] crews;
+    boolean like_flag = false;
 
-    public PerformDetailFragment(){}
+    String play_like_request_url = "http://211.174.237.197/request_user_play_update_by_id/";
 
     @Override
     public void onAttach(Context context) {
@@ -60,6 +77,7 @@ public class PerformDetailFragment extends Fragment {
         crewDBHelper = new CrewDBHelper(this.getContext(), "Crew.db", null, 1);
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         journalDBHelper = new JournalDBHelper(this.getContext(), "Journal.db",null,1);
+        userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
 
         Bundle bundle = getArguments();
         if(bundle != null){
@@ -179,15 +197,17 @@ public class PerformDetailFragment extends Fragment {
 
         //관련 저널 파트
         String relation_journals = playDBHelper.getPlayRelative_Journal(play_id);
-        if (!relation_journals.equals("[]")){
-            relation_journals = relation_journals.replace("[","");
-            relation_journals = relation_journals.replace("]","");
+        relation_journals = relation_journals.replace("[","");
+        relation_journals = relation_journals.replace("]","");
+        Log.d("relation_journals", relation_journals);
+        if (!relation_journals.equals("")){
             String[] relative_journals = relation_journals.split(",");
 
             journal_rv = (RecyclerView)viewGroup.findViewById(R.id.journal_rv);
             journal_rv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             journal_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
             ArrayList<PerformDetailJournalAdapter.JournalItem> data2 = new ArrayList<>();
+
             for(int i=0; i<relative_journals.length; i++){
                 Log.d("relative_journals", i + " = " + relative_journals[i]);
                 int new_relative_journal = Integer.parseInt(relative_journals[i]);
@@ -198,7 +218,80 @@ public class PerformDetailFragment extends Fragment {
             journal_rv.setAdapter(performDetailJournalAdapter);
         }
 
+        //공연 좋아요 버튼
+        like_btn = (Button)viewGroup.findViewById(R.id.play_like_btn);
+        like_flag = userDBHelper.IsHeart(play_id);
+        if(!like_flag){
+            like_btn.setBackgroundResource(R.drawable.rounded_border_4dp_252525);
+            like_btn.setText("작품이 괜찮다면 ♥︎");
+        }
+        else{
+            like_btn.setBackgroundResource(R.drawable.rounded_border_4dp_c74343);
+            like_btn.setText("좋아요 순위 반영 완료");
+        }
+        like_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(like_flag){
+                    like_btn.setBackgroundResource(R.drawable.rounded_border_4dp_252525);
+                    like_btn.setText("작품이 괜찮다면 ♥︎");
+                    like_flag = false;
+                    sendPOSTPlayLikeRequest(play_like_request_url, Integer.toString(play_id), Integer.toString(user_id), "delete");
+                    //좋아요 취소
+                }
+                else{
+                    like_btn.setBackgroundResource(R.drawable.rounded_border_4dp_c74343);
+                    like_btn.setText("좋아요 순위 반영 완료");
+                    like_flag = true;
+                    sendPOSTPlayLikeRequest(play_like_request_url, Integer.toString(play_id), Integer.toString(user_id), "insert");
+                    //좋아요
+                }
+            }
+        });
 
         return viewGroup;
+    }
+
+    public void sendPOSTPlayLikeRequest(String url, String play_id, String user_id, String action){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(!response.equals("1")){
+                            Log.d("PlayLikeRequest", "Response Failed");
+                        }
+                        else{
+                            Log.d("postSendHeartChange","Success to like play " + action  + " | play_id = " + play_id);
+                            if(action == "insert"){
+                                userDBHelper.add_heart(Integer.parseInt(user_id), Integer.parseInt(play_id));
+                            }
+                            else if(action == "delete"){
+                                userDBHelper.delete_heart(Integer.parseInt(play_id));
+                            }
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("PlayLikeRequest", error.toString());
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("play_id", play_id);
+                params.put("user_id", user_id);
+                params.put("action", action);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
     }
 }

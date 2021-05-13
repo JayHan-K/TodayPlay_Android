@@ -3,6 +3,7 @@ package co.kr.todayplay.fragment.perform;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.MainActivity;
@@ -54,9 +56,10 @@ public class PerformWriteReviewFragment2 extends Fragment {
 
     int play_id = -1;
     int user_id = -1;
-    int certification_type = -1;
+    String certification_type = "-1";
     String certification_imgpath = "";
-    Bitmap certification_bitmap;
+    String review_certified_pic = "";
+    String[] review_pic  = {"", "", ""};
 
     public PerformWriteReviewFragment2(){}
 
@@ -65,13 +68,15 @@ public class PerformWriteReviewFragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_write_review,container,false);
         Bundle bundle = getArguments();
+        Log.d("WriteReview2", "onCreateView: ");
         if(bundle != null){
             play_id = bundle.getInt("play_id");
             user_id = bundle.getInt("user_id");
-            certification_type = bundle.getInt("certification_type");
+            certification_type = bundle.getString("certification_type");
             certification_imgpath = bundle.getString("certification_imgpath");
             Log.d("Bundle result", "play_id: " + play_id + " | user_id = " + user_id + " | certification_type = " + certification_type + " certification_imgpath = " + certification_imgpath);
         }
+
         back_btn = (ImageButton) viewGroup.findViewById(R.id.back_btn);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +121,12 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 bundle1.putString("review_good", good_et.getText().toString());
                 bundle1.putString("review_bad", bad_et.getText().toString());
                 bundle1.putString("review_tip", tip_et.getText().toString());
+                //수정
+                bundle1.putString("review_pic1", review_pic[0]);
+                bundle1.putString("review_pic2", review_pic[1]);
+                bundle1.putString("review_pic3", review_pic[2]);
+                Log.d("WriteReview2", "review_pic1 = " + review_pic[0] + " review_pic2 = " + review_pic[1] + "review_pic3 = " + review_pic[2]);
+                bundle1.putString("certification_type", certification_type);
                 bundle1.putString("certification_imgpath", certification_imgpath);
                 bundle1.putInt("num_of_star", (int)rate);
                 performRecommendDialogFragment.setArguments(bundle1);
@@ -232,10 +243,18 @@ public class PerformWriteReviewFragment2 extends Fragment {
         photo_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
                 intent.putExtra(intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(Intent.createChooser(intent, "Select picture"), CODE_ALBUM_REQUEST);
+                startActivityForResult(Intent.createChooser(intent, "사진 애플리케이션을 선택해주세요."), CODE_ALBUM_REQUEST);
+
+                 */
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "사진 애플리케이션을 선택해주세요."), CODE_ALBUM_REQUEST);
             }
         });
 
@@ -246,33 +265,59 @@ public class PerformWriteReviewFragment2 extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("WriteReviewFragment2", "onActivityResult: ");
         //갤러리 이미지 가져오기
         if(requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null){
             ArrayList<Uri> uriList = new ArrayList<>();
+            //review_pic 초기화
+            for(int i=0; i<review_pic.length; i++){
+                review_pic[i] = "";
+            }
+            // 리사이클러뷰 초기화
+            final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
+            photo_rv.setAdapter(performReviewImageAdapter);
+            photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
             if(data.getClipData() != null){
                 ClipData clipData = data.getClipData();
                 Log.d("WriteReviewFragment2", "picked photo num = " + clipData.getItemCount());
-                if(clipData.getItemCount() > 10){
-                    Toast.makeText(getActivity().getApplicationContext(), "사진은 최대 10개까지 선택 가능 합니다.", Toast.LENGTH_SHORT).show();
+                if(clipData.getItemCount() > 3){
+                    Toast.makeText(getActivity().getApplicationContext(), "사진은 최대 3개까지 선택 가능 합니다.", Toast.LENGTH_SHORT).show();
                     uriList.clear();
                     return;
                 }else if(clipData.getItemCount() == 1){
                     Uri filePath = clipData.getItemAt(0).getUri();
+                    review_pic[0] = getRealPathFromUri(filePath);
                     Log.d("WriteReviewFragment2", "Uri = " + clipData.getItemAt(0).getUri());
                     uriList.add(filePath);
-                }else if(clipData.getItemCount() > 1 && clipData.getItemCount() <= 10){
+                }else if(clipData.getItemCount() > 1 && clipData.getItemCount() <= 3){
                     for(int i=0; i<clipData.getItemCount(); i++){
                         uriList.add(clipData.getItemAt(i).getUri());
+                        review_pic[i] = getRealPathFromUri(clipData.getItemAt(i).getUri());
                         Log.d("WriteReviewFragment2", "Uri " + i + " = " + clipData.getItemAt(i).getUri());
                     }
                 }
+                performReviewImageAdapter.notifyDataSetChanged();
             }
-            // 리사이클러뷰에 띄우기
-            final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
-            photo_rv.setAdapter(performReviewImageAdapter);
-            photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+            else if(data.getData() != null){
+                review_pic[0] = data.getData().toString();
+                Log.d("WriteReviewFragment2", "Uri = " + data.getData());
+                uriList.add(data.getData());
+                performReviewImageAdapter.notifyDataSetChanged();
+            }
+
         }
+    }
+
+    //Uri를 절대경로로 바꿔서 리턴해주는 함수
+    String getRealPathFromUri(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getActivity().getApplicationContext(), contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 
     void showDialog(DialogFragment dialogFragment){

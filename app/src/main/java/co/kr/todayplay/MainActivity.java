@@ -292,11 +292,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frameLayout, fragment).commit();
     }
 
-    public void replaceFragment(Fragment fragment, int play_id, int certification_type, String certification_imgpath) {
+    public void replaceFragment(Fragment fragment, int play_id, String certification_type, String certification_imgpath) {
         Bundle bundle = new Bundle();
         bundle.putInt("user_id", Integer.parseInt(userId));
         bundle.putInt("play_id", play_id);
-        bundle.putInt("certification_type", certification_type);
+        bundle.putString("certification_type", certification_type);
         bundle.putString("certification_imgpath", certification_imgpath);
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();

@@ -1,6 +1,7 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
     PerformTotalReviewCommentFragment performTotalReviewCommentFragment = new PerformTotalReviewCommentFragment();
 
     public static class ReviewItem{
-        private int profile_drawable;
+        private String profile_path;
         private String user_name;
         private boolean thumb;
         private String age_level;
@@ -36,12 +37,13 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
         private String good_thing;
         private String bad_thing;
         private String tip;
-        private ArrayList<Integer> review_drawable;
+        private ArrayList<Uri> review_pics;
         private int num_comment;
 
         public ReviewItem(){}
-        public ReviewItem(int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, String tip, int num_comment){
-            this.profile_drawable = profile_drawable;
+
+        public ReviewItem(String profile_path, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, String tip, ArrayList<Uri> review_pics, int num_comment){
+            this.profile_path = profile_path;
             this.user_name = user_name;
             this.thumb = thumb;
             this.age_level = age_level;
@@ -51,21 +53,12 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             this.good_thing = good_thing;
             this.bad_thing = bad_thing;
             this.tip = tip;
+            this.review_pics = review_pics;
             this.num_comment = num_comment;
         }
-        public ReviewItem(int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, String tip, ArrayList<Integer> review_drawable, int num_comment){
-            this.profile_drawable = profile_drawable;
-            this.user_name = user_name;
-            this.thumb = thumb;
-            this.age_level = age_level;
-            this.date = date;
-            this.num_heart = num_heart;
-            this.num_review = num_review;
-            this.good_thing = good_thing;
-            this.bad_thing = bad_thing;
-            this.tip = tip;
-            this.review_drawable = review_drawable;
-            this.num_comment = num_comment;
+
+        public String getProfile_path() {
+            return profile_path;
         }
 
         public boolean isThumb() {
@@ -73,10 +66,6 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
         }
         public int getNum_heart() {
             return num_heart;
-        }
-
-        public int getProfile_drawable() {
-            return profile_drawable;
         }
 
         public int getNum_review() {
@@ -107,8 +96,8 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             return good_thing;
         }
 
-        public ArrayList<Integer> getReview_drawable() {
-            return review_drawable;
+        public ArrayList<Uri> getReview_pics() {
+            return review_pics;
         }
 
         public int getNum_comment() {
@@ -172,7 +161,8 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         ReviewItem item = data.get(position);
         PerformTotalReviewAdapter.ReviewHolder itemController = (PerformTotalReviewAdapter.ReviewHolder) holder;
-            itemController.profile_iv.setImageResource(item.getProfile_drawable());
+        if(item.getProfile_path().equals(""))itemController.profile_iv.setImageResource(R.drawable.icon_mypage);
+        //수정 프로필 이미지
             itemController.user_name_tv.setText(item.user_name);
             if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
             else itemController.thumb_iv.setImageResource(R.drawable.icon_bad);
@@ -182,9 +172,13 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             itemController.date_tv.setText(item.getDate());
             itemController.good_thing_tv.setText(item.getGood_thing());
             itemController.bad_thing_tv.setText(item.getBad_thing());
+            itemController.tip_tv.setText(item.getTip());
+            //수정 더보기 숨기기
+            if(item.getTip().equals("")) itemController.more_comment_tv.setVisibility(View.GONE);
             itemController.more_comment_tv.setText("댓글 " + item.getNum_comment() + "개 보기");
             //recycler
-            if (item.review_drawable != null){
+        //수정 리뷰 이미지
+            if (item.review_pics != null){
                 itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
                     @Override
                     public boolean canScrollHorizontally() {

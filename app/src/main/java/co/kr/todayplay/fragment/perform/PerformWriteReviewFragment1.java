@@ -42,7 +42,7 @@ public class PerformWriteReviewFragment1 extends Fragment {
     Boolean etc_flag = false;
     Boolean receipt_flag = false;
     Boolean ticket_flag = false;
-    int certification_type = -1;
+    String certification_type = "-1";
     ImageButton back_btn;
     Button save_btn;
     ConstraintLayout ticket_btn, receipt_btn, etc_btn;
@@ -50,7 +50,6 @@ public class PerformWriteReviewFragment1 extends Fragment {
     DialogFragment writeReviewDialogFragment1 = new WriteReviewDialogFragment1();
     DialogFragment writeReviewDialogFragment2 = new WriteReviewDialogFragment2();
     PerformWriteReviewFragment2 performWriteReviewFragment2 = new PerformWriteReviewFragment2();
-
 
     public PerformWriteReviewFragment1(){}
 
@@ -161,9 +160,9 @@ public class PerformWriteReviewFragment1 extends Fragment {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ticket_flag) certification_type = 1;
-                else if(receipt_flag) certification_type = 2;
-                else if(etc_flag) certification_type = 3;
+                if(ticket_flag) certification_type = "type1";
+                else if(receipt_flag) certification_type = "type2";
+                else if(etc_flag) certification_type = "type3";
                 Log.d("ReviewFragment1", "save_btn is Clicked");
                 checkSelfPermission();
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -171,8 +170,6 @@ public class PerformWriteReviewFragment1 extends Fragment {
                 intent.setType("image/*");
                 Log.d("DialogFragment", "onClicked");
                 startActivityForResult(intent, GALLERY_CODE);
-
-
             }
         });
 

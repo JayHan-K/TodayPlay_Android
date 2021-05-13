@@ -1,9 +1,12 @@
 package co.kr.todayplay.fragment.perform;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -25,6 +33,10 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mordred.wordcloud.WordCloud;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +47,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewAdapter;
@@ -48,18 +61,21 @@ public class PerformReviewFragment extends Fragment {
     PieChart recommend_ratio_chart;
     ImageView keywords_iv;
 
+    ArrayList<PerformReviewAdapter.ReviewItem> all_review_data = new ArrayList<>();
+    PerformReviewAdapter performReviewAdapter;
+
     int play_id = -1;
     int user_id = -1;
+
+    String review_info_request_url = "http://211.174.237.197/request_review_info_by_play_id/";
+    String review_user_request_url = "http://211.174.237.197/request_user_info_by_id/";
 
     public PerformReviewFragment(){}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        int review_data_size = 5;
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.fragment_perform_review,container,false);
-        ConstraintLayout constraintLayout = (ConstraintLayout)viewGroup.findViewById(R.id.constraintLayout);
-        constraintLayout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         if(bundle != null){
             play_id = bundle.getInt("play_id");
@@ -188,7 +204,10 @@ public class PerformReviewFragment extends Fragment {
         keywords_iv.setImageBitmap(generatedWordCloudBmp);
         //--후기 키워드 End --
 
-        final ArrayList<PerformReviewAdapter.ReviewItem> data = new ArrayList<>();
+        //후기
+        sendPOSTPlay_idRequest(review_info_request_url, Integer.toString(play_id));
+
+        /*
         ArrayList<Integer> image_data = new ArrayList<>();
         image_data.add(R.drawable.poster_sample1);
         image_data.add(R.drawable.poster_sample2);
@@ -197,15 +216,12 @@ public class PerformReviewFragment extends Fragment {
         image_data.add(R.drawable.poster_sample5);
         image_data.add(R.drawable.poster_sample6);
         data.add(new PerformReviewAdapter.ReviewItem(R.drawable.icon_mypage, "제인", true, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 ", image_data));
-        data.add(new PerformReviewAdapter.ReviewItem(R.drawable.icon_mypage, "제인1", false, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 "));
-
-        final PerformReviewAdapter performReviewAdapter = new PerformReviewAdapter(getActivity().getApplicationContext(), data);
+        all_review_data.add(new PerformReviewAdapter.ReviewItem(R.drawable.icon_mypage, "제인1", false, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 "));
+*/
+        performReviewAdapter = new PerformReviewAdapter(getActivity().getApplicationContext(), all_review_data);
         review_rv.setAdapter(performReviewAdapter);
 
-        if(review_data_size > 2) {
-            more_review_btn.setText((review_data_size - 2) + "개의 후기 더 보기");
-        }
-        else more_review_btn.setVisibility(View.GONE);
+        more_review_btn.setVisibility(View.GONE);
         review_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false));
         more_review_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,5 +238,148 @@ public class PerformReviewFragment extends Fragment {
         });
 
         return viewGroup;
+    }
+
+    public void sendPOSTPlay_idRequest(String url, String play_id){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Play_idRequest", "Response = " + response);
+                        if(!response.equals("-1")){
+                            try {
+                                JSONArray reviews = new JSONObject(response).getJSONArray("review");
+                                Log.d("Play_idRequest", "reviews length = "+ reviews.length());
+                                if(reviews.length()>2) {
+                                    more_review_btn.setVisibility(View.VISIBLE);
+                                    more_review_btn.setText(reviews.length()-2 + "개의 후기 더 보기");
+                                }
+                                if(reviews.length()>=2){
+                                    for(int i=0; i<2; i++){
+                                        JSONObject review = reviews.getJSONObject(i);
+                                        String user_id = review.getString("user_id");
+                                        sendPOSTUser_idRequest(review_user_request_url, user_id, review);
+                                    }
+                                }
+                                else if(reviews.length() == 1){
+                                    JSONObject review = reviews.getJSONObject(0);
+                                    String user_id = review.getString("user_id");
+                                    sendPOSTUser_idRequest(review_user_request_url, user_id, review);
+                                }
+                                else{
+                                    Log.d("Play_idRequest", "Reviews None");
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Play_idRequest", error.toString());
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("play_id", play_id);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
+    }
+
+    public void sendPOSTUser_idRequest(String url, String user_id, JSONObject review){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("User_idRequest", "Response = " + response);
+                        try {
+                            JSONObject user = new JSONObject(response).getJSONObject("user");
+                            String nickname = user.getString("nickname");
+                            String level = user.getString("rank");
+                            String profile = user.getString("user_pic");
+                            String birth = user.getString("birthday");
+                            Log.d("User_idRequest", "user_id = " + user_id + " nickname = " + nickname + " level = " + level + " profile_path = " + profile + " birth = " + birth);
+
+                            String review_good = review.getString("review_good");
+                            String review_bad = review.getString("review_bad");
+                            String review_tip = review.getString("review_tip");
+                            String review_certified_pic =  review.getString("review_certified_pic");
+                            ArrayList<Uri> review_pics = new ArrayList<>();
+                            ArrayList<String> str_review_pics = new ArrayList<>();
+                            str_review_pics.add(review.getString("review_pic1"));
+                            str_review_pics.add(review.getString("review_pic2"));
+                            str_review_pics.add(review.getString("review_pic3"));
+                            for(int j=0; j<2; j++){
+                                if(str_review_pics.get(j).equals("")) continue;
+                                //수정 - 리뷰 이미지 처리
+                                //review_pics.add(getUriFromPath(str_review_pics.get(i)));
+                            }
+                            String comment = review.getString("comment");
+                            int num_comment = 0;
+                            //수정 num_comment
+
+                            int recommend = review.getInt("recommend");
+                            boolean thumb = false;
+                            if(recommend == 1) thumb = true;
+                            int review_num_of_heart = review.getInt("review_num_of_heart");
+                            String written_date = review.getString("written_date");
+
+                            int review_id = review.getInt("review_id");
+                            int play_id = review.getInt("play_id");
+                            Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " pic1 = " + str_review_pics.get(0) + " pic2 = " + str_review_pics.get(1)  +  " pic3 = " + str_review_pics.get(2) + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
+
+                            all_review_data.add(new PerformReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart,num_comment, review_good, review_bad, review_pics));
+                            performReviewAdapter.notifyDataSetChanged();
+                            Log.d("User_idRequest", "review all_review_data size = " + all_review_data.size());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("user_id", user_id);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
+    }
+
+    private Uri getUriFromPath(String filePath) {
+        long photoId;
+        Uri photoUri = MediaStore.Images.Media.getContentUri("external");
+        String[] projection = {MediaStore.Images.ImageColumns._ID};
+        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(photoUri, projection, MediaStore.Images.ImageColumns.DATA + " LIKE ?", new String[] { filePath }, null);
+        cursor.moveToFirst();
+
+        int columnIndex = cursor.getColumnIndex(projection[0]);
+        photoId = cursor.getLong(columnIndex);
+
+        cursor.close();
+        return Uri.parse(photoUri.toString() + "/" + photoId);
     }
 }

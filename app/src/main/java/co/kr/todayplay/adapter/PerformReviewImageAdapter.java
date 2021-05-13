@@ -34,6 +34,10 @@ public class PerformReviewImageAdapter extends RecyclerView.Adapter<RecyclerView
         this.data = data;
         this.mContext = mContext;
     }
+    public PerformReviewImageAdapter(ArrayList<Uri> data){
+        super();
+        this.data = data;
+    }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
