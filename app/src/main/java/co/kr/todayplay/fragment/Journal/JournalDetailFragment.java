@@ -77,7 +77,7 @@ public class JournalDetailFragment extends Fragment {
     int user_id = -1;
     //수정 유저 닉네임, 프로필 메인엑티비티에서 가져오기
     String user_pic = "";
-    String user_name = "Tester";
+    final String user_name = "";
     String journal_title;
     String[] relation_journal;
     Boolean scrap_flag = false;
@@ -136,7 +136,6 @@ public class JournalDetailFragment extends Fragment {
         userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
         Log.d("JournalDetail", "journal_id " + journal_id + ": journal_title = " + journal_title + " , journal_num_of_scrap = " + journalDBHelper.getJournalNum_of_scrap(journal_id) + ", journal_num_of_view = " + journalDBHelper.getJournalNum_of_view(journal_id) + ", journal_comments = " + journalDBHelper.getJournalComments(journal_id) + ", journal_banner_img = " + journalDBHelper.getJournalBanner_img(journal_id) + ", relation_journal = " + journalDBHelper.getJournalRelation_journal(journal_id));
 
-        //수정 유저 정보
         //이전 fragment의 데이터 가져오기 JOURNAL_ID, USER_ID
         Bundle bundle = getArguments();
         if(bundle != null){
@@ -213,6 +212,8 @@ public class JournalDetailFragment extends Fragment {
                 }
             }
         });
+
+        //수정 유저 정보
 
         //조회수, 스크랩
         num_view_tv.setText("0");

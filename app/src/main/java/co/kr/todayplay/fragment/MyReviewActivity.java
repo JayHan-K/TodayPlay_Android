@@ -2,11 +2,23 @@ package co.kr.todayplay.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +27,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.MyPageReviewCommentAdapter;
 import co.kr.todayplay.adapter.MypageReviewAdapter;
@@ -27,12 +42,36 @@ public class MyReviewActivity extends Fragment {
 
     public MyReviewActivity(){}
 
+    //수정 user_id
+    int user_id = -1;
+    String user_info_request_url = "http://211.174.237.197/request_user_info_by_id/";
+    String review_info_request_url = "http://211.174.237.197/request_review_info_by_review_id/";
+
+    TextView user_level_tv, user_total_review_tv;
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_myreview, container, false);
         LineView lineView = (LineView)viewGroup.findViewById(R.id.line_view);
         Button review_to_profile = viewGroup.findViewById(R.id.back_profile3);
+        user_level_tv = (TextView)viewGroup.findViewById(R.id.textView36);
+        user_total_review_tv = (TextView)viewGroup.findViewById(R.id.textView38);
+
+
+        //requestQueue 생성
+        //메인 Activity가 메모리에서 만들어질 때, RequestQueue를 하나만 생성한다.
+        if(AppHelper.requestQueue == null){
+            AppHelper.requestQueue = Volley.newRequestQueue(this.getContext());
+        }
+
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            user_id = bundle.getInt("user_id");
+            Log.d("Bundle result", "user_id: " + user_id);
+        }
+
+        sendPOSTUser_idRequest(user_info_request_url, Integer.toString(user_id));
 
         RecyclerView recyclerView = (RecyclerView) viewGroup.findViewById(R.id.myreview_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false));
@@ -127,5 +166,81 @@ public class MyReviewActivity extends Fragment {
         return viewGroup;
 
     }
+
+    public void sendPOSTUser_idRequest(String url, String user_id){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("User_idRequest", "response = " + response);
+                        try {
+                            JSONObject user = new JSONObject(response).getJSONObject("user");
+                            String my_review  = user.getString("my_review");
+                            String level = user.getString("rank");
+                            user_level_tv.setText(level);
+                            String[] my_reviews = my_review.split(", ");
+                            user_total_review_tv.setText(my_reviews.length + "");
+                            for(int i=0; i<my_reviews.length; i++){
+                                Log.d("User_idRequest", i + " review_id = " + my_reviews[i]);
+                                sendPOSTReview_idRequest(review_info_request_url, my_reviews[i]);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("user_id", user_id);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
+    }
+
+    public void sendPOSTReview_idRequest(String url, String review_id){
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Review_idRequest", "response = " + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json");
+                params.put("review_id", review_id);
+                return  params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        AppHelper.requestQueue.add(stringRequest);
+    }
+
+
+
+
 
 }
