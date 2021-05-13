@@ -47,7 +47,7 @@ public class PerformTotalReviewFragment extends Fragment {
     ImageView perform_poster_iv;
     PerformTotalReviewAdapter performTotalReviewAdapter;
     ArrayList<PerformTotalReviewAdapter.ReviewItem> total_review_data = new ArrayList<>();
-    PerformWriteReviewFragment performWriteReviewFragment = new PerformWriteReviewFragment();
+    PerformWriteReviewFragment1 performWriteReviewFragment1 = new PerformWriteReviewFragment1();
 
     String play_info_request_url = "http://211.174.237.197/request_play_info_by_id/";
     String reviews_request_url = "http://211.174.237.197/request_review_info_by_play_id/";
@@ -110,7 +110,7 @@ public class PerformTotalReviewFragment extends Fragment {
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment);
+                ((MainActivity)getActivity()).replaceFragment2(performWriteReviewFragment1, play_id);
             }
         });
 

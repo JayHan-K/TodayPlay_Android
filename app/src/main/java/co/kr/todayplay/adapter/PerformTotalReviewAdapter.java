@@ -161,7 +161,7 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         ReviewItem item = data.get(position);
         PerformTotalReviewAdapter.ReviewHolder itemController = (PerformTotalReviewAdapter.ReviewHolder) holder;
-        if(item.getProfile_path().equals(""))itemController.profile_iv.setImageResource(R.drawable.icon_mypage);
+        itemController.profile_iv.setImageResource(R.drawable.icon_mypage);
         //수정 프로필 이미지
             itemController.user_name_tv.setText(item.user_name);
             if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
@@ -174,7 +174,7 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             itemController.bad_thing_tv.setText(item.getBad_thing());
             itemController.tip_tv.setText(item.getTip());
             //수정 더보기 숨기기
-            if(item.getTip().equals("")) itemController.more_comment_tv.setVisibility(View.GONE);
+            if(item.getTip().equals("")) itemController.more_tv.setVisibility(View.GONE);
             itemController.more_comment_tv.setText("댓글 " + item.getNum_comment() + "개 보기");
             //recycler
         //수정 리뷰 이미지
@@ -192,7 +192,8 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             itemController.more_comment_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((MainActivity)view.getContext()).replaceFragment(performTotalReviewCommentFragment);
+                    //수정
+                    //((MainActivity)view.getContext()).replaceFragment(performTotalReviewCommentFragment);
                 }
             });
 
