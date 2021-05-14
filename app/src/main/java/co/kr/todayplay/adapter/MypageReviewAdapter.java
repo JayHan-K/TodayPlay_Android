@@ -26,6 +26,7 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     PerformTotalReviewCommentFragment performTotalReviewCommentFragment = new PerformTotalReviewCommentFragment();
 
     public static class ReviewItem{
+        private String play_title;
         private int profile_drawable;
         private String user_name;
         private boolean thumb;
@@ -38,7 +39,8 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private ArrayList<Integer> review_drawable;
 
         public ReviewItem(){}
-        public ReviewItem(int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing){
+        public ReviewItem(String play_title, int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing){
+            this.play_title = play_title;
             this.profile_drawable = profile_drawable;
             this.user_name = user_name;
             this.thumb = thumb;
@@ -49,7 +51,8 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.good_thing = good_thing;
             this.bad_thing = bad_thing;
         }
-        public ReviewItem(int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, ArrayList<Integer> review_drawable){
+        public ReviewItem(String play_title, int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, ArrayList<Integer> review_drawable){
+            this.play_title = play_title;
             this.profile_drawable = profile_drawable;
             this.user_name = user_name;
             this.thumb = thumb;
@@ -60,6 +63,10 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.good_thing = good_thing;
             this.bad_thing = bad_thing;
             this.review_drawable = review_drawable;
+        }
+
+        public String getPlay_title() {
+            return play_title;
         }
 
         public boolean isThumb() {
@@ -104,6 +111,7 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class ReviewHolder extends RecyclerView.ViewHolder{
+        private TextView play_title_tv;
         private ImageView profile_iv;
         private TextView user_name_tv;
         private ImageView thumb_iv;
@@ -119,6 +127,7 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public ReviewHolder(@NonNull View itemView) {
             super(itemView);
+            this.play_title_tv = itemView.findViewById(R.id.play_title_tv);
             this.profile_iv = itemView.findViewById(R.id.review_user_iv);
             this.user_name_tv = itemView.findViewById(R.id.user_name_tv);
             this.thumb_iv = itemView.findViewById(R.id.thumb_img);
@@ -153,6 +162,7 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         ReviewItem item = data.get(position);
         MypageReviewAdapter.ReviewHolder itemController = (MypageReviewAdapter.ReviewHolder) holder;
+        itemController.play_title_tv.setText(item.getPlay_title());
             itemController.profile_iv.setImageResource(item.getProfile_drawable());
             itemController.user_name_tv.setText(item.user_name);
             if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
@@ -176,10 +186,12 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             else Log.d("IsImage", "onBindViewHolder: image is null!!");
 
+        //mvp ver. 후기 상세보기 임시 막음
+        itemController.more_tv.setText("");
         itemController.more_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)view.getContext()).replaceFragment(performTotalReviewCommentFragment);
+                //((MainActivity)view.getContext()).replaceFragment(performTotalReviewCommentFragment);
             }
         });
     }

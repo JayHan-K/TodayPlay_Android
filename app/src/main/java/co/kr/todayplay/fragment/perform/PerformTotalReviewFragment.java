@@ -24,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +39,7 @@ import co.kr.todayplay.DBHelper.PlayDB.PlayDBHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.adapter.PerformReviewAdapter;
+import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
 import co.kr.todayplay.adapter.PerformTotalReviewAdapter;
 
 public class PerformTotalReviewFragment extends Fragment {
@@ -189,7 +192,10 @@ public class PerformTotalReviewFragment extends Fragment {
                             }
                             String comment = review.getString("comment");
                             int num_comment = 0;
-                            //수정 num_comment
+                            if(!comment.equals("")) {
+                                String[] comments = comment.split(", ");
+                                num_comment = comments.length;
+                            }
 
                             int recommend = review.getInt("recommend");
                             boolean thumb = false;
@@ -203,6 +209,7 @@ public class PerformTotalReviewFragment extends Fragment {
                             Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " pic1 = " + str_review_pics.get(0) + " pic2 = " + str_review_pics.get(1)  +  " pic3 = " + str_review_pics.get(2) + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
 
                             total_review_data.add(new PerformTotalReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart, num_comment, review_good, review_bad, review_tip, review_pics, num_comment));
+                            total_review_data = reviewSort(total_review_data);
                             performTotalReviewAdapter.notifyDataSetChanged();
                             Log.d("User_idRequest", "review total_review_data size = " + total_review_data.size());
 
@@ -265,6 +272,19 @@ public class PerformTotalReviewFragment extends Fragment {
         };
         stringRequest.setShouldCache(false);
         AppHelper.requestQueue.add(stringRequest);
+    }
+
+    //최신 순으로 리뷰를 정렬하는 함수
+    public ArrayList<PerformTotalReviewAdapter.ReviewItem> reviewSort(ArrayList<PerformTotalReviewAdapter.ReviewItem> reviews){
+        ArrayList<PerformTotalReviewAdapter.ReviewItem> review_list = reviews;
+
+        Collections.sort(review_list, new Comparator<PerformTotalReviewAdapter.ReviewItem>() {
+            @Override
+            public int compare(PerformTotalReviewAdapter.ReviewItem o1, PerformTotalReviewAdapter.ReviewItem o2) {
+                return o2.getDate().compareTo(o1.getDate());
+            }
+        });
+        return review_list;
     }
 
 }
