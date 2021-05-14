@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -317,7 +318,7 @@
                 app:layout_constraintStart_toStartOf="@id/scroll_part"
                 app:layout_constraintEnd_toEndOf="@id/scroll_part"
                 android:layout_marginTop="50dp"/>
-
+            <!--
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/star_part"
                 android:layout_width="wrap_content"
@@ -326,14 +327,15 @@
                 app:layout_constraintStart_toStartOf="@id/scroll_part"
                 app:layout_constraintEnd_toEndOf="@id/scroll_part"
                 android:layout_marginTop="30dp">
+
                 <Button
                     android:id="@+id/star1_btn"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
+                    android:layout_width="37dp"
+                    android:layout_height="29dp"
                     android:background="@drawable/write_review_star_off_icon"
-                    app:layout_constraintTop_toTopOf="@id/star_part"
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
-                    app:layout_constraintStart_toStartOf="@id/star_part"/>
+                    app:layout_constraintStart_toStartOf="@id/star_part"
+                    app:layout_constraintTop_toTopOf="@id/star_part" />
                 <Button
                     android:id="@+id/star2_btn"
                     android:layout_width="33dp"
@@ -370,8 +372,9 @@
                     app:layout_constraintBottom_toBottomOf="@id/star_part"
                     app:layout_constraintStart_toEndOf="@id/star4_btn"
                     android:layout_marginLeft="8dp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+-->
             <RatingBar
                 android:id="@+id/star_rb"
                 android:layout_width="wrap_content"

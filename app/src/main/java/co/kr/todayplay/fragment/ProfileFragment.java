@@ -249,6 +249,8 @@ public class ProfileFragment extends Fragment {
         Bundle bundle = new Bundle();
         MyReviewActivity myReviewActivity = new MyReviewActivity();
         bundle.putSerializable("user_id", user_id);
+        bundle.putSerializable("nickname", nickname);
+        bundle.putSerializable("rank", rank);
         myReviewActivity.setArguments(bundle);
 
         getChildFragmentManager().beginTransaction().replace(
