@@ -77,7 +77,7 @@ public class JournalDetailFragment extends Fragment {
     int user_id = -1;
     //수정 유저 닉네임, 프로필 메인엑티비티에서 가져오기
     String user_pic = "";
-    String user_name = "Tester";
+    final String user_name = "";
     String journal_title;
     String[] relation_journal;
     Boolean scrap_flag = false;
@@ -88,7 +88,7 @@ public class JournalDetailFragment extends Fragment {
 
     //layout
     ImageButton back_btn, scrap_btn;
-    TextView num_of_scrap_tv, num_of_scrap_tv2, num_comment_tv, num_comment_tv2, num_view_tv, editor_tv;
+    TextView num_of_scrap_tv, num_of_scrap_tv2, num_comment_tv, num_comment_tv2, num_view_tv, editor_tv, banner_title_tv, banner_subtitle_tv, banner_level_tv;
     RecyclerView comment_rv, recommend_journal_rv;
     EditText comment_et;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -136,7 +136,6 @@ public class JournalDetailFragment extends Fragment {
         userDBHelper = new UserDBHelper(getActivity().getApplicationContext(), "User.db", null, 1);
         Log.d("JournalDetail", "journal_id " + journal_id + ": journal_title = " + journal_title + " , journal_num_of_scrap = " + journalDBHelper.getJournalNum_of_scrap(journal_id) + ", journal_num_of_view = " + journalDBHelper.getJournalNum_of_view(journal_id) + ", journal_comments = " + journalDBHelper.getJournalComments(journal_id) + ", journal_banner_img = " + journalDBHelper.getJournalBanner_img(journal_id) + ", relation_journal = " + journalDBHelper.getJournalRelation_journal(journal_id));
 
-        //수정 유저 정보
         //이전 fragment의 데이터 가져오기 JOURNAL_ID, USER_ID
         Bundle bundle = getArguments();
         if(bundle != null){
@@ -170,9 +169,18 @@ public class JournalDetailFragment extends Fragment {
         relation_journal_container = (ConstraintLayout)viewGroup.findViewById(R.id.bottom_part);
         comment_save_btn = (Button)viewGroup.findViewById(R.id.comment_save_btn);
 
+        banner_level_tv = (TextView)viewGroup.findViewById(R.id.banner_level_tv);
+        banner_subtitle_tv = (TextView)viewGroup.findViewById(R.id.banner_subtitle_tv);
+        banner_title_tv = (TextView)viewGroup.findViewById(R.id.banner_title_tv);
 
         //Set hidden 저널 title
         journal_title = journalDBHelper.getJournalTitle(journal_id);
+
+        //Set banner text
+        banner_title_tv.setText(journal_title);
+        banner_subtitle_tv.setText(journalDBHelper.getJournalSubtitle(journal_id));
+        banner_level_tv.setText(journalDBHelper.getJournalCategory(journal_id));
+
         //Set 저널 에디터
         editor_tv.setText("by. " + journalDBHelper.getJournalEditor(journal_id));
         //Set 저널 스크랩
@@ -204,6 +212,8 @@ public class JournalDetailFragment extends Fragment {
                 }
             }
         });
+
+        //수정 유저 정보
 
         //조회수, 스크랩
         num_view_tv.setText("0");
@@ -259,7 +269,7 @@ public class JournalDetailFragment extends Fragment {
         */
         //--Journal 본문 Part Start--
         journal_content_iv = (ImageView)viewGroup.findViewById(R.id.journal_iv);
-        journal_content_iv.setImageResource(R.drawable.journal_sample2);
+        journal_content_iv.setImageResource(R.drawable.journal_sample_final);
 
         //연관 저널
         String relation_journal_string = journalDBHelper.getJournalRelation_journal(journal_id);

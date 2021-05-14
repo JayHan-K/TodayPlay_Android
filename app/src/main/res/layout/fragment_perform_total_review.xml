@@ -86,7 +86,7 @@
                 app:layout_constraintStart_toStartOf="@id/poster_text_part"/>
             <TextView
                 android:id="@+id/perform_date_tv"
-                android:text="2011, 90분"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
@@ -108,11 +108,11 @@
                             android:textColor="#ffffff"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="연출"
+                            android:text=""
                             app:layout_constraintTop_toTopOf="@id/director_part"
                             app:layout_constraintStart_toStartOf="@id/director_part"/>
                         <TextView
-                            android:text="이윤택 (문화게릴라)"
+                            android:text=""
                             android:textColor="#ffffff"
                             android:textSize="12sp"
                             android:layout_width="wrap_content"
@@ -134,11 +134,11 @@
                 android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="출연진"
+                android:text=""
                 app:layout_constraintTop_toTopOf="@id/actor_part"
                 app:layout_constraintStart_toStartOf="@id/actor_part"/>
                 <TextView
-                    android:text="노심동, 조정우, 민 ..."
+                    android:text=""
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     android:layout_width="wrap_content"

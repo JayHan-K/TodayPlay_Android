@@ -3,25 +3,25 @@
     <item
         android:state_pressed="true"
         android:state_window_focused="true"
-        android:drawable="@drawable/star_on_size_30"
-        android:width="33dp"
-        android:height="33dp">
+        android:drawable="@drawable/star_on_size_50"
+        android:width="50dp"
+        android:height="50dp">
     </item>
     <item
         android:state_focused="true"
         android:state_window_focused="true"
-        android:drawable="@drawable/star_on_size_30"
-        android:width="33dp"
-        android:height="33dp">
+        android:drawable="@drawable/star_on_size_50"
+        android:width="50dp"
+        android:height="50dp">
     </item>
     <item
         android:state_selected="true"
         android:state_window_focused="true"
-        android:drawable="@drawable/star_on_size_30"
-        android:width="33dp"
-        android:height="33dp">
+        android:drawable="@drawable/star_on_size_50"
+        android:width="50dp"
+        android:height="50dp">
     </item>
-    <item android:drawable="@drawable/star_on_size_30"
-        android:width="33dp"
-        android:height="33dp"/>
+    <item android:drawable="@drawable/star_on_size_50"
+        android:width="50dp"
+        android:height="50dp"/>
 </selector>
