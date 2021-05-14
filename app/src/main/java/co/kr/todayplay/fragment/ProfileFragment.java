@@ -392,7 +392,7 @@ public class ProfileFragment extends Fragment {
 
                     play_count =Integer.toString(my_play_str.length) ;
                     journal_count = Integer.toString(my_journal_str.length);
-                    review_count = Integer.toString(my_review_str.length-1);
+                    review_count = Integer.toString(my_review_str.length);
 //                    nickname = my_nickname;
                     my_review_id.setText(review_count);
                     my_pick_id.setText(play_count);
