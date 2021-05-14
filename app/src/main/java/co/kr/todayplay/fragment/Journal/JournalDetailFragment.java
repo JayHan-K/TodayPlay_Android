@@ -66,6 +66,7 @@ import co.kr.todayplay.DBHelper.UserDB.UserDBHelper;
 import co.kr.todayplay.JoinIdentificationActivityVer2;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.SharedPreference;
 import co.kr.todayplay.adapter.JournalRecommendListAdapter;
 import co.kr.todayplay.adapter.PerformDetailJournalAdapter;
 import co.kr.todayplay.adapter.PerformReviewCommentAdapter;
@@ -77,7 +78,7 @@ public class JournalDetailFragment extends Fragment {
     int user_id = -1;
     //수정 유저 닉네임, 프로필 메인엑티비티에서 가져오기
     String user_pic = "";
-    final String user_name = "";
+    String user_name = "";
     String journal_title;
     String[] relation_journal;
     Boolean scrap_flag = false;
@@ -145,9 +146,12 @@ public class JournalDetailFragment extends Fragment {
             Log.d("Bundle result", "user_id: " + user_id);
         }
         //메인 Activity가 메모리에서 만들어질 때, RequestQueue를 하나만 생성한다.
-        if(AppHelper.requestQueue == null){
+        if(AppHelper.requestQueue == null) {
             AppHelper.requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         }
+
+        user_name = SharedPreference.getAttribute(getActivity().getApplicationContext(), "nickname");
+        Log.d("JournalDetail", "user_name = " + user_name);
 
         //layout binding
         num_of_scrap_tv = (TextView)viewGroup.findViewById(R.id.num_bookmarks_tv);
