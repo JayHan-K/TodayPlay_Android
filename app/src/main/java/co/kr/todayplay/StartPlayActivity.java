@@ -79,8 +79,10 @@ public class StartPlayActivity extends AppCompatActivity {
                             Log.d("something failed","failed"+data);
                         }else{
                             SharedPreference.setAttribute(getApplicationContext(),"userId", data);
+                            SharedPreference.setAttribute(getApplicationContext(),"nickname",nickname);
                             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                             intent.putExtra("userId", data);
+                            intent.putExtra("nickname",nickname);
 //                        intent.putExtra("name",name);
 //                        intent.putExtra("birth",birth);
 //                        intent.putExtra("phone",phone);

@@ -31,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,12 +130,29 @@ public class Login_Home_Activity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(String data) {
                                                 Log.d("Login_Home_Activity", "user_id : " + data);
-                                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                                intent.putExtra("userId", data);
-                                                MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
-                                                mainActivity.finish();
-                                                startActivity(intent);
-                                                finish();
+                                                String result2 = postData2(data, new VolleyCallback() {
+                                                    @Override
+                                                    public void onSuccess(String data2) {
+                                                        Log.d("data2",data2);
+                                                        String my_nickname = data2.split("nickname\": \"")[1].split("\",")[0];
+                                                        my_nickname = StringEscapeUtils.unescapeJava(my_nickname);
+
+                                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                        intent.putExtra("userId", data);
+                                                        intent.putExtra("nickname",my_nickname);
+                                                        SharedPreference.setAttribute(getApplicationContext(),"nickname",my_nickname);
+
+                                                        MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                                                        mainActivity.finish();
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                });
+//                                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                                                intent.putExtra("userId", data);
+//
+//                                                startActivity(intent);
+//                                                finish();
                                             }
                                         });
 
@@ -208,6 +227,53 @@ public class Login_Home_Activity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/json");
                     params.put("email", email);
+                    return params;
+                }
+            };
+            queue.add(stringRequest);
+            return resposeData[0];
+
+
+        } catch (Exception e) {
+            Log.d("Login_Home", e.toString());
+
+        }
+        return "0";
+    }
+
+    public String postData2(String user_id2,VolleyCallback callback){
+
+        try{
+            String[] resposeData = {""};
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "http://211.174.237.197/request_user_pic_nickname_by_id/";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
+
+                @Override
+                public void onResponse(String response) {
+
+
+                    String data = response;
+                    Log.d("Login_Home", data);
+                    resposeData[0] = data;
+
+                    callback.onSuccess(data);
+
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("Login_Home", error.toString());
+                }
+            }) {
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    params.put("user_id",user_id2);
                     return params;
                 }
             };

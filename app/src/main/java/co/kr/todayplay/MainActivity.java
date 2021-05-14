@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     static Line data4;
 
     String userId=null ;
+    String nickname = null;
     static int cnt=0;
     int current =0;
     public static Activity MainActivity;
@@ -127,11 +128,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
+        nickname = intent.getStringExtra("nickname");
+
 
         Log.d("userId","userId="+userId);
+        Log.d("nickname","nickname="+nickname);
+
 
         if(userId !=null){
             SharedPreference.setAttribute(getApplicationContext(),"userId",userId);
+            SharedPreference.setAttribute(getApplicationContext(),"nickname",nickname);
         }
         String get = get_play_id_from_user_id(userId, new VolleyCallback() {
             @Override

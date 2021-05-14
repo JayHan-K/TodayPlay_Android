@@ -39,6 +39,7 @@ public class LogOutPopupFragment extends DialogFragment implements View.OnClickL
             @Override
             public void onClick(View view) {
                 SharedPreference.removeAttribte(getContext(), "userId");
+                SharedPreference.removeAttribte(getContext(), "nickname");
                 Intent intent5 = new Intent(getContext(), Login_Home_Activity.class);
                 startActivity(intent5);
                 getActivity().finish();

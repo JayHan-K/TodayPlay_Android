@@ -391,11 +391,11 @@ public class ProfileFragment extends Fragment {
                     play_count =Integer.toString(my_play_str.length) ;
                     journal_count = Integer.toString(my_journal_str.length);
                     review_count = Integer.toString(my_review_str.length-1);
-                    nickname = my_nickname;
+//                    nickname = my_nickname;
                     my_review_id.setText(review_count);
                     my_pick_id.setText(play_count);
                     scrap_id.setText(journal_count);
-                    nickname = StringEscapeUtils.unescapeJava(nickname);
+                    nickname = StringEscapeUtils.unescapeJava(my_nickname);
                     mynickname.setText(nickname);
                     textView18.setText(rank);
                     String exps = exp +"%";
