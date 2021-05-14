@@ -26,9 +26,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.fragment.HomeFragment;
+import co.kr.todayplay.object.Sim_uri;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -38,7 +43,8 @@ public class PerformWriteReviewFragment1 extends Fragment {
     private final int GALLERY_CODE=1112;
     Bitmap bitmap;
     String imagePath = "";
-
+//    ArrayList<Sim_uri> image = new ArrayList<>();
+    ArrayList<Uri> image = new ArrayList<>();
     Boolean etc_flag = false;
     Boolean receipt_flag = false;
     Boolean ticket_flag = false;
@@ -209,11 +215,14 @@ public class PerformWriteReviewFragment1 extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == GALLERY_CODE){
+
                 sendPicture(data.getData());
                 if(bitmap!=null)  {
                     Log.d("DialogFragment", "result bitmap = " + bitmap.toString() + " img_path = " + imagePath);
-                    ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment2, play_id, certification_type, imagePath);
-
+//                    image.add(new Sim_uri(data.getData()));
+                    image.add(data.getData());
+                    ((MainActivity)getActivity()).replaceFragment(performWriteReviewFragment2, play_id, certification_type, imagePath,image);
+                    Log.d("imagesize=",Integer.toString(image.size()));
                 }
                 else{
                     Log.d("DialogFragment", "intent result bitmap = " + bitmap.toString() + " img_path = " + imagePath);

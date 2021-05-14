@@ -110,6 +110,7 @@ public class Intro_Activity extends AppCompatActivity {
     UpdateCrewDB updateCrewDB = new UpdateCrewDB();
     DownloadFilesTask lastDownload;
     String userId;
+    String nickname;
 
 
     @Override
@@ -119,6 +120,7 @@ public class Intro_Activity extends AppCompatActivity {
 
         //userId를 받아옴
         userId = SharedPreference.getAttribute(getApplicationContext(),"userId");
+        nickname =SharedPreference.getAttribute(getApplicationContext(),"nickname");
 
 //        if (!hasPermissions(PERMISSIONS)) { //퍼미션 허가를 했었는지 여부를 확인
 //            requestNecessaryPermissions(PERMISSIONS);//퍼미션 허가안되어 있다면 사용자에게 요청
