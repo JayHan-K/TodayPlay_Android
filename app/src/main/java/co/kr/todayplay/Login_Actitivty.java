@@ -167,7 +167,7 @@ public class Login_Actitivty extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(String data2) {
                                     Log.d("data2",data2);
-                                    String my_nickname = data2.split("nickname\": \"")[1].split("\",")[0];
+                                    String my_nickname = data2.split("nickname\": \"")[1].split("\"")[0];
                                     my_nickname = StringEscapeUtils.unescapeJava(my_nickname);
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     intent.putExtra("userId", data);

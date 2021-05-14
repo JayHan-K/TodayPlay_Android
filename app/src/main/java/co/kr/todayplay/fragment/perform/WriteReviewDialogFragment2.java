@@ -2,6 +2,7 @@ package co.kr.todayplay.fragment.perform;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 
 
@@ -30,6 +33,10 @@ public class WriteReviewDialogFragment2 extends DialogFragment {
             @Override
             public void onClick(View v) {
                 //BackStack 처리 필요
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                mainActivity.finish();
+                startActivity(intent);
                 dismiss();
             }
         });
