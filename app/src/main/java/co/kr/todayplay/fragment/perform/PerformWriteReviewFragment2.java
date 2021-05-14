@@ -285,9 +285,9 @@ public class PerformWriteReviewFragment2 extends Fragment {
             // 리사이클러뷰 초기화
             final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
             photo_rv.setAdapter(performReviewImageAdapter);
-            photo_rv.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
-            Log.d("get_data",data.getData().toString());
-            Log.d("data_ClipData",data.getClipData().toString());
+            photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+            //Log.d("get_data",data.getData().toString());
+            //Log.d("data_ClipData",data.getClipData().toString());
             if(data.getClipData() != null){
                 ClipData clipData = data.getClipData();
                 Log.d("WriteReviewFragment2", "picked photo num = " + clipData.getItemCount());
