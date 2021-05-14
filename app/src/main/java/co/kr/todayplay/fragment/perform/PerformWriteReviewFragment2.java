@@ -289,9 +289,8 @@ public class PerformWriteReviewFragment2 extends Fragment {
             final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
             photo_rv.setAdapter(performReviewImageAdapter);
             photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
-            //Log.d("get_data",data.getData().toString());
-            Log.d("data_ClipData",data.getClipData().toString());
             if(data.getClipData() != null){
+                Log.d("data_ClipData",data.getClipData().toString());
                 ClipData clipData = data.getClipData();
                 Log.d("WriteReviewFragment2", "picked photo num = " + clipData.getItemCount());
                 if(clipData.getItemCount() > 3){
@@ -322,6 +321,7 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 performReviewImageAdapter.notifyDataSetChanged();
             }
             else if(data.getData() != null){
+                Log.d("get_data",data.getData().toString());
                 review_pic[0] = data.getData().toString();
                 Log.d("WriteReviewFragment2", "Uri = " + data.getData());
                 images.add(data.getData());
