@@ -51,7 +51,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import co.kr.todayplay.AppHelper;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
-import co.kr.todayplay.adapter.PerformReviewAdapter;
+import co.kr.todayplay.adapter.PerformReviewAdapter2;
 
 public class PerformReviewFragment extends Fragment {
     RecyclerView review_rv;
@@ -62,8 +62,8 @@ public class PerformReviewFragment extends Fragment {
     PieChart recommend_ratio_chart;
     ImageView keywords_iv;
 
-    ArrayList<PerformReviewAdapter.ReviewItem> all_review_data = new ArrayList<>();
-    PerformReviewAdapter performReviewAdapter;
+    ArrayList<PerformReviewAdapter2.ReviewItem> all_review_data = new ArrayList<>();
+    PerformReviewAdapter2 PerformReviewAdapter2;
 
     int play_id = -1;
     int user_id = -1;
@@ -106,11 +106,11 @@ public class PerformReviewFragment extends Fragment {
         image_data.add(R.drawable.poster_sample4);
         image_data.add(R.drawable.poster_sample5);
         image_data.add(R.drawable.poster_sample6);
-        data.add(new PerformReviewAdapter.ReviewItem(R.drawable.icon_mypage, "제인", true, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 ", image_data));
-        all_review_data.add(new PerformReviewAdapter.ReviewItem(R.drawable.icon_mypage, "제인1", false, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 "));
+        data.add(new PerformReviewAdapter2.ReviewItem(R.drawable.icon_mypage, "제인", true, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 ", image_data));
+        all_review_data.add(new PerformReviewAdapter2.ReviewItem(R.drawable.icon_mypage, "제인1", false, "20대, Beginner", "2020.10.23 작성", 23, 23, "노래를 매우 잘합니다. 오리지널 캐스트라 그런지 한국 버전으로 봤을 때와 느낌이 다르네. 그리고 넘버들이 ", "무대 장치들이 예전에는 실물들이라 더 웅장하고 멋있었는데.. 대체 왜 영상으로 대체된거죠? 오페라의 유령은 "));
 */
-        performReviewAdapter = new PerformReviewAdapter(getActivity().getApplicationContext(), all_review_data);
-        review_rv.setAdapter(performReviewAdapter);
+        PerformReviewAdapter2 = new PerformReviewAdapter2(getActivity().getApplicationContext(), all_review_data);
+        review_rv.setAdapter(PerformReviewAdapter2);
 
         more_review_btn.setVisibility(View.GONE);
         review_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false));
@@ -363,6 +363,7 @@ public class PerformReviewFragment extends Fragment {
                             String nickname = user.getString("nickname");
                             String level = user.getString("rank");
                             String profile = user.getString("user_pic");
+                            if(!profile.equals("")) profile = getActivity().getApplicationContext().getFileStreamPath(profile).toString();
                             String birth = user.getString("birthday");
                             Log.d("User_idRequest", "user_id = " + user_id + " nickname = " + nickname + " level = " + level + " profile_path = " + profile + " birth = " + birth);
 
@@ -370,16 +371,28 @@ public class PerformReviewFragment extends Fragment {
                             String review_bad = review.getString("review_bad");
                             String review_tip = review.getString("review_tip");
                             String review_certified_pic =  review.getString("review_certified_pic");
-                            ArrayList<Uri> review_pics = new ArrayList<>();
+
                             ArrayList<String> str_review_pics = new ArrayList<>();
-                            str_review_pics.add(review.getString("review_pic1"));
-                            str_review_pics.add(review.getString("review_pic2"));
-                            str_review_pics.add(review.getString("review_pic3"));
-                            for(int j=0; j<2; j++){
-                                if(str_review_pics.get(j).equals("")) continue;
-                                //수정 - 리뷰 이미지 처리
-                                //review_pics.add(getUriFromPath(str_review_pics.get(i)));
+                            String review_pic1 = review.getString("review_pic1");
+                            String review_pic2 = review.getString("review_pic2");
+                            String review_pic3 = review.getString("review_pic3");
+                            Log.d("User_id", "review_pic1 = " + review_pic1 + " review_pic2 = " + review_pic2 + " review_pic3 = " + review_pic3);
+                            if(!review_pic1.equals("")) {
+                                str_review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic1).toString());
+                                Log.d("User_idRequest", "review_pic1 = " + str_review_pics.get(0));
                             }
+                            if(!review_pic2.equals("")) {
+                                str_review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic2).toString());
+                                Log.d("User_idRequest", "review_pic2 = " + str_review_pics.get(1));
+
+                            }
+                            if(!review_pic3.equals("")) {
+                                str_review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic2).toString());
+                                Log.d("User_idRequest", "review_pic3 = " + str_review_pics.get(2));
+
+                            }
+
+
                             String comment = review.getString("comment");
                             int num_comment = 0;
                             //수정 num_comment
@@ -392,10 +405,10 @@ public class PerformReviewFragment extends Fragment {
 
                             int review_id = review.getInt("review_id");
                             int play_id = review.getInt("play_id");
-                            Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " pic1 = " + str_review_pics.get(0) + " pic2 = " + str_review_pics.get(1)  +  " pic3 = " + str_review_pics.get(2) + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
+                            Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
 
-                            all_review_data.add(new PerformReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart,num_comment, review_good, review_bad, review_pics));
-                            performReviewAdapter.notifyDataSetChanged();
+                            all_review_data.add(new PerformReviewAdapter2.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart,num_comment, review_good, review_bad, str_review_pics));
+                            PerformReviewAdapter2.notifyDataSetChanged();
                             Log.d("User_idRequest", "review all_review_data size = " + all_review_data.size());
                         } catch (JSONException e) {
                             e.printStackTrace();
