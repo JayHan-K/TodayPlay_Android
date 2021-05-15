@@ -402,7 +402,6 @@ public class PerformReviewFragment extends Fragment {
 
                             }
 
-
                             String comment = review.getString("comment");
                             int num_comment = 0;
                             //수정 num_comment

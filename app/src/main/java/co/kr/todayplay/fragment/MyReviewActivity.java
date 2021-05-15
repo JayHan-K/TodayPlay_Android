@@ -1,5 +1,7 @@
 package co.kr.todayplay.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +58,7 @@ public class MyReviewActivity extends Fragment {
     PlayDBHelper playDBHelper;
 
     TextView user_level_tv, user_total_review_tv;
+    CircularImageView user_profile_iv;
     ArrayList<MypageReviewAdapter.ReviewItem> myReview_data = new ArrayList<>();
     MypageReviewAdapter mypageReviewAdapter;
     RecyclerView myReview_rv;
@@ -68,6 +72,7 @@ public class MyReviewActivity extends Fragment {
         user_level_tv = (TextView)viewGroup.findViewById(R.id.textView36);
         user_total_review_tv = (TextView)viewGroup.findViewById(R.id.textView38);
         myReview_rv = (RecyclerView)viewGroup.findViewById(R.id.myreview_rv);
+        user_profile_iv = (CircularImageView)viewGroup.findViewById(R.id.profile_user_iv2);
 
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
 
@@ -197,11 +202,19 @@ public class MyReviewActivity extends Fragment {
                         Log.d("User_idRequest", "response = " + response);
                         try {
                             JSONObject user = new JSONObject(response).getJSONObject("user");
+                            String user_pic = user.getString("user_pic");
+                            if(user_pic.equals("") || user_pic == null){
+                                user_profile_iv.setImageResource(R.drawable.icon_mypage);
+                            }
+                            else{
+                                Bitmap bm = BitmapFactory.decodeFile( getActivity().getApplicationContext().getFileStreamPath(user_pic).toString());
+                                user_profile_iv.setImageBitmap(bm);
+                            }
                             String my_review  = user.getString("my_review");
                             String level = user.getString("rank");
                             user_level_tv.setText(level);
                             String[] my_reviews = my_review.split(", ");
-                            user_total_review_tv.setText(my_reviews.length + "");
+                            user_total_review_tv.setText(my_reviews.length + "개");
                             for(int i=0; i<my_reviews.length; i++){
                                 Log.d("User_idRequest", i + " review_id = " + my_reviews[i]);
                                 sendPOSTReview_idRequest(review_info_request_url, my_reviews[i]);
@@ -242,24 +255,32 @@ public class MyReviewActivity extends Fragment {
                             try {
                                 JSONObject review = new JSONObject(response).getJSONObject("review");
                                 int play_id = review.getInt("play_id");
-                                Log.d("Review_idRequest", "play_id = " + play_id);
                                 String play_title = playDBHelper.getPlayTitle(play_id);
-                                Log.d("Review_idRequest", "play_title = " + play_title);
                                 String good = review.getString("review_good");
-                                Log.d("Review_idRequest", "good = " + good);
                                 String bad = review.getString("review_bad");
-                                Log.d("Review_idRequest", "bad = " + bad);
                                 String tip = review.getString("review_tip");
-                                Log.d("Review_idRequest", "tip = " + tip);
                                 String certified_pic = review.getString("review_certified_pic");
-                                Log.d("Review_idRequest", "certified_pic = " + certified_pic);
+                                String review_pic1 = review.getString("review_pic1");
+                                String review_pic2 = review.getString("review_pic2");
+                                String review_pic3 = review.getString("review_pic3");
+                                Log.d("User_id", "review_pic1 = " + review_pic1 + " review_pic2 = " + review_pic2 + " review_pic3 = " + review_pic3);
+
                                 ArrayList<String> review_pics = new ArrayList<>();
-                                review_pics.add(review.getString("review_pic1"));
-                                review_pics.add(review.getString("review_pic2"));
-                                review_pics.add(review.getString("review_pic3"));
-                                Log.d("Review_idRequest", "review_pic1 = " + review_pics.get(0));
-                                Log.d("Review_idRequest", "review_pic2 = " + review_pics.get(1));
-                                Log.d("Review_idRequest", "review_pic3 = " + review_pics.get(2));
+                                if(!review_pic1.equals("")) {
+                                    review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic1).toString());
+                                    Log.d("User_idRequest", "review_pic1 = " + review_pics.get(0));
+                                }
+                                if(!review_pic2.equals("")) {
+                                    review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic2).toString());
+                                    Log.d("User_idRequest", "review_pic2 = " + review_pics.get(1));
+
+                                }
+                                if(!review_pic3.equals("")) {
+                                    review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic2).toString());
+                                    Log.d("User_idRequest", "review_pic3 = " + review_pics.get(2));
+
+                                }
+
                                 String comment = review.getString("comment");
                                 Log.d("Review_idRequest", "comment = " + comment);
                                 int num_comment = 0;
@@ -277,9 +298,9 @@ public class MyReviewActivity extends Fragment {
                                 Log.d("Review_idRequest", "review_num_of_heart = " + review_num_of_heart);
                                 String written_date = review.getString("written_date");
                                 Log.d("Review_idRequest", "written_date = " + written_date);
-                                Log.d("Review_idRequest", "review_id = " + review_id + " play_id = " + play_id + " play_title = " + play_title + " user_id = " + user_id + " good = " + good + " bad = " + bad + " tip = " + tip + " certified_pic = " + certified_pic + " pic1 = " + review_pics.get(0) + " pic2 = " + review_pics.get(1)  +  " pic3 = " + review_pics.get(2) + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
+                                Log.d("Review_idRequest", "review_id = " + review_id + " play_id = " + play_id + " play_title = " + play_title + " user_id = " + user_id + " good = " + good + " bad = " + bad + " tip = " + tip + " certified_pic = " + certified_pic + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
 
-                                myReview_data.add(new MypageReviewAdapter.ReviewItem(play_title, R.drawable.icon_mypage, nickname, thumb, rank, written_date, review_num_of_heart, num_comment, good, bad));
+                                myReview_data.add(new MypageReviewAdapter.ReviewItem(play_title, R.drawable.icon_mypage, nickname, thumb, rank, written_date, review_num_of_heart, num_comment, good, bad, review_pics));
                                 myReview_data = reviewSort(myReview_data);
                                 mypageReviewAdapter.notifyDataSetChanged();
 

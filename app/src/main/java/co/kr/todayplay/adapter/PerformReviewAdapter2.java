@@ -183,7 +183,6 @@ public class PerformReviewAdapter2 extends RecyclerView.Adapter<RecyclerView.Vie
             itemController.good_thing_tv.setText(item.getGood_thing());
             itemController.bad_thing_tv.setText(item.getBad_thing());
             //recycler
-        //수정 리뷰 이미지
             if (item.getReview_pics().size() > 0){
                 itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
                     @Override

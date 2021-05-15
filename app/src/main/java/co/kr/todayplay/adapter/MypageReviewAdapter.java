@@ -36,7 +36,7 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private int num_review;
         private String good_thing;
         private String bad_thing;
-        private ArrayList<Integer> review_drawable;
+        private ArrayList<String> review_pics;
 
         public ReviewItem(){}
         public ReviewItem(String play_title, int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing){
@@ -51,7 +51,7 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.good_thing = good_thing;
             this.bad_thing = bad_thing;
         }
-        public ReviewItem(String play_title, int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, ArrayList<Integer> review_drawable){
+        public ReviewItem(String play_title, int profile_drawable, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, ArrayList<String> review_pics){
             this.play_title = play_title;
             this.profile_drawable = profile_drawable;
             this.user_name = user_name;
@@ -62,7 +62,11 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.num_review = num_review;
             this.good_thing = good_thing;
             this.bad_thing = bad_thing;
-            this.review_drawable = review_drawable;
+            this.review_pics = review_pics;
+        }
+
+        public ArrayList<String> getReview_pics() {
+            return review_pics;
         }
 
         public String getPlay_title() {
@@ -104,9 +108,6 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return good_thing;
         }
 
-        public ArrayList<Integer> getReview_drawable() {
-            return review_drawable;
-        }
 
     }
 
@@ -173,17 +174,18 @@ public class MypageReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemController.date_tv.setText(item.getDate());
             itemController.good_thing_tv.setText(item.getGood_thing());
             itemController.bad_thing_tv.setText(item.getBad_thing());
+
             //recycler
-            if (item.review_drawable != null){
-                itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
-                    @Override
-                    public boolean canScrollHorizontally() {
-                        return false;
-                    }
-                });
-                //PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
-                //itemController.photo_rv.setAdapter(performReviewImageAdapter);
-            }
+        if (item.getReview_pics().size() > 0){
+            itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+            });
+            PerformReviewImageAdapter2 PerformReviewImageAdapter2 = new PerformReviewImageAdapter2(item.getReview_pics());
+            itemController.photo_rv.setAdapter(PerformReviewImageAdapter2);
+        }
             else Log.d("IsImage", "onBindViewHolder: image is null!!");
 
         //mvp ver. 후기 상세보기 임시 막음
