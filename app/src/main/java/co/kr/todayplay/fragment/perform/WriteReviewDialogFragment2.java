@@ -2,7 +2,8 @@ package co.kr.todayplay.fragment.perform;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
 import co.kr.todayplay.fragment.HomeFragment;
@@ -29,6 +31,17 @@ public class WriteReviewDialogFragment2 extends DialogFragment {
         cancel_btn = (Button)view.findViewById(R.id.cancel_button);
         write_btn = (Button)view.findViewById(R.id.write_btn);
 
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //BackStack 처리 필요
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                mainActivity.finish();
+                startActivity(intent);
+                dismiss();
+            }
+        });
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
