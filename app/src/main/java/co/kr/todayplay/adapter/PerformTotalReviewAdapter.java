@@ -1,6 +1,8 @@
 package co.kr.todayplay.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,12 +39,12 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
         private String good_thing;
         private String bad_thing;
         private String tip;
-        private ArrayList<Uri> review_pics;
+        private ArrayList<String> review_pics;
         private int num_comment;
 
         public ReviewItem(){}
 
-        public ReviewItem(String profile_path, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, String tip, ArrayList<Uri> review_pics, int num_comment){
+        public ReviewItem(String profile_path, String user_name, boolean thumb, String age_level, String date, int num_heart, int num_review, String good_thing, String bad_thing, String tip, ArrayList<String> review_pics, int num_comment){
             this.profile_path = profile_path;
             this.user_name = user_name;
             this.thumb = thumb;
@@ -96,7 +98,7 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             return good_thing;
         }
 
-        public ArrayList<Uri> getReview_pics() {
+        public ArrayList<String> getReview_pics() {
             return review_pics;
         }
 
@@ -161,8 +163,11 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         ReviewItem item = data.get(position);
         PerformTotalReviewAdapter.ReviewHolder itemController = (PerformTotalReviewAdapter.ReviewHolder) holder;
-        itemController.profile_iv.setImageResource(R.drawable.icon_mypage);
-        //수정 프로필 이미지
+        if(item.getProfile_path().equals("")) itemController.profile_iv.setImageResource(R.drawable.icon_mypage);
+        else{
+            Bitmap bm = BitmapFactory.decodeFile(item.getProfile_path());
+            itemController.profile_iv.setImageBitmap(bm);
+        }
             itemController.user_name_tv.setText(item.user_name);
             if(item.isThumb()) itemController.thumb_iv.setImageResource(R.drawable.icon_good);
             else itemController.thumb_iv.setImageResource(R.drawable.icon_bad);
@@ -176,19 +181,19 @@ public class PerformTotalReviewAdapter extends RecyclerView.Adapter<RecyclerView
             //수정 더보기 숨기기
             if(item.getTip().equals("")) itemController.more_tv.setVisibility(View.GONE);
             itemController.more_comment_tv.setText("댓글 " + item.getNum_comment() + "개 보기");
+
             //recycler
-        //수정 리뷰 이미지
-            if (item.review_pics != null){
-                itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
-                    @Override
-                    public boolean canScrollHorizontally() {
-                        return false;
-                    }
-                });
-                //PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(item.getReview_drawable());
-                //itemController.photo_rv.setAdapter(performReviewImageAdapter);
-            }
-            else Log.d("IsImage", "onBindViewHolder: image is null!!");
+        if (item.getReview_pics().size() > 0){
+            itemController.photo_rv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+            });
+            PerformReviewImageAdapter2 PerformReviewImageAdapter2 = new PerformReviewImageAdapter2(item.getReview_pics());
+            itemController.photo_rv.setAdapter(PerformReviewImageAdapter2);
+        }
+
             itemController.more_comment_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

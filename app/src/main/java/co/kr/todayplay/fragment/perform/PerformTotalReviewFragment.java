@@ -174,21 +174,41 @@ public class PerformTotalReviewFragment extends Fragment {
                             String nickname = user.getString("nickname");
                             String level = user.getString("rank");
                             String profile = user.getString("user_pic");
+                            if(!profile.equals("")) {
+                                if(profile.equals("null")){
+                                    Log.d("User_idRequest", "user_pic is null");
+                                    profile = "";
+                                }
+                                else{
+                                    Log.d("User_idRequest", "user_pic is not null");
+                                    profile = getActivity().getApplicationContext().getFileStreamPath(profile).toString();
+                                }
+                            }
                             String birth = user.getString("birthday");
                             Log.d("User_idRequest", "user_id = " + user_id + " nickname = " + nickname + " level = " + level + " profile_path = " + profile + " birth = " + birth);
 
                             String review_good = review.getString("review_good");
                             String review_bad = review.getString("review_bad");
                             String review_tip = review.getString("review_tip");
-                            ArrayList<Uri> review_pics = new ArrayList<>();
+
                             ArrayList<String> str_review_pics = new ArrayList<>();
-                            str_review_pics.add(review.getString("review_pic1"));
-                            str_review_pics.add(review.getString("review_pic2"));
-                            str_review_pics.add(review.getString("review_pic3"));
-                            for(int j=0; j<2; j++){
-                                if(str_review_pics.get(j).equals("")) continue;
-                                //수정 - 리뷰 이미지 처리
-                                //review_pics.add(getUriFromPath(str_review_pics.get(i)));
+                            String review_pic1 = review.getString("review_pic1");
+                            String review_pic2 = review.getString("review_pic2");
+                            String review_pic3 = review.getString("review_pic3");
+                            Log.d("User_id", "review_pic1 = " + review_pic1 + " review_pic2 = " + review_pic2 + " review_pic3 = " + review_pic3);
+                            if(!review_pic1.equals("")) {
+                                str_review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic1).toString());
+                                Log.d("User_idRequest", "review_pic1 = " + str_review_pics.get(0));
+                            }
+                            if(!review_pic2.equals("")) {
+                                str_review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic2).toString());
+                                Log.d("User_idRequest", "review_pic2 = " + str_review_pics.get(1));
+
+                            }
+                            if(!review_pic3.equals("")) {
+                                str_review_pics.add(getActivity().getApplicationContext().getFileStreamPath(review_pic2).toString());
+                                Log.d("User_idRequest", "review_pic3 = " + str_review_pics.get(2));
+
                             }
                             String comment = review.getString("comment");
                             int num_comment = 0;
@@ -206,9 +226,9 @@ public class PerformTotalReviewFragment extends Fragment {
                             String review_certified_pic =  review.getString("review_certified_pic");
                             int review_id = review.getInt("review_id");
                             int play_id = review.getInt("play_id");
-                            Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " pic1 = " + str_review_pics.get(0) + " pic2 = " + str_review_pics.get(1)  +  " pic3 = " + str_review_pics.get(2) + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
+                            Log.d("User_idRequest", "review_id = " + review_id + " play_id = " + play_id + " user_id = " + user_id + " good = " + review_good + " bad = " + review_bad + " tip = " + review_tip + " certified_pic = " + review_certified_pic + " comment = " + comment + " recommend = " + recommend + " review_num_of_heart = " + review_num_of_heart + " written_date = " + written_date);
 
-                            total_review_data.add(new PerformTotalReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart, num_comment, review_good, review_bad, review_tip, review_pics, num_comment));
+                            total_review_data.add(new PerformTotalReviewAdapter.ReviewItem(profile, nickname, thumb, level, written_date, review_num_of_heart, num_comment, review_good, review_bad, review_tip, str_review_pics, num_comment));
                             total_review_data = reviewSort(total_review_data);
                             performTotalReviewAdapter.notifyDataSetChanged();
                             Log.d("User_idRequest", "review total_review_data size = " + total_review_data.size());
