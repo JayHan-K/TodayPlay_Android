@@ -45,7 +45,11 @@ public class WriteReviewDialogFragment1 extends DialogFragment {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)inflater.getContext()).onBackPressed();
+                //BackStack 처리 필요
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                mainActivity.finish();
+                startActivity(intent);
                 dismiss();
             }
         });

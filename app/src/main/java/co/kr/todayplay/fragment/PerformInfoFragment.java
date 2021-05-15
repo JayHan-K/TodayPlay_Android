@@ -126,6 +126,12 @@ public class PerformInfoFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) { }
 
         });
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)viewGroup.getContext()).onBackPressed();
+            }
+        });
 
         //Set 카테고리, 제목, 포스터
         Log.d("perform Play_id","play_id="+play_id);
