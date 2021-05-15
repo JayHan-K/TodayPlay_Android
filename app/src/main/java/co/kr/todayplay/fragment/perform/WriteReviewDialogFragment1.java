@@ -3,6 +3,7 @@ package co.kr.todayplay.fragment.perform;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import co.kr.todayplay.MainActivity;
 import co.kr.todayplay.R;
+import co.kr.todayplay.fragment.HomeFragment;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -45,11 +47,16 @@ public class WriteReviewDialogFragment1 extends DialogFragment {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 //BackStack 처리 필요
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
                 mainActivity.finish();
                 startActivity(intent);
+                dismiss();
+                 */
+                HomeFragment homeFragment = new HomeFragment();
+                ((MainActivity)view.getContext()).replaceFragmentHome(homeFragment);
                 dismiss();
             }
         });
