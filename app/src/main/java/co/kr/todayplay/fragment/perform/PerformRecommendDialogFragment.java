@@ -105,8 +105,15 @@ public class PerformRecommendDialogFragment extends DialogFragment {
 //            review_pic1 = bundle.getString("review_pic1");
 //            review_pic2 = bundle.getString("review_pic2");
 //            review_pic3 = bundle.getString("review_pic3");
-            for(int i=0;i<images.size()-1;++i){
-                review_pic[i]=getRealPathFromURI(images.get(i+1));
+            int cnt = images.size()-1;
+            while(cnt>0){
+                if(getRealPathFromURI(images.get(cnt)) == null) images.remove(cnt);
+                cnt --;
+            }
+            Log.d("after remove", "images size = " + images.size());
+            for(int i=1;i<images.size();i++){
+                review_pic[i-1]=getRealPathFromURI(images.get(i));
+                Log.d("Bundle result", "review_pic" + i + " = " + review_pic[i-1] + " images" + i + " = " + images.get(i));
             }
             num_of_star = bundle.getInt("num_of_star");
             Log.d("images_size",Integer.toString(images.size()));
@@ -117,10 +124,10 @@ public class PerformRecommendDialogFragment extends DialogFragment {
         review_certified_pic = certified[certified.length-1];
         review_certified_pic = time + review_certified_pic;
 
-        for(int i =0 ; i<images.size()-1;++i){
-            String[] pic = review_pic[i].split("/");
-            review_pic_name[i] =pic[pic.length-1];
-            review_pic_name[i] = time+review_pic_name[i];
+        for(int i =1 ; i<images.size();i++){
+            String[] pic = review_pic[i-1].split("/");
+            review_pic_name[i-1] =pic[pic.length-1];
+            review_pic_name[i-1] = time+review_pic_name[i-1];
         }
 //        if(!review_pic1.equals("")){
 //            String[] pic1 = review_pic1.split("/");
@@ -175,7 +182,7 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                             Log.d("postSendReviewData","Success to send review");
                             Toast.makeText(getActivity().getApplicationContext(), "후기가 등록되었습니다.", Toast.LENGTH_LONG).show();
                             Log.d("pressed","pressed=");
-                            for(int b=0;b<images.size();++b){
+                            for(int b=0;b<images.size();b++){
                                 String result = uploadImage(b,new VolleyReviewCallback() {
                                     @Override
                                     public void onSuccess(String data) {
@@ -444,8 +451,8 @@ public class PerformRecommendDialogFragment extends DialogFragment {
                         params.put("file", new DataPart(review_certified_pic,byteArrayOutputStream.toByteArray(), "image/jpeg"));
 
                     }else{
-                        params.put("file", new DataPart(review_pic_name[s-1],byteArrayOutputStream.toByteArray(), "image/jpeg"));
-                        Log.d("bitmap live?",review_pic_name[s-1]);
+                        params.put("file", new DataPart(review_pic_name[s],byteArrayOutputStream.toByteArray(), "image/jpeg"));
+                        Log.d("bitmap live?",review_pic_name[s]);
                     }
 
                 } catch (FileNotFoundException e) {

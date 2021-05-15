@@ -49,6 +49,8 @@ public class PerformWriteReviewFragment2 extends Fragment {
     TextView good_num_text_tv, bad_num_text_tv, tip_num_text_tv, photo_tv;
     RatingBar star_rb;
     ArrayList<Uri> images ;
+    ArrayList<Uri> uriList = new ArrayList<>();
+    PerformReviewImageAdapter performReviewImageAdapter;
 
     DialogFragment writeReviewDialogFragment2 = new WriteReviewDialogFragment2();
 
@@ -247,8 +249,12 @@ public class PerformWriteReviewFragment2 extends Fragment {
             }
         });
 
-        photo_btn = (Button)viewGroup.findViewById(R.id.photo_btn);
         photo_rv = (RecyclerView)viewGroup.findViewById(R.id.photo_rv);
+        performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getActivity().getApplicationContext());
+        photo_rv.setAdapter(performReviewImageAdapter);
+        photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+
+        photo_btn = (Button)viewGroup.findViewById(R.id.photo_btn);
         photo_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,15 +263,21 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
                 intent.putExtra(intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(Intent.createChooser(intent, "사진 애플리케이션을 선택해주세요."), CODE_ALBUM_REQUEST);
-            */
+*/
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, CODE_ALBUM_REQUEST);
 
-
+/*
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "사진 애플리케이션을 선택해주세요."), CODE_ALBUM_REQUEST);
-
+*/
 
             }
         });
@@ -278,17 +290,16 @@ public class PerformWriteReviewFragment2 extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("WriteReviewFragment2", "onActivityResult: ");
+
+        //review_pic, uriList 초기화
+        uriList.clear();
+        for(int i=0; i<review_pic.length; i++){
+            review_pic[i] = "";
+        }
+
         //갤러리 이미지 가져오기
-        if(requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null && data.getClipData() != null){
-            ArrayList<Uri> uriList = new ArrayList<>();
-            //review_pic 초기화
-            for(int i=0; i<review_pic.length; i++){
-                review_pic[i] = "";
-            }
+        if(requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null){
             // 리사이클러뷰 초기화
-            final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
-            photo_rv.setAdapter(performReviewImageAdapter);
-            photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
             if(data.getClipData() != null){
                 Log.d("data_ClipData",data.getClipData().toString());
                 ClipData clipData = data.getClipData();
