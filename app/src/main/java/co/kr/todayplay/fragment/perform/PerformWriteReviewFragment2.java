@@ -257,13 +257,16 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
                 intent.putExtra(intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(Intent.createChooser(intent, "사진 애플리케이션을 선택해주세요."), CODE_ALBUM_REQUEST);
+            */
 
-                 */
+
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "사진 애플리케이션을 선택해주세요."), CODE_ALBUM_REQUEST);
+
+
             }
         });
 
@@ -276,7 +279,7 @@ public class PerformWriteReviewFragment2 extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("WriteReviewFragment2", "onActivityResult: ");
         //갤러리 이미지 가져오기
-        if(requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null){
+        if(requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null && data.getClipData() != null){
             ArrayList<Uri> uriList = new ArrayList<>();
             //review_pic 초기화
             for(int i=0; i<review_pic.length; i++){
@@ -286,9 +289,8 @@ public class PerformWriteReviewFragment2 extends Fragment {
             final PerformReviewImageAdapter performReviewImageAdapter = new PerformReviewImageAdapter(uriList, getContext());
             photo_rv.setAdapter(performReviewImageAdapter);
             photo_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
-            //Log.d("get_data",data.getData().toString());
-            //Log.d("data_ClipData",data.getClipData().toString());
             if(data.getClipData() != null){
+                Log.d("data_ClipData",data.getClipData().toString());
                 ClipData clipData = data.getClipData();
                 Log.d("WriteReviewFragment2", "picked photo num = " + clipData.getItemCount());
                 if(clipData.getItemCount() > 3){
@@ -319,6 +321,7 @@ public class PerformWriteReviewFragment2 extends Fragment {
                 performReviewImageAdapter.notifyDataSetChanged();
             }
             else if(data.getData() != null){
+                Log.d("get_data",data.getData().toString());
                 review_pic[0] = data.getData().toString();
                 Log.d("WriteReviewFragment2", "Uri = " + data.getData());
                 images.add(data.getData());

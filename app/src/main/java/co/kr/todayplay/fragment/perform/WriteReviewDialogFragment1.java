@@ -46,6 +46,10 @@ public class WriteReviewDialogFragment1 extends DialogFragment {
             @Override
             public void onClick(View v) {
                 //BackStack 처리 필요
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                mainActivity.finish();
+                startActivity(intent);
                 dismiss();
             }
         });
