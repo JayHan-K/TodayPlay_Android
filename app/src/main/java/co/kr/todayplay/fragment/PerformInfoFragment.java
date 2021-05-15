@@ -161,6 +161,12 @@ public class PerformInfoFragment extends Fragment {
             //poster.setBackground(bitmapDrawable);
         }
          */
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)viewGroup.getContext()).onBackPressed();
+            }
+        });
 
 
         return viewGroup;

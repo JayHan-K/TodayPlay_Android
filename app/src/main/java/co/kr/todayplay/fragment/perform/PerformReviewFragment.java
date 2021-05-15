@@ -363,7 +363,17 @@ public class PerformReviewFragment extends Fragment {
                             String nickname = user.getString("nickname");
                             String level = user.getString("rank");
                             String profile = user.getString("user_pic");
-                            if(!profile.equals("")) profile = getActivity().getApplicationContext().getFileStreamPath(profile).toString();
+                            Log.d("User_idRequest", "user_pic = " + profile);
+                            if(!profile.equals("")) {
+                                if(profile.equals("null")){
+                                    Log.d("User_idRequest", "user_pic is null");
+                                    profile = "";
+                                }
+                                else{
+                                    Log.d("User_idRequest", "user_pic is not null");
+                                    profile = getActivity().getApplicationContext().getFileStreamPath(profile).toString();
+                                }
+                            }
                             String birth = user.getString("birthday");
                             Log.d("User_idRequest", "user_id = " + user_id + " nickname = " + nickname + " level = " + level + " profile_path = " + profile + " birth = " + birth);
 
