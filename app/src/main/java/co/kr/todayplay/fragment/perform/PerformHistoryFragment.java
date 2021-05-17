@@ -39,6 +39,9 @@ public class PerformHistoryFragment extends Fragment {
     int user_id = -1;
     String play_name;
 
+    ArrayList<PerformHistoryAdapter.Item> data = new ArrayList<>();
+    PerformHistoryAdapter performHistoryAdapter;
+
     public PerformHistoryFragment(){}
 
     @Nullable
@@ -54,18 +57,15 @@ public class PerformHistoryFragment extends Fragment {
         playDBHelper = new PlayDBHelper(this.getContext(), "Play.db",null,1);
         play_name = playDBHelper.getPlayTitle(play_id);
         String history = playDBHelper.getPlayHistory(play_id);
-        history = history.replace("[", "{ history : [");
-        history = history.replace("]","]}");
-        history_rv = (RecyclerView)viewGroup.findViewById(R.id.history_rv);
-        history_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false)
-        {
+        Log.d("history", "all history string = " + history);
+        history = "{ history : [" + history.substring(1) + "}";
+        Log.d("history", "after history = " +  history);
 
-            @Override
-            public boolean canScrollVertically() { //가로 스크롤막기
-                return false;
-            }
-        });
-        ArrayList<PerformHistoryAdapter.Item> data = new ArrayList<>();
+        history_rv = (RecyclerView)viewGroup.findViewById(R.id.history_rv);
+        history_rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+
+        performHistoryAdapter = new PerformHistoryAdapter(data);
+        history_rv.setAdapter(performHistoryAdapter);
 
         try {
             JSONObject history_object = new JSONObject(history);
@@ -73,15 +73,13 @@ public class PerformHistoryFragment extends Fragment {
             for (int i=0; i<history_array.length(); i++){
                 JSONObject jsonObject = history_array.getJSONObject(i);
                 String img_path = getActivity().getApplicationContext().getFileStreamPath(jsonObject.optString("poster_img")).toString();
-                Log.d("history_array", jsonObject.optString("poster_img") + " | " + jsonObject.optString("play_date") + " | " + jsonObject.optString("play_product_company") + " | " + jsonObject.optString("play_director") + " | " + jsonObject.optString("play_crew"));
+                Log.d("history_array", i + " img_path = " + img_path + " | " + jsonObject.optString("poster_img") + " | " + jsonObject.optString("play_date") + " | " + jsonObject.optString("play_product_company") + " | " + jsonObject.optString("play_director") + " | " + jsonObject.optString("play_crew"));
                 data.add(new PerformHistoryAdapter.Item(img_path, jsonObject.optString("play_date"), jsonObject.optString("play_crew"),  jsonObject.optString("play_director"), jsonObject.optString("play_product_company")));
-
+                performHistoryAdapter.notifyDataSetChanged();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        PerformHistoryAdapter performHistoryAdapter = new PerformHistoryAdapter(data);
-        history_rv.setAdapter(performHistoryAdapter);
 
         return viewGroup;
     }
